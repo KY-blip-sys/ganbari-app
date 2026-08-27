@@ -8,8 +8,10 @@ import { showView } from "../nav.js";
 const openBtn = document.getElementById("btn-open-settings");
 const closeBtn = document.getElementById("btn-close-settings");
 const resetBtn = document.getElementById("btn-reset-data");
+const logoutBtn = document.getElementById("btn-logout");
+const accountEmailEl = document.getElementById("account-email");
 
-export function initSettingsView(onResetConfirmed) {
+export function initSettingsView(onResetConfirmed, onLogout) {
   openBtn.addEventListener("click", () => showView("settings"));
   closeBtn.addEventListener("click", () => showView("home"));
 
@@ -24,4 +26,17 @@ export function initSettingsView(onResetConfirmed) {
       },
     });
   });
+
+  logoutBtn.addEventListener("click", () => {
+    showConfirm({
+      title: "ログアウトしますか？",
+      text: "再度ログインすることでデータが復元されます。",
+      confirmLabel: "ログアウト",
+      onConfirm: onLogout,
+    });
+  });
+}
+
+export function setAccountEmail(email) {
+  accountEmailEl.textContent = email || "";
 }

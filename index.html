@@ -12,11 +12,39 @@
   <link rel="stylesheet" href="css/components.css">
   <link rel="stylesheet" href="css/nav.css">
   <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="css/auth.css">
 </head>
 
 <body>
 
-  <div id="app">
+  <div id="sync-error-banner" class="sync-error-banner sync-error-hidden"></div>
+
+  <!-- ログイン／新規登録画面 -->
+  <div id="auth-screen" class="auth-screen auth-hidden">
+    <div class="auth-card card glass-card">
+      <p class="auth-logo">⚔️</p>
+      <h1 class="auth-title" id="auth-title">ログイン</h1>
+
+      <label class="modal-label" for="auth-email">メールアドレス</label>
+      <input id="auth-email" class="modal-input" type="email" autocomplete="email" placeholder="you@example.com">
+
+      <label class="modal-label" for="auth-password">パスワード</label>
+      <input id="auth-password" class="modal-input" type="password" autocomplete="current-password" placeholder="6文字以上">
+
+      <p class="auth-error" id="auth-error"></p>
+      <p class="auth-info" id="auth-info"></p>
+
+      <div class="modal-actions">
+        <button id="btn-auth-submit" class="modal-save-button tap-scale" disabled>ログイン</button>
+      </div>
+
+      <button id="btn-auth-toggle" class="auth-toggle-link tap-scale">
+        アカウントをお持ちでない方はこちら
+      </button>
+    </div>
+  </div>
+
+  <div id="app" class="app-hidden">
 
     <!-- PCサイドバー -->
     <nav id="sidebar-nav" class="sidebar-nav" aria-label="メインナビゲーション"></nav>
@@ -223,6 +251,11 @@
         </header>
 
         <main class="view-flow">
+          <section class="card glass-card settings-card">
+            <p class="account-email" id="account-email"></p>
+            <button id="btn-logout" class="logout-button tap-scale">ログアウト</button>
+          </section>
+
           <section class="card glass-card settings-card">
             <button id="btn-reset-data" class="reset-button tap-scale">データをリセット</button>
             <p class="reset-hint">記録・経験値・レベルがすべて削除されます</p>

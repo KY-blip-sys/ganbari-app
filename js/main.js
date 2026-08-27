@@ -22,7 +22,7 @@ import { renderLevel } from "./components/levelCard.js";
 import { renderRecords, setOnDelete, setOnEdit } from "./components/recordList.js";
 import { initRecordModal, openRecordModalForEdit } from "./components/recordModal.js";
 import { renderAiComment } from "./components/aiComment.js";
-import { initSettingsView } from "./components/settingsView.js";
+import { initSettingsView, setAccountEmail } from "./components/settingsView.js";
 import { renderTitle } from "./components/titleCard.js";
 import { renderQuests, flashQuestComplete } from "./components/questCard.js";
 import { renderLifeStatuses } from "./components/statusCard.js";
@@ -34,8 +34,29 @@ import { renderMap } from "./components/mapView.js";
 import { renderTitleGallery } from "./components/titleGalleryView.js";
 import { renderCoach } from "./components/coachView.js";
 import { initNav } from "./nav.js";
+import * as authService from "./auth/authService.js";
+import { initAuthView } from "./auth/authView.js";
+import {
+  hasRemoteData,
+  fetchRemoteState,
+  migrateLocalToRemote,
+  upsertRecordRemote,
+  deleteRecordRemote,
+  upsertProgressRemote,
+  deleteAllRemoteData,
+} from "./utils/cloudSync.js";
+import { showSyncError } from "./components/syncError.js";
+
+const SAVE_FAIL_MSG = "データの保存に失敗しました。通信状態を確認してください。";
+const DELETE_FAIL_MSG = "データの削除に失敗しました。通信状態を確認してください。";
+const LOAD_FAIL_MSG = "データの読み込みに失敗しました。通信状態を確認してください。";
 
 let state = loadState();
+let currentUserId = null;
+let appStarted = false;
+
+const appEl = document.getElementById("app");
+const authScreenEl = document.getElementById("auth-screen");
 
 const statusListHomeEl = document.getElementById("status-list-home");
 const statusListFullEl = document.getElementById("status-list-full");
@@ -52,11 +73,29 @@ function computeTodayExp(records) {
   return records.reduce((sum, r) => sum + r.exp, 0);
 }
 
+function syncProgress() {
+  if (!currentUserId) return;
+  upsertProgressRemote(currentUserId, { totalExp: state.totalExp, quests: state.quests }).catch(() =>
+    showSyncError(SAVE_FAIL_MSG)
+  );
+}
+
+function syncRecordUpsert(dateKey, record) {
+  if (!currentUserId) return;
+  upsertRecordRemote(currentUserId, dateKey, record).catch(() => showSyncError(SAVE_FAIL_MSG));
+}
+
+function syncRecordDelete(id) {
+  if (!currentUserId) return;
+  deleteRecordRemote(currentUserId, id).catch(() => showSyncError(SAVE_FAIL_MSG));
+}
+
 function ensureTodayQuests() {
   const key = todayKey();
   if (!state.quests[key]) {
     state.quests[key] = { list: generateDailyQuests(), rewardClaimed: false };
     saveState(state);
+    syncProgress();
   }
 }
 
@@ -120,6 +159,8 @@ function addRecord({ title, category, exp }) {
 
   saveState(state);
   renderAll({ animate: true });
+  syncRecordUpsert(key, record);
+  syncProgress();
 
   if (questRewardClaimed) flashQuestComplete();
 
@@ -138,6 +179,8 @@ function deleteRecord(id) {
 
   saveState(state);
   renderAll({ animate: true });
+  syncRecordDelete(id);
+  syncProgress();
 }
 
 function updateRecord(id, { title, category, exp }) {
@@ -157,6 +200,8 @@ function updateRecord(id, { title, category, exp }) {
 
   saveState(state);
   renderAll({ animate: true });
+  syncRecordUpsert(key, target);
+  syncProgress();
 
   if (questRewardClaimed) flashQuestComplete();
 
@@ -168,12 +213,76 @@ function resetAll() {
   clearState();
   state = loadState();
   renderAll();
+
+  if (currentUserId) {
+    deleteAllRemoteData(currentUserId).catch(() => showSyncError(DELETE_FAIL_MSG));
+  }
 }
 
-setOnDelete(deleteRecord);
-setOnEdit(openRecordModalForEdit);
-initRecordModal({ onSave: addRecord, onUpdate: updateRecord });
-initSettingsView(resetAll);
-initCalendar();
-initNav();
-renderAll();
+function showApp() {
+  authScreenEl.classList.add("auth-hidden");
+  appEl.classList.remove("app-hidden");
+}
+
+function showAuth() {
+  appEl.classList.add("app-hidden");
+  authScreenEl.classList.remove("auth-hidden");
+}
+
+function startApp() {
+  setOnDelete(deleteRecord);
+  setOnEdit(openRecordModalForEdit);
+  initRecordModal({ onSave: addRecord, onUpdate: updateRecord });
+  initSettingsView(resetAll, () => authService.signOut());
+  initCalendar();
+  initNav();
+  renderAll();
+}
+
+async function handleAuthenticated(session) {
+  currentUserId = session.user.id;
+  setAccountEmail(session.user.email);
+
+  try {
+    const remoteHasData = await hasRemoteData(currentUserId);
+    if (remoteHasData) {
+      state = await fetchRemoteState(currentUserId);
+      saveState(state);
+    } else {
+      await migrateLocalToRemote(currentUserId, state);
+    }
+  } catch {
+    showSyncError(LOAD_FAIL_MSG);
+  }
+
+  if (!appStarted) {
+    appStarted = true;
+    startApp();
+  } else {
+    renderAll();
+  }
+  showApp();
+}
+
+async function bootstrap() {
+  initAuthView({ onAuthenticated: handleAuthenticated });
+
+  try {
+    authService.onAuthStateChange((event) => {
+      if (event === "SIGNED_OUT") {
+        location.reload();
+      }
+    });
+
+    const { data } = await authService.getSession();
+    if (data.session) {
+      await handleAuthenticated(data.session);
+      return;
+    }
+  } catch {
+    showSyncError(LOAD_FAIL_MSG);
+  }
+  showAuth();
+}
+
+bootstrap();
