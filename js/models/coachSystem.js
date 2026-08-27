@@ -8,7 +8,7 @@ import { CATEGORIES } from "./categories.js";
 
 function categoryHintFor(lifeStatKey) {
   const category = CATEGORIES.find((c) => c.lifeStat === lifeStatKey);
-  return category ? `「${category.key}」の記録を追加してみましょう。` : "";
+  return category ? `「${category.key}」の記録を追加してみましょう` : "";
 }
 
 export function computeCoachTips({ lifeStatuses, achievements, todayRecords }) {
@@ -20,8 +20,8 @@ export function computeCoachTips({ lifeStatuses, achievements, todayRecords }) {
 
   const dailyMessage =
     todayRecords.length === 0
-      ? "今日はまだ記録がありません。何か1つ、頑張ったことを記録してみましょう。"
-      : "今日も記録できています。この調子で続けましょう。";
+      ? "今日はまだ記録がありません 何か1つ頑張ったことを記録してみましょう"
+      : "今日も記録できています この調子で続けましょう";
 
   return {
     dailyMessage,

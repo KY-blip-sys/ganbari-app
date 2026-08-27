@@ -44,18 +44,18 @@ function applyMode() {
 }
 
 function mapErrorMessage(error) {
-  if (!error) return "エラーが発生しました。もう一度お試しください。";
+  if (!error) return "エラーが発生しました もう一度お試しください";
   const msg = error.message || "";
   if (msg.includes("Invalid login credentials")) {
-    return "メールアドレスまたはパスワードが正しくありません。";
+    return "メールアドレスまたはパスワードが正しくありません";
   }
   if (msg.includes("already registered") || msg.includes("already been registered")) {
-    return "このメールアドレスはすでに登録されています。";
+    return "このメールアドレスはすでに登録されています";
   }
   if (msg.includes("Password should be")) {
-    return "パスワードは6文字以上で入力してください。";
+    return "パスワードは6文字以上で入力してください";
   }
-  return mode === "login" ? "ログインに失敗しました。" : "登録に失敗しました。";
+  return mode === "login" ? "ログインに失敗しました" : "登録に失敗しました";
 }
 
 async function handleSubmit() {
@@ -88,11 +88,11 @@ async function handleSubmit() {
       if (data.session && onAuthenticatedCallback) {
         onAuthenticatedCallback(data.session);
       } else {
-        infoEl.textContent = "確認メールを送信しました。メール内のリンクをクリックして登録を完了してください。";
+        infoEl.textContent = "確認メールを送信しました メール内のリンクをクリックして登録を完了してください";
       }
     }
   } catch {
-    errorEl.textContent = "通信エラーが発生しました。通信状態を確認してください。";
+    errorEl.textContent = "通信エラーが発生しました 通信状態を確認してください";
   } finally {
     submitBtn.textContent = originalLabel;
     updateSubmitState();

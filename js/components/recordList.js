@@ -59,7 +59,7 @@ function buildRecordItem(record) {
   deleteBtn.addEventListener("click", () => {
     showConfirm({
       title: "この記録を削除しますか？",
-      text: "この操作は取り消せません。",
+      text: "この操作は取り消せません",
       confirmLabel: "削除",
       onConfirm: () => removeItem(li, record.id),
       onCancel: () => setTranslate(bodyEl, 0),

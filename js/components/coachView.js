@@ -14,14 +14,14 @@ export function renderCoach({ dailyMessage, weakestStat, weakestStatHint, nextAc
       <p class="card-label">📊 伸ばすと良いステータス</p>
       <p class="coach-tip-text">${
         weakestStat
-          ? `「${weakestStat.key}」が一番育っていません。${weakestStatHint}`
-          : "記録を追加するとおすすめが表示されます。"
+          ? `「${weakestStat.key}」が一番育っていません ${weakestStatHint}`
+          : "記録を追加するとおすすめが表示されます"
       }</p>
     </section>
     <section class="card glass-card coach-tip-card">
       <p class="card-label">🏆 次に狙える実績</p>
       <p class="coach-tip-text">${
-        nextAchievement ? `「${nextAchievement.name}」まであと少しです。` : "すべての実績を達成しました！"
+        nextAchievement ? `「${nextAchievement.name}」まであと少しです` : "すべての実績を達成しました！"
       }</p>
     </section>
   `;

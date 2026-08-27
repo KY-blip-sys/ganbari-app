@@ -47,9 +47,9 @@ import {
 } from "./utils/cloudSync.js";
 import { showSyncError } from "./components/syncError.js";
 
-const SAVE_FAIL_MSG = "データの保存に失敗しました。通信状態を確認してください。";
-const DELETE_FAIL_MSG = "データの削除に失敗しました。通信状態を確認してください。";
-const LOAD_FAIL_MSG = "データの読み込みに失敗しました。通信状態を確認してください。";
+const SAVE_FAIL_MSG = "データの保存に失敗しました 通信状態を確認してください";
+const DELETE_FAIL_MSG = "データの削除に失敗しました 通信状態を確認してください";
+const LOAD_FAIL_MSG = "データの読み込みに失敗しました 通信状態を確認してください";
 
 let state = loadState();
 let currentUserId = null;
@@ -60,6 +60,18 @@ const authScreenEl = document.getElementById("auth-screen");
 
 const statusListHomeEl = document.getElementById("status-list-home");
 const statusListFullEl = document.getElementById("status-list-full");
+const greetingMainEl = document.getElementById("greeting-main");
+
+function updateGreeting() {
+  const hour = new Date().getHours();
+  let text;
+  if (hour >= 5 && hour < 12) text = "おはようございます";
+  else if (hour >= 12 && hour < 18) text = "こんにちは";
+  else text = "こんばんは";
+  greetingMainEl.textContent = text;
+}
+
+updateGreeting();
 
 function getTodayRecords() {
   return state.records[todayKey()] || [];

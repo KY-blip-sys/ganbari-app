@@ -88,11 +88,6 @@
   color: var(--color-accent);
 }
 
-.exp-today-star {
-  font-size: 40px;
-  margin-right: 4px;
-}
-
 .exp-today-unit {
   font-size: 24px;
   font-weight: 600;
@@ -122,6 +117,12 @@
 }
 
 /* ---------- レベルカード ---------- */
+
+.level-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
 
 .level-row {
   display: flex;
@@ -1175,8 +1176,9 @@
     padding: 24px 40px 0;
   }
 
-  /* AIコメントは幅いっぱいに使う */
-  .ai-comment-bar {
+  /* AIコメントと人生ステータスは幅いっぱいに使う（カード5枚の非対称を解消） */
+  .ai-comment-bar,
+  #status-card-home {
     grid-column: 1 / -1;
   }
 
@@ -1199,10 +1201,6 @@
 
   .exp-today-value {
     font-size: 68px;
-  }
-
-  .exp-today-star {
-    font-size: 48px;
   }
 
   .exp-today-unit {
