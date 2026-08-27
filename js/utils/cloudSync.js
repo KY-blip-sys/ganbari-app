@@ -5,6 +5,7 @@
 // ==========================================================
 
 import { getSupabaseClient } from "../lib/supabaseClient.js";
+import { migrateQuests } from "./storage.js";
 
 export async function hasRemoteData(userId) {
   const supabase = await getSupabaseClient();
@@ -41,7 +42,7 @@ export async function fetchRemoteState(userId) {
   return {
     totalExp: progress ? progress.total_exp : 0,
     records,
-    quests: progress && progress.quests ? progress.quests : {},
+    quests: migrateQuests(progress ? progress.quests : null),
   };
 }
 

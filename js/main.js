@@ -3,17 +3,27 @@
 // ==========================================================
 
 import { loadState, saveState, clearState } from "./utils/storage.js";
-import { todayKey } from "./utils/dateUtils.js";
+import { todayKey, weekKey, monthKey } from "./utils/dateUtils.js";
+import { recordsInWeek, recordsInMonth } from "./utils/recordStats.js";
 import { createRecord } from "./models/record.js";
 import { normalizeCategory } from "./models/categories.js";
 import { computeLevel } from "./models/levelSystem.js";
 import { computeRank } from "./utils/scoreUtils.js";
-import { computeLifeStatuses } from "./models/statusSystem.js";
+import {
+  computeLifeStatuses,
+  computeStatusBreakdown,
+  computeStatusWeeklyTrend,
+} from "./models/statusSystem.js";
 import { computeTodayTitle, computeAllEarnedTitles } from "./models/titleSystem.js";
-import { generateDailyQuests, evaluateQuest, QUEST_REWARD_EXP } from "./models/questSystem.js";
-import { computeAllSkillTrees } from "./models/skillSystem.js";
+import {
+  generateQuests,
+  evaluateQuest,
+  QUEST_REWARD_EXP,
+  SPECIAL_MILESTONES,
+  findNewlyReachedMilestones,
+} from "./models/questSystem.js";
+import { computeAllSkillTrees, computeSkillTree } from "./models/skillSystem.js";
 import { computeAchievements } from "./models/achievementSystem.js";
-import { computeMapProgress } from "./models/mapSystem.js";
 import { computeCoachTips } from "./models/coachSystem.js";
 
 import { renderExp } from "./components/scoreCard.js";
@@ -25,7 +35,8 @@ import { renderAiComment } from "./components/aiComment.js";
 import { initSettingsView, setAccountEmail } from "./components/settingsView.js";
 import { renderTitle } from "./components/titleCard.js";
 import { renderQuests, flashQuestComplete } from "./components/questCard.js";
-import { renderLifeStatuses } from "./components/statusCard.js";
+import { renderLifeStatuses, setOnStatusClick } from "./components/statusCard.js";
+import { initStatusDetail, openStatusDetail } from "./components/statusDetailView.js";
 import { initCalendar, renderCalendar } from "./components/calendarCard.js";
 import { showLevelUp } from "./components/levelUpOverlay.js";
 import { renderSkillTree } from "./components/skillTreeView.js";
@@ -102,31 +113,65 @@ function syncRecordDelete(id) {
   deleteRecordRemote(currentUserId, id).catch(() => showSyncError(SAVE_FAIL_MSG));
 }
 
-function ensureTodayQuests() {
-  const key = todayKey();
-  if (!state.quests[key]) {
-    state.quests[key] = { list: generateDailyQuests(), rewardClaimed: false };
+function ensurePeriodicQuests() {
+  let changed = false;
+  const dKey = todayKey();
+  const wKey = weekKey();
+  const mKey = monthKey();
+
+  if (!state.quests.daily[dKey]) {
+    state.quests.daily[dKey] = { list: generateQuests("daily", dKey), rewardClaimed: false };
+    changed = true;
+  }
+  if (!state.quests.weekly[wKey]) {
+    state.quests.weekly[wKey] = { list: generateQuests("weekly", wKey), rewardClaimed: false };
+    changed = true;
+  }
+  if (!state.quests.monthly[mKey]) {
+    state.quests.monthly[mKey] = { list: generateQuests("monthly", mKey), rewardClaimed: false };
+    changed = true;
+  }
+
+  if (changed) {
     saveState(state);
     syncProgress();
   }
 }
 
-function tryClaimQuestReward() {
-  const key = todayKey();
-  const questState = state.quests[key];
-  if (!questState || questState.rewardClaimed) return false;
+function tryClaimPeriodRewards() {
+  let anyClaimed = false;
 
-  const todayRecords = getTodayRecords();
-  const allDone = questState.list.every((q) => evaluateQuest(q, todayRecords).done);
-  if (!allDone) return false;
+  const periods = [
+    { type: "daily", key: todayKey(), records: getTodayRecords() },
+    { type: "weekly", key: weekKey(), records: recordsInWeek(state.records, weekKey()) },
+    { type: "monthly", key: monthKey(), records: recordsInMonth(state.records, monthKey()) },
+  ];
 
-  questState.rewardClaimed = true;
-  state.totalExp += QUEST_REWARD_EXP;
-  return true;
+  periods.forEach(({ type, key, records }) => {
+    const questState = state.quests[type][key];
+    if (!questState || questState.rewardClaimed) return;
+
+    const allDone = questState.list.every((q) => evaluateQuest(q, records).done);
+    if (!allDone) return;
+
+    questState.rewardClaimed = true;
+    state.totalExp += QUEST_REWARD_EXP[type];
+    anyClaimed = true;
+  });
+
+  let newMilestone = findNewlyReachedMilestones(state.totalExp, state.quests.special.claimed)[0];
+  while (newMilestone) {
+    state.quests.special.claimed.push(newMilestone.id);
+    state.totalExp += newMilestone.reward;
+    anyClaimed = true;
+    newMilestone = findNewlyReachedMilestones(state.totalExp, state.quests.special.claimed)[0];
+  }
+
+  return anyClaimed;
 }
 
 function renderAll({ animate = false } = {}) {
-  ensureTodayQuests();
+  ensurePeriodicQuests();
 
   const todayRecords = getTodayRecords();
   const allRecords = getAllRecordsFlat();
@@ -141,6 +186,9 @@ function renderAll({ animate = false } = {}) {
     lifeStatLevels,
   });
 
+  const wKey = weekKey();
+  const mKey = monthKey();
+
   renderExp(todayExp, animate);
   renderRank(rankInfo);
   renderLevel(levelInfo);
@@ -149,11 +197,22 @@ function renderAll({ animate = false } = {}) {
   renderTitle(computeTodayTitle(todayRecords));
   renderLifeStatuses(statusListHomeEl, lifeStatuses);
   renderLifeStatuses(statusListFullEl, lifeStatuses);
-  renderQuests(state.quests[todayKey()].list, todayRecords);
+  renderQuests({
+    daily: { list: state.quests.daily[todayKey()].list, records: todayRecords },
+    weekly: { list: state.quests.weekly[wKey].list, records: recordsInWeek(state.records, wKey) },
+    monthly: { list: state.quests.monthly[mKey].list, records: recordsInMonth(state.records, mKey) },
+    special: {
+      totalExp: state.totalExp,
+      milestones: SPECIAL_MILESTONES.map((m) => ({
+        ...m,
+        claimed: state.quests.special.claimed.includes(m.id),
+      })),
+    },
+  });
   renderCalendar(state.records);
   renderSkillTree(computeAllSkillTrees(lifeStatuses));
   renderAchievements(achievements);
-  renderMap(computeMapProgress(state.totalExp));
+  renderMap({ totalExp: state.totalExp, lifeStatuses });
   renderTitleGallery(computeAllEarnedTitles(state.records));
   renderCoach(computeCoachTips({ lifeStatuses, achievements, todayRecords }));
 }
@@ -167,7 +226,7 @@ function addRecord({ title, category, exp }) {
   state.records[key].push(record);
   state.totalExp += exp;
 
-  const questRewardClaimed = tryClaimQuestReward();
+  const questRewardClaimed = tryClaimPeriodRewards();
 
   saveState(state);
   renderAll({ animate: true });
@@ -208,7 +267,7 @@ function updateRecord(id, { title, category, exp }) {
   target.category = normalizeCategory(category);
   target.exp = exp;
 
-  const questRewardClaimed = tryClaimQuestReward();
+  const questRewardClaimed = tryClaimPeriodRewards();
 
   saveState(state);
   renderAll({ animate: true });
@@ -219,6 +278,34 @@ function updateRecord(id, { title, category, exp }) {
 
   const afterLevel = computeLevel(state.totalExp).level;
   if (afterLevel > beforeLevel) showLevelUp(afterLevel);
+}
+
+function handleStatusClick(key) {
+  const allRecords = getAllRecordsFlat();
+  const lifeStatuses = computeLifeStatuses(allRecords);
+  const stat = lifeStatuses.find((s) => s.key === key);
+  if (!stat) return;
+
+  const lifeStatLevels = Object.fromEntries(lifeStatuses.map((s) => [s.key, s.level]));
+  const achievements = computeAchievements({
+    totalExp: state.totalExp,
+    records: state.records,
+    lifeStatLevels,
+  });
+
+  const skillNodes = computeSkillTree(key, stat.level);
+
+  openStatusDetail({
+    key,
+    icon: stat.icon,
+    level: stat.level,
+    progressRatio: stat.progressRatio,
+    expToNext: stat.expToNext,
+    breakdown: computeStatusBreakdown(key, allRecords),
+    trend: computeStatusWeeklyTrend(key, state.records),
+    nextSkill: skillNodes.find((n) => !n.unlocked) || null,
+    nextAchievement: achievements.find((a) => a.id.startsWith(`stat-${key}-`) && !a.unlocked) || null,
+  });
 }
 
 function resetAll() {
@@ -247,6 +334,8 @@ function startApp() {
   initRecordModal({ onSave: addRecord, onUpdate: updateRecord });
   initSettingsView(resetAll, () => authService.signOut());
   initCalendar();
+  initStatusDetail();
+  setOnStatusClick(handleStatusClick);
   initNav();
   renderAll();
 }

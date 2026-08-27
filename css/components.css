@@ -340,7 +340,44 @@
   font-weight: 800;
 }
 
-/* ---------- 今日のクエスト ---------- */
+/* ---------- クエスト ---------- */
+
+.quest-tabs {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  margin-bottom: 4px;
+  scrollbar-width: none;
+}
+
+.quest-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.quest-tab {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+  padding: 9px 14px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--color-text-secondary);
+  background: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+}
+
+.quest-tab.active {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: #fff;
+}
+
+.quest-tab-icon {
+  font-size: 15px;
+}
 
 .quest-header {
   display: flex;
@@ -410,6 +447,58 @@
   flex-shrink: 0;
 }
 
+/* ---------- スペシャルクエスト ---------- */
+
+.quest-special-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 12px 0;
+  border-top: 1px solid var(--color-border);
+}
+
+.quest-special-item:first-child {
+  border-top: none;
+  padding-top: 0;
+}
+
+.quest-special-icon {
+  font-size: 28px;
+  flex-shrink: 0;
+}
+
+.quest-special-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.quest-special-title {
+  font-size: 15px;
+  font-weight: 800;
+  margin-bottom: 2px;
+}
+
+.quest-special-desc {
+  font-size: 12.5px;
+  color: var(--color-text-secondary);
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.quest-special-hint {
+  margin-top: 6px;
+  font-size: 12px;
+  color: var(--color-text-tertiary);
+}
+
+.quest-special-claimed {
+  opacity: 0.55;
+}
+
+.quest-special-claimed .quest-special-desc {
+  margin-bottom: 0;
+}
+
 /* ---------- 人生ステータス ---------- */
 
 .status-list {
@@ -422,6 +511,9 @@
   display: flex;
   align-items: center;
   gap: 10px;
+  width: 100%;
+  padding: 4px 0;
+  text-align: left;
 }
 
 .status-icon {
@@ -434,8 +526,14 @@
 .status-name {
   font-size: 13px;
   font-weight: 700;
-  width: 56px;
+  width: 62px;
   color: var(--color-text-secondary);
+  flex-shrink: 0;
+}
+
+.status-chevron {
+  font-size: 12px;
+  color: var(--color-text-tertiary);
   flex-shrink: 0;
 }
 
@@ -462,6 +560,126 @@
   width: 40px;
   text-align: right;
   flex-shrink: 0;
+}
+
+/* ---------- ステータス詳細モーダル ---------- */
+
+.status-detail-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.status-detail-icon {
+  font-size: 36px;
+  flex-shrink: 0;
+}
+
+.status-detail-heading .modal-title {
+  text-align: left;
+  margin-bottom: 2px;
+}
+
+.status-detail-level {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--color-accent);
+}
+
+.status-detail-breakdown {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.status-detail-breakdown-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.status-detail-breakdown-icon {
+  font-size: 15px;
+  width: 20px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.status-detail-breakdown-name {
+  font-size: 12.5px;
+  font-weight: 700;
+  width: 62px;
+  color: var(--color-text-secondary);
+  flex-shrink: 0;
+}
+
+.status-detail-breakdown-exp {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--color-text-tertiary);
+  width: 52px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.status-detail-trend {
+  margin-bottom: 20px;
+}
+
+.trend-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 6px;
+  height: 64px;
+}
+
+.trend-bar-col {
+  flex: 1;
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+}
+
+.trend-bar {
+  width: 100%;
+  min-height: 4px;
+  border-radius: 4px 4px 0 0;
+  background: linear-gradient(180deg, #0a84ff, #5e5ce6);
+}
+
+.status-detail-goals {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 4px;
+}
+
+.status-detail-goal-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  background: var(--color-bg-elevated-solid);
+  border: 1px solid var(--color-border);
+}
+
+.status-detail-goal-icon {
+  font-size: 22px;
+  flex-shrink: 0;
+}
+
+.status-detail-goal-title {
+  font-size: 13.5px;
+  font-weight: 700;
+}
+
+.status-detail-goal-desc {
+  font-size: 11.5px;
+  color: var(--color-text-tertiary);
+  font-weight: 600;
 }
 
 /* ---------- スキルツリー ---------- */
@@ -577,6 +795,43 @@
 }
 
 /* ---------- 人生マップ ---------- */
+
+.map-tabs {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  margin-bottom: 4px;
+  scrollbar-width: none;
+}
+
+.map-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.map-tab {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+  padding: 9px 14px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--color-text-secondary);
+  background: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+}
+
+.map-tab.active {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: #fff;
+}
+
+.map-tab-icon {
+  font-size: 15px;
+}
 
 .map-path {
   display: flex;

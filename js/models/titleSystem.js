@@ -12,41 +12,50 @@ function buildDayContext(dayRecords) {
     categoryCounts[r.category] = (categoryCounts[r.category] || 0) + 1;
   });
 
-  return { totalExp, categoryExp, categoryCounts, touchedCategories: Object.keys(categoryExp).length };
+  const hours = dayRecords.map((r) => new Date(r.createdAt).getHours());
+
+  return {
+    totalExp,
+    categoryExp,
+    categoryCounts,
+    touchedCategories: Object.keys(categoryExp).length,
+    recordCount: dayRecords.length,
+    maxSingleExp: Math.max(0, ...dayRecords.map((r) => r.exp)),
+    earliestHour: hours.length ? Math.min(...hours) : null,
+    latestHour: hours.length ? Math.max(...hours) : null,
+  };
 }
 
 // 判定順そのものが優先順位（先にマッチした称号が採用される）。
 export const TITLE_LIST = [
-  {
-    id: "perfect-day",
-    icon: "🏆",
-    name: "パーフェクトデイ",
-    matches: (ctx) => ctx.totalExp >= 100,
-  },
-  {
-    id: "scholar",
-    icon: "🎓",
-    name: "勉強家",
-    matches: (ctx) => (ctx.categoryExp["勉強"] || 0) >= 30,
-  },
-  {
-    id: "health-master",
-    icon: "💪",
-    name: "健康マスター",
-    matches: (ctx) => (ctx.categoryExp["運動"] || 0) >= 30,
-  },
+  { id: "legendary-day", icon: "🌠", name: "伝説の一日", matches: (ctx) => ctx.totalExp >= 300 },
+  { id: "perfect-day", icon: "🏆", name: "パーフェクトデイ", matches: (ctx) => ctx.totalExp >= 200 },
+  { id: "fulfilling-day", icon: "✨", name: "充実の一日", matches: (ctx) => ctx.totalExp >= 100 },
+
+  { id: "overachiever", icon: "🔥", name: "限界突破者", matches: (ctx) => ctx.maxSingleExp >= 50 },
+  { id: "multi-tasker", icon: "🧩", name: "マルチタスカー", matches: (ctx) => ctx.recordCount >= 5 },
+
+  { id: "scholar", icon: "🎓", name: "勉強家", matches: (ctx) => (ctx.categoryExp["勉強"] || 0) >= 30 },
+  { id: "health-master", icon: "💪", name: "健康マスター", matches: (ctx) => (ctx.categoryExp["運動"] || 0) >= 30 },
+  { id: "wellness-guru", icon: "❤️", name: "ウェルネスの達人", matches: (ctx) => (ctx.categoryExp["健康"] || 0) >= 30 },
+  { id: "mindful-one", icon: "🧘", name: "心の安定", matches: (ctx) => (ctx.categoryExp["メンタル"] || 0) >= 30 },
+  { id: "hustler", icon: "💼", name: "仕事人間", matches: (ctx) => (ctx.categoryExp["仕事"] || 0) >= 30 },
+  { id: "earner", icon: "💵", name: "稼ぎ頭", matches: (ctx) => (ctx.categoryExp["アルバイト"] || 0) >= 30 },
+  { id: "artist", icon: "🎨", name: "趣味人", matches: (ctx) => (ctx.categoryExp["趣味"] || 0) >= 30 },
+  { id: "socialite", icon: "🤝", name: "社交家", matches: (ctx) => (ctx.categoryExp["人間関係"] || 0) >= 30 },
   {
     id: "life-skill-master",
     icon: "🏠",
     name: "生活力の達人",
     matches: (ctx) => (ctx.categoryCounts["家事"] || 0) >= 2,
   },
-  {
-    id: "balancer",
-    icon: "⚖️",
-    name: "バランサー",
-    matches: (ctx) => ctx.touchedCategories >= 4,
-  },
+  { id: "wildcard", icon: "🌟", name: "自由人", matches: (ctx) => (ctx.categoryExp["その他"] || 0) >= 30 },
+
+  { id: "jack-of-all-trades", icon: "🌈", name: "何でも屋", matches: (ctx) => ctx.touchedCategories >= 6 },
+  { id: "balancer", icon: "⚖️", name: "バランサー", matches: (ctx) => ctx.touchedCategories >= 4 },
+
+  { id: "early-bird-day", icon: "🌅", name: "早起きさん", matches: (ctx) => ctx.earliestHour !== null && ctx.earliestHour < 7 },
+  { id: "night-owl-day", icon: "🌙", name: "夜更かしさん", matches: (ctx) => ctx.latestHour !== null && ctx.latestHour >= 23 },
 ];
 
 const DEFAULT_TITLE = { icon: "🌱", name: "今日の一歩" };

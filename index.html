@@ -19,6 +19,12 @@
 
 <body>
 
+  <div class="flame-bg" aria-hidden="true">
+    <span class="flame-blob flame-blob-1"></span>
+    <span class="flame-blob flame-blob-2"></span>
+    <span class="flame-blob flame-blob-3"></span>
+  </div>
+
   <div id="sync-error-banner" class="sync-error-banner sync-error-hidden"></div>
 
   <!-- ログイン／新規登録画面 -->
@@ -161,10 +167,11 @@
           <h1>クエスト</h1>
         </header>
         <main class="view-flow">
+          <div class="quest-tabs" id="quest-tabs"></div>
           <section class="card glass-card quest-card" id="quest-card">
             <div class="quest-header">
-              <p class="card-label">今日のクエスト</p>
-              <span class="quest-reward-tag">全達成で+30EXP</span>
+              <p class="card-label" id="quest-card-label">今日のクエスト</p>
+              <span class="quest-reward-tag" id="quest-reward-tag"></span>
             </div>
             <ul class="quest-list" id="quest-list"></ul>
           </section>
@@ -190,6 +197,7 @@
           <h1>人生マップ</h1>
         </header>
         <main class="view-flow">
+          <div class="map-tabs" id="map-tabs"></div>
           <section class="card glass-card map-card" id="map-content"></section>
         </main>
       </section>
@@ -287,6 +295,7 @@
         <button class="category-chip tap-scale" data-category="勉強">📚 勉強</button>
         <button class="category-chip tap-scale" data-category="運動">💪 運動</button>
         <button class="category-chip tap-scale" data-category="健康">❤️ 健康</button>
+        <button class="category-chip tap-scale" data-category="メンタル">🧘 メンタル</button>
         <button class="category-chip tap-scale" data-category="仕事">💼 仕事</button>
         <button class="category-chip tap-scale" data-category="趣味">🎨 趣味</button>
         <button class="category-chip tap-scale" data-category="家事">🧹 家事</button>
@@ -354,6 +363,37 @@
 
       <div class="modal-actions">
         <button id="btn-day-detail-close" class="modal-cancel-button tap-scale">閉じる</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ステータス詳細モーダル -->
+  <div id="status-detail-overlay" class="modal-overlay modal-hidden">
+    <div class="modal-sheet glass-card" id="status-detail-sheet">
+      <div class="modal-handle"></div>
+
+      <div class="status-detail-header">
+        <span class="status-detail-icon" id="status-detail-icon"></span>
+        <div class="status-detail-heading">
+          <h2 class="modal-title" id="status-detail-title"></h2>
+          <p class="status-detail-level" id="status-detail-level"></p>
+        </div>
+      </div>
+
+      <div class="exp-bar-track"><div class="exp-bar-fill" id="status-detail-bar-fill"></div></div>
+      <p class="exp-hint" id="status-detail-hint"></p>
+
+      <p class="modal-label">カテゴリ内訳</p>
+      <div id="status-detail-breakdown" class="status-detail-breakdown"></div>
+
+      <p class="modal-label">直近8週間の推移</p>
+      <div id="status-detail-trend" class="status-detail-trend"></div>
+
+      <p class="modal-label">次の目標</p>
+      <div id="status-detail-goals" class="status-detail-goals"></div>
+
+      <div class="modal-actions">
+        <button id="btn-status-detail-close" class="modal-cancel-button tap-scale">閉じる</button>
       </div>
     </div>
   </div>

@@ -2,6 +2,67 @@
    animations.css — タップ / 画面遷移 / モーダル演出
    ========================================================== */
 
+/* ---------- 背景の燃え上がるアニメーション ---------- */
+
+.flame-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.flame-blob {
+  position: absolute;
+  bottom: -15%;
+  left: -10%;
+  width: 55vw;
+  height: 55vw;
+  max-width: 480px;
+  max-height: 480px;
+  border-radius: 50%;
+  filter: blur(60px);
+  background: radial-gradient(circle, rgba(255, 149, 0, 0.9) 0%, rgba(255, 69, 0, 0.55) 45%, rgba(255, 0, 0, 0) 75%);
+  animation: flame-rise 10s ease-in-out infinite;
+}
+
+.flame-blob-2 {
+  left: 30%;
+  width: 42vw;
+  height: 42vw;
+  background: radial-gradient(circle, rgba(255, 204, 0, 0.85) 0%, rgba(255, 94, 0, 0.5) 45%, rgba(255, 0, 0, 0) 75%);
+  animation-delay: -3.5s;
+  animation-duration: 12s;
+}
+
+.flame-blob-3 {
+  left: auto;
+  right: -12%;
+  width: 48vw;
+  height: 48vw;
+  background: radial-gradient(circle, rgba(255, 59, 48, 0.8) 0%, rgba(255, 149, 0, 0.5) 45%, rgba(255, 0, 0, 0) 75%);
+  animation-delay: -6.5s;
+  animation-duration: 11s;
+}
+
+@keyframes flame-rise {
+  0%, 100% { transform: translateY(0) scale(1); opacity: var(--flame-opacity-min); }
+  50% { transform: translateY(-8%) scale(1.15); opacity: var(--flame-opacity-max); }
+}
+
+@media (prefers-color-scheme: dark) {
+  .flame-blob {
+    mix-blend-mode: screen;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flame-blob {
+    animation: none;
+    opacity: var(--flame-opacity-min);
+  }
+}
+
 .tap-scale {
   transition: transform 0.15s ease, opacity 0.15s ease;
 }

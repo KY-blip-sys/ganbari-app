@@ -30,6 +30,9 @@
   --safe-bottom: env(safe-area-inset-bottom, 0px);
   --safe-top: env(safe-area-inset-top, 0px);
 
+  --flame-opacity-min: 0.12;
+  --flame-opacity-max: 0.22;
+
   color-scheme: light;
 }
 
@@ -44,6 +47,8 @@
     --color-text-tertiary: #7c7c80;
     --color-danger-bg: rgba(255, 69, 58, 0.16);
     --shadow-card: 0 8px 30px rgba(0, 0, 0, 0.35);
+    --flame-opacity-min: 0.22;
+    --flame-opacity-max: 0.4;
     color-scheme: dark;
   }
 }

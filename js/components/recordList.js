@@ -14,6 +14,7 @@ const LONG_PRESS_MS = 500;
 
 let onDeleteCallback = null;
 let onEditCallback = null;
+let renderedIds = new Set();
 
 export function setOnDelete(callback) {
   onDeleteCallback = callback;
@@ -27,17 +28,21 @@ export function renderRecords(records) {
   listEl.innerHTML = "";
   emptyEl.style.display = records.length === 0 ? "block" : "none";
 
+  const fragment = document.createDocumentFragment();
   records
     .slice()
     .reverse()
     .forEach((record) => {
-      listEl.appendChild(buildRecordItem(record));
+      fragment.appendChild(buildRecordItem(record, !renderedIds.has(record.id)));
     });
+  listEl.appendChild(fragment);
+
+  renderedIds = new Set(records.map((r) => r.id));
 }
 
-function buildRecordItem(record) {
+function buildRecordItem(record, isNew) {
   const li = document.createElement("li");
-  li.className = "record-item record-item-enter";
+  li.className = isNew ? "record-item record-item-enter" : "record-item";
   li.dataset.id = record.id;
 
   li.innerHTML = `

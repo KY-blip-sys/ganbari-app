@@ -8,7 +8,12 @@ function defaultState() {
   return {
     totalExp: 0,
     records: {}, // { "YYYY-MM-DD": [record, ...] }
-    quests: {}, // { "YYYY-MM-DD": { list: [quest, ...], rewardClaimed: boolean } }
+    quests: {
+      daily: {}, // { "YYYY-MM-DD": { list: [quest, ...], rewardClaimed: boolean } }
+      weekly: {}, // { "週の月曜日キー": { list, rewardClaimed } }
+      monthly: {}, // { "YYYY-MM": { list, rewardClaimed } }
+      special: { claimed: [] }, // 達成済みマイルストーンID
+    },
   };
 }
 
@@ -26,6 +31,22 @@ function migrateRecords(records) {
   return migrated;
 }
 
+export function migrateQuests(quests) {
+  if (!quests || typeof quests !== "object") return defaultState().quests;
+
+  if (quests.daily || quests.weekly || quests.monthly || quests.special) {
+    return {
+      daily: quests.daily || {},
+      weekly: quests.weekly || {},
+      monthly: quests.monthly || {},
+      special: quests.special && Array.isArray(quests.special.claimed) ? quests.special : { claimed: [] },
+    };
+  }
+
+  // 旧形式: { "YYYY-MM-DD": { list, rewardClaimed } } はそのままデイリーとして扱う
+  return { daily: quests, weekly: {}, monthly: {}, special: { claimed: [] } };
+}
+
 export function loadState() {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
@@ -34,7 +55,7 @@ export function loadState() {
     return {
       totalExp: typeof parsed.totalExp === "number" ? parsed.totalExp : 0,
       records: migrateRecords(parsed.records && typeof parsed.records === "object" ? parsed.records : {}),
-      quests: parsed.quests && typeof parsed.quests === "object" ? parsed.quests : {},
+      quests: migrateQuests(parsed.quests),
     };
   } catch {
     return defaultState();
