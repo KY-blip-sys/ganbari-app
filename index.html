@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
+  <title>人生RPG</title>
+  <link rel="icon"
+    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%E2%9A%94%EF%B8%8F%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/nav.css">
+  <link rel="stylesheet" href="css/animations.css">
+</head>
+
+<body>
+
+  <div id="app">
+
+    <!-- PCサイドバー -->
+    <nav id="sidebar-nav" class="sidebar-nav" aria-label="メインナビゲーション"></nav>
+
+    <div id="content-wrap" class="content-wrap">
+
+      <!-- ホーム画面 -->
+      <section id="view-home" class="view">
+
+        <header class="home-header">
+          <div class="header-text">
+            <p class="greeting" id="greeting-main">おはようございます。</p>
+            <p class="greeting-sub">今日も自分をレベルアップしましょう。</p>
+          </div>
+          <button id="btn-open-settings" class="icon-button tap-scale" aria-label="設定">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 15.5a3.5 3.5 0 100-7 3.5 3.5 0 000 7z" stroke="currentColor" stroke-width="1.6" />
+              <path
+                d="M19.4 13a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V19a2 2 0 11-4 0v-.09a1.65 1.65 0 00-1-1.51 1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 11-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H4a2 2 0 110-4h.09a1.65 1.65 0 001.51-1 1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06a1.65 1.65 0 001.82.33H10a1.65 1.65 0 001-1.51V4a2 2 0 114 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 112.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V10a1.65 1.65 0 001.51 1H20a2 2 0 110 4h-.09a1.65 1.65 0 00-1.51 1z"
+                stroke="currentColor" stroke-width="1.6" />
+            </svg>
+          </button>
+        </header>
+
+        <main class="view-main">
+
+          <!-- 今日の獲得EXP -->
+          <section class="card glass-card grid-card grid-card-center exp-card" id="exp-card">
+            <p class="card-label">今日の獲得EXP</p>
+            <p class="exp-today-value">
+              <span class="exp-today-star">⭐</span>+<span id="exp-number">0</span><span
+                class="exp-today-unit">EXP</span>
+            </p>
+          </section>
+
+          <!-- 今日の評価 -->
+          <section class="card glass-card grid-card grid-card-center rank-card" id="rank-card">
+            <p class="card-label">🏆 今日の評価</p>
+            <p class="rank-value" id="rank-value">Eランク</p>
+            <p class="rank-message" id="rank-message"></p>
+          </section>
+
+          <!-- レベル -->
+          <section class="card glass-card grid-card level-card" id="level-card">
+            <div class="level-row">
+              <p class="level-label">現在レベル</p>
+              <p class="level-value" id="level-value">Lv.1</p>
+            </div>
+            <div class="exp-bar-track">
+              <div class="exp-bar-fill" id="exp-bar-fill"></div>
+            </div>
+            <p class="exp-hint" id="exp-hint">あと100EXPでレベルアップ</p>
+          </section>
+
+          <!-- 今日の称号 -->
+          <section class="card glass-card grid-card grid-card-center title-card" id="title-card">
+            <p class="card-label">今日の称号</p>
+            <div class="title-content">
+              <span class="title-icon" id="title-icon">💤</span>
+              <span class="title-name" id="title-name">まだ記録なし</span>
+            </div>
+          </section>
+
+          <!-- 人生ステータス -->
+          <section class="card glass-card grid-card status-card" id="status-card-home">
+            <p class="card-label">人生ステータス</p>
+            <div class="status-list" id="status-list-home"></div>
+          </section>
+
+          <!-- AIコメント -->
+          <section class="card glass-card grid-card ai-comment-bar" id="ai-comment-bar">
+            <span class="ai-comment-icon">✨</span>
+            <p id="ai-comment-text" class="ai-comment-text"></p>
+          </section>
+
+        </main>
+
+      </section>
+
+      <!-- 記録画面 -->
+      <section id="view-records" class="view view-hidden">
+        <header class="view-header">
+          <h1>記録</h1>
+        </header>
+        <main class="view-flow">
+
+          <!-- 今日の記録 -->
+          <section class="card glass-card record-section" id="record-section">
+            <div class="record-section-header">
+              <h2>今日の記録</h2>
+            </div>
+
+            <button id="btn-add-record" class="add-record-button tap-scale">
+              ＋ 今日頑張ったことを追加
+            </button>
+
+            <ul id="record-list" class="record-list"></ul>
+
+            <p id="record-empty" class="record-empty">まだ記録がありません</p>
+          </section>
+
+          <!-- 今月の記録（カレンダー） -->
+          <section class="card glass-card calendar-card" id="calendar-card">
+            <div class="calendar-header">
+              <button id="btn-cal-prev" class="icon-button-sm tap-scale" aria-label="前の月">‹</button>
+              <p class="calendar-title" id="calendar-title">2026年8月</p>
+              <button id="btn-cal-next" class="icon-button-sm tap-scale" aria-label="次の月">›</button>
+            </div>
+            <div class="calendar-weekdays">
+              <span>日</span><span>月</span><span>火</span><span>水</span><span>木</span><span>金</span><span>土</span>
+            </div>
+            <div class="calendar-grid" id="calendar-grid"></div>
+          </section>
+
+        </main>
+      </section>
+
+      <!-- クエスト画面 -->
+      <section id="view-quests" class="view view-hidden">
+        <header class="view-header">
+          <h1>クエスト</h1>
+        </header>
+        <main class="view-flow">
+          <section class="card glass-card quest-card" id="quest-card">
+            <div class="quest-header">
+              <p class="card-label">今日のクエスト</p>
+              <span class="quest-reward-tag">全達成で+30EXP</span>
+            </div>
+            <ul class="quest-list" id="quest-list"></ul>
+          </section>
+        </main>
+      </section>
+
+      <!-- ステータス画面 -->
+      <section id="view-status" class="view view-hidden">
+        <header class="view-header">
+          <h1>ステータス</h1>
+        </header>
+        <main class="view-flow">
+          <section class="card glass-card status-card">
+            <p class="card-label">人生ステータス</p>
+            <div class="status-list" id="status-list-full"></div>
+          </section>
+        </main>
+      </section>
+
+      <!-- 人生マップ画面 -->
+      <section id="view-map" class="view view-hidden">
+        <header class="view-header">
+          <h1>人生マップ</h1>
+        </header>
+        <main class="view-flow">
+          <section class="card glass-card map-card" id="map-content"></section>
+        </main>
+      </section>
+
+      <!-- スキルツリー画面 -->
+      <section id="view-skills" class="view view-hidden">
+        <header class="view-header">
+          <h1>スキルツリー</h1>
+        </header>
+        <main class="view-flow" id="skills-content"></main>
+      </section>
+
+      <!-- 実績画面 -->
+      <section id="view-achievements" class="view view-hidden">
+        <header class="view-header">
+          <h1>実績</h1>
+        </header>
+        <main class="view-flow">
+          <section class="card glass-card achievement-card" id="achievements-content"></section>
+        </main>
+      </section>
+
+      <!-- 称号画面 -->
+      <section id="view-titles" class="view view-hidden">
+        <header class="view-header">
+          <h1>称号</h1>
+        </header>
+        <main class="view-flow">
+          <section class="card glass-card title-gallery-card" id="titles-content"></section>
+        </main>
+      </section>
+
+      <!-- AIコーチ画面 -->
+      <section id="view-coach" class="view view-hidden">
+        <header class="view-header">
+          <h1>AIコーチ</h1>
+        </header>
+        <main class="view-flow" id="coach-content"></main>
+      </section>
+
+      <!-- 設定画面 -->
+      <section id="view-settings" class="view view-hidden">
+        <header class="settings-header">
+          <button id="btn-close-settings" class="icon-button tap-scale" aria-label="戻る">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round" />
+            </svg>
+          </button>
+          <h1>設定</h1>
+          <div class="header-spacer"></div>
+        </header>
+
+        <main class="view-flow">
+          <section class="card glass-card settings-card">
+            <button id="btn-reset-data" class="reset-button tap-scale">データをリセット</button>
+            <p class="reset-hint">記録・経験値・レベルがすべて削除されます</p>
+          </section>
+        </main>
+      </section>
+
+    </div>
+
+    <!-- モバイル下部タブバー -->
+    <nav id="tab-bar" class="tab-bar" aria-label="メインナビゲーション"></nav>
+
+  </div>
+
+  <!-- その他メニュー（モバイル） -->
+  <div id="overflow-sheet-overlay" class="modal-overlay modal-hidden">
+    <div class="modal-sheet glass-card" id="overflow-sheet">
+      <div class="modal-handle"></div>
+      <h2 class="modal-title">その他</h2>
+      <div class="overflow-list" id="overflow-list"></div>
+    </div>
+  </div>
+
+  <!-- 記録追加モーダル -->
+  <div id="modal-overlay" class="modal-overlay modal-hidden">
+    <div class="modal-sheet glass-card" id="modal-sheet">
+
+      <div class="modal-handle"></div>
+      <h2 class="modal-title" id="modal-title">今日頑張ったことを追加</h2>
+
+      <label class="modal-label" for="input-title">タイトル</label>
+      <input id="input-title" class="modal-input" type="text" placeholder="例：英語1時間" maxlength="30">
+
+      <p class="modal-label">カテゴリ</p>
+      <div class="category-grid" id="category-grid">
+        <button class="category-chip tap-scale" data-category="勉強">📚 勉強</button>
+        <button class="category-chip tap-scale" data-category="運動">💪 運動</button>
+        <button class="category-chip tap-scale" data-category="健康">❤️ 健康</button>
+        <button class="category-chip tap-scale" data-category="仕事">💼 仕事</button>
+        <button class="category-chip tap-scale" data-category="趣味">🎨 趣味</button>
+        <button class="category-chip tap-scale" data-category="家事">🧹 家事</button>
+        <button class="category-chip tap-scale" data-category="その他">✨ その他</button>
+        <button class="category-chip tap-scale" data-category="アルバイト">💵 アルバイト</button>
+        <button class="category-chip tap-scale" data-category="人間関係">🤝 人間関係</button>
+      </div>
+
+      <p class="modal-label">獲得EXP</p>
+      <div class="exp-grid" id="exp-grid">
+        <button class="exp-chip tap-scale" data-exp="5">
+          <span class="exp-chip-emoji">😊</span>
+          <span class="exp-chip-value">+5</span>
+          <span class="exp-chip-label">少し頑張った</span>
+        </button>
+        <button class="exp-chip tap-scale selected" data-exp="10">
+          <span class="exp-chip-emoji">🙂</span>
+          <span class="exp-chip-value">+10</span>
+          <span class="exp-chip-label">頑張った</span>
+        </button>
+        <button class="exp-chip tap-scale" data-exp="20">
+          <span class="exp-chip-emoji">😤</span>
+          <span class="exp-chip-value">+20</span>
+          <span class="exp-chip-label">かなり頑張った</span>
+        </button>
+        <button class="exp-chip tap-scale" data-exp="35">
+          <span class="exp-chip-emoji">🔥</span>
+          <span class="exp-chip-value">+35</span>
+          <span class="exp-chip-label">本気で頑張った</span>
+        </button>
+        <button class="exp-chip tap-scale" data-exp="50">
+          <span class="exp-chip-emoji">👑</span>
+          <span class="exp-chip-value">+50</span>
+          <span class="exp-chip-label">限界突破</span>
+        </button>
+      </div>
+
+      <div class="modal-actions">
+        <button id="btn-cancel-record" class="modal-cancel-button tap-scale">キャンセル</button>
+        <button id="btn-save-record" class="modal-save-button tap-scale" disabled>保存</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- リセット確認モーダル -->
+  <div id="confirm-overlay" class="modal-overlay modal-hidden">
+    <div class="confirm-sheet glass-card">
+      <p class="confirm-title" id="confirm-title">本当にリセットしますか？</p>
+      <p class="confirm-text" id="confirm-text">この操作は取り消せません。</p>
+      <div class="confirm-actions">
+        <button id="btn-confirm-cancel" class="modal-cancel-button tap-scale">キャンセル</button>
+        <button id="btn-confirm-ok" class="confirm-danger-button tap-scale">リセットする</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- カレンダー日別詳細モーダル -->
+  <div id="day-detail-overlay" class="modal-overlay modal-hidden">
+    <div class="modal-sheet glass-card" id="day-detail-sheet">
+      <div class="modal-handle"></div>
+      <h2 class="modal-title" id="day-detail-title">記録</h2>
+
+      <ul id="day-detail-list" class="record-list"></ul>
+      <p id="day-detail-empty" class="record-empty">記録がありません</p>
+
+      <div class="modal-actions">
+        <button id="btn-day-detail-close" class="modal-cancel-button tap-scale">閉じる</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- レベルアップ演出 -->
+  <div id="level-up-overlay" class="level-up-overlay level-up-hidden">
+    <div class="level-up-content">
+      <div class="level-up-glow"></div>
+      <p class="level-up-label">LEVEL UP!</p>
+      <p class="level-up-sublabel" id="level-up-sublabel">Lv.2 に到達しました</p>
+    </div>
+  </div>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+
+</html>
