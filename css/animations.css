@@ -91,13 +91,15 @@
 }
 
 .modal-sheet,
-.confirm-sheet {
+.confirm-sheet,
+.hint-popup-sheet {
   transform: translateY(100%);
   transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .modal-overlay.modal-visible .modal-sheet,
-.modal-overlay.modal-visible .confirm-sheet {
+.modal-overlay.modal-visible .confirm-sheet,
+.modal-overlay.modal-visible .hint-popup-sheet {
   transform: translateY(0);
 }
 

@@ -230,18 +230,12 @@
   min-width: 0;
 }
 
-.record-edit-btn {
+.record-item-chevron {
   flex-shrink: 0;
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 14px;
-  color: var(--color-text-secondary);
-  background: var(--color-bg-elevated-solid);
-  border: 1px solid var(--color-border);
+  margin-left: 6px;
+  font-size: 18px;
+  line-height: 1;
+  color: var(--color-text-tertiary);
 }
 
 .record-item-delete {
@@ -499,6 +493,85 @@
   margin-bottom: 0;
 }
 
+/* ---------- 総合ステータス（レーダーチャート） ---------- */
+
+.status-overview {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.status-radar-svg {
+  width: 100%;
+  max-width: 260px;
+  height: auto;
+}
+
+.status-radar-grid {
+  fill: none;
+  stroke: var(--color-border);
+  stroke-width: 1;
+}
+
+.status-radar-axis {
+  stroke: var(--color-border);
+  stroke-width: 1;
+}
+
+.status-radar-shape {
+  fill: rgba(94, 92, 230, 0.28);
+  stroke: var(--color-accent);
+  stroke-width: 2;
+  stroke-linejoin: round;
+}
+
+.status-radar-dot {
+  fill: var(--color-accent);
+}
+
+.status-radar-label {
+  font-size: 12px;
+  fill: var(--color-text-secondary);
+}
+
+.status-overview-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  width: 100%;
+}
+
+.status-overview-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 10px 4px;
+  border-radius: var(--radius-sm);
+  background: var(--color-bg-elevated-solid);
+  border: 1px solid var(--color-border);
+}
+
+.status-overview-stat-label {
+  font-size: 11px;
+  color: var(--color-text-tertiary);
+  font-weight: 700;
+}
+
+.status-overview-stat-value {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--color-accent);
+}
+
+.status-overview-stat-sub {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--color-text-secondary);
+  margin-left: 4px;
+}
+
 /* ---------- 人生ステータス ---------- */
 
 .status-list {
@@ -688,6 +761,21 @@
   margin-bottom: 16px;
 }
 
+.skill-branch {
+  margin-top: 16px;
+}
+
+.skill-branch:first-of-type {
+  margin-top: 8px;
+}
+
+.skill-branch-label {
+  font-size: 12.5px;
+  font-weight: 800;
+  color: var(--color-accent);
+  margin-bottom: 2px;
+}
+
 .skill-chain {
   display: flex;
   flex-direction: column;
@@ -773,6 +861,10 @@
   border-radius: var(--radius-sm);
   background: var(--color-bg-elevated-solid);
   border: 1px solid var(--color-border);
+  cursor: pointer;
+  width: 100%;
+  font: inherit;
+  color: inherit;
 }
 
 .achievement-tile.locked {
@@ -944,6 +1036,10 @@
   border-radius: var(--radius-sm);
   background: var(--color-bg-elevated-solid);
   border: 1px solid var(--color-border);
+  cursor: pointer;
+  width: 100%;
+  font: inherit;
+  color: inherit;
 }
 
 .title-gallery-tile.locked {
@@ -1212,6 +1308,37 @@
 
 .modal-overlay.modal-hidden {
   display: none;
+}
+
+/* ---------- ヒントポップアップ（実績・称号） ---------- */
+
+.hint-popup-sheet {
+  width: 100%;
+  max-width: 480px;
+  border-radius: 24px 24px 0 0;
+  padding: 24px 24px calc(var(--safe-bottom) + 28px);
+  box-shadow: var(--shadow-modal);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 8px;
+}
+
+.hint-popup-icon {
+  font-size: 32px;
+}
+
+.hint-popup-title {
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.hint-popup-text {
+  font-size: 14px;
+  color: var(--color-text-secondary);
+  font-weight: 600;
+  line-height: 1.5;
 }
 
 /* ---------- 記録追加モーダル ---------- */

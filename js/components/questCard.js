@@ -20,6 +20,15 @@ const TABS = [
 let selectedTab = "daily";
 let cachedData = null;
 
+const QUEST_TYPE_ICON = {
+  categoryExp: "🎯",
+  recordCount: "📝",
+  totalExp: "💰",
+  streak: "🔥",
+  timeOfDay: "🌙",
+  categoryDiversity: "🎨",
+};
+
 function renderTabs() {
   tabsEl.innerHTML = TABS.map(
     (t) => `
@@ -45,11 +54,12 @@ function renderQuestList(list, records) {
 
   listEl.innerHTML = list
     .map((quest) => {
-      const { current, target, done } = evaluateQuest(quest, records);
+      const { current, target, done } = evaluateQuest(quest, records, cachedData.context);
+      const typeIcon = QUEST_TYPE_ICON[quest.type] || "🎯";
       return `
         <li class="quest-item">
           <span class="quest-checkbox ${done ? "done" : ""}">${done ? "✓" : ""}</span>
-          <span class="quest-text ${done ? "done" : ""}">${quest.label}</span>
+          <span class="quest-text ${done ? "done" : ""}">${typeIcon} ${quest.label}</span>
           <span class="quest-progress">${current}/${target}</span>
         </li>
       `;

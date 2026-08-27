@@ -63,6 +63,36 @@ export function computeStatusBreakdown(lifeStatKey, allRecords) {
     .sort((a, b) => b.exp - a.exp);
 }
 
+const RADAR_LEVEL_CAP = 30;
+
+const OVERALL_RANK_TIERS = [
+  { min: 25, rank: "SSS", label: "伝説" },
+  { min: 20, rank: "SS", label: "覚醒" },
+  { min: 15, rank: "S", label: "熟練" },
+  { min: 10, rank: "A", label: "上級" },
+  { min: 6, rank: "B", label: "中級" },
+  { min: 3, rank: "C", label: "初級" },
+  { min: 0, rank: "D", label: "駆け出し" },
+];
+
+// レーダーチャート・総合ランクなど、ステータス画面上部のサマリー表示用データ
+export function computeStatusOverview(lifeStatuses) {
+  const totalLevel = lifeStatuses.reduce((sum, s) => sum + s.level, 0);
+  const totalExp = lifeStatuses.reduce((sum, s) => sum + s.exp, 0);
+  const averageLevel = totalLevel / lifeStatuses.length;
+
+  const radar = lifeStatuses.map(({ key, icon, level }) => ({
+    key,
+    icon,
+    level,
+    ratio: Math.min(1, level / RADAR_LEVEL_CAP),
+  }));
+
+  const rank = OVERALL_RANK_TIERS.find((t) => averageLevel >= t.min);
+
+  return { radar, totalLevel, totalExp, averageLevel, rank };
+}
+
 // 直近N週間、そのステータスが週ごとに何EXP積み上がったか
 export function computeStatusWeeklyTrend(lifeStatKey, recordsByDate, weeksCount = 8) {
   const now = new Date();

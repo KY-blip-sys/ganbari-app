@@ -13,6 +13,7 @@ import {
   computeLifeStatuses,
   computeStatusBreakdown,
   computeStatusWeeklyTrend,
+  computeStatusOverview,
 } from "./models/statusSystem.js";
 import { computeTodayTitle, computeAllEarnedTitles } from "./models/titleSystem.js";
 import {
@@ -35,7 +36,7 @@ import { renderAiComment } from "./components/aiComment.js";
 import { initSettingsView, setAccountEmail } from "./components/settingsView.js";
 import { renderTitle } from "./components/titleCard.js";
 import { renderQuests, flashQuestComplete } from "./components/questCard.js";
-import { renderLifeStatuses, setOnStatusClick } from "./components/statusCard.js";
+import { renderLifeStatuses, setOnStatusClick, renderStatusOverview } from "./components/statusCard.js";
 import { initStatusDetail, openStatusDetail } from "./components/statusDetailView.js";
 import { initCalendar, renderCalendar } from "./components/calendarCard.js";
 import { showLevelUp } from "./components/levelUpOverlay.js";
@@ -71,15 +72,52 @@ const authScreenEl = document.getElementById("auth-screen");
 
 const statusListHomeEl = document.getElementById("status-list-home");
 const statusListFullEl = document.getElementById("status-list-full");
+const statusOverviewEl = document.getElementById("status-overview-content");
 const greetingMainEl = document.getElementById("greeting-main");
+const greetingSubEl = document.getElementById("greeting-sub");
+
+const TIME_BUCKETS = [
+  { id: "morning", test: (h) => h >= 5 && h < 11 },
+  { id: "noon", test: (h) => h >= 11 && h < 14 },
+  { id: "afternoon", test: (h) => h >= 14 && h < 18 },
+  { id: "evening", test: (h) => h >= 18 && h < 22 },
+  { id: "night", test: (h) => h >= 22 || h < 5 },
+];
+
+const GREETINGS = {
+  morning: ["おはようございます", "おはよう！今日も一日始めましょう", "今日も素敵な朝ですね", "気持ちのいい朝です"],
+  noon: ["こんにちは", "お昼の時間ですね", "午前中もお疲れさまでした", "いい調子で進んでいますか？"],
+  afternoon: ["こんにちは", "午後も頑張っていきましょう", "少し一息つくのもいいですね", "今日も残り半分です"],
+  evening: ["こんばんは", "今日も一日お疲れさまでした", "夕方のひととき、いい調子です", "今日の頑張りを記録しましょう"],
+  night: ["こんばんは", "夜も頑張っていますね", "そろそろ一日を振り返ってみましょう", "今日もよく頑張りました"],
+};
+
+const GREETING_SUBS = {
+  morning: ["今日も自分をレベルアップしましょう", "小さな一歩から始めましょう", "今日はどんな成長をしますか？", "新しい一日の始まりです"],
+  noon: ["午後も充実させていきましょう", "ここまでの調子はどうですか？", "一息ついたら再開しましょう"],
+  afternoon: ["今日も自分をレベルアップしましょう", "ラストスパートといきましょう", "集中力を切らさずいきましょう"],
+  evening: ["今日の振り返りをしてみましょう", "あと少し、頑張りどころです", "一日の成果を記録しましょう"],
+  night: ["今日も一日お疲れさまでした", "無理せず、ゆっくり休むのも大切です", "明日に向けて準備しましょう"],
+};
+
+function hashSeed(str) {
+  let seed = 0;
+  for (let i = 0; i < str.length; i++) seed = (seed * 31 + str.charCodeAt(i)) >>> 0;
+  return seed;
+}
+
+function pickBySeed(list, seedStr) {
+  return list[hashSeed(seedStr) % list.length];
+}
 
 function updateGreeting() {
-  const hour = new Date().getHours();
-  let text;
-  if (hour >= 5 && hour < 12) text = "おはようございます";
-  else if (hour >= 12 && hour < 18) text = "こんにちは";
-  else text = "こんばんは";
-  greetingMainEl.textContent = text;
+  const now = new Date();
+  const hour = now.getHours();
+  const bucket = (TIME_BUCKETS.find((b) => b.test(hour)) || TIME_BUCKETS[0]).id;
+  const seed = `${todayKey(now)}-${hour}`;
+
+  greetingMainEl.textContent = pickBySeed(GREETINGS[bucket], seed);
+  greetingSubEl.textContent = pickBySeed(GREETING_SUBS[bucket], `sub-${seed}`);
 }
 
 updateGreeting();
@@ -147,11 +185,13 @@ function tryClaimPeriodRewards() {
     { type: "monthly", key: monthKey(), records: recordsInMonth(state.records, monthKey()) },
   ];
 
+  const questContext = { recordsByDate: state.records, todayKeyValue: todayKey() };
+
   periods.forEach(({ type, key, records }) => {
     const questState = state.quests[type][key];
     if (!questState || questState.rewardClaimed) return;
 
-    const allDone = questState.list.every((q) => evaluateQuest(q, records).done);
+    const allDone = questState.list.every((q) => evaluateQuest(q, records, questContext).done);
     if (!allDone) return;
 
     questState.rewardClaimed = true;
@@ -197,6 +237,7 @@ function renderAll({ animate = false } = {}) {
   renderTitle(computeTodayTitle(todayRecords));
   renderLifeStatuses(statusListHomeEl, lifeStatuses);
   renderLifeStatuses(statusListFullEl, lifeStatuses);
+  renderStatusOverview(statusOverviewEl, computeStatusOverview(lifeStatuses));
   renderQuests({
     daily: { list: state.quests.daily[todayKey()].list, records: todayRecords },
     weekly: { list: state.quests.weekly[wKey].list, records: recordsInWeek(state.records, wKey) },
@@ -208,6 +249,7 @@ function renderAll({ animate = false } = {}) {
         claimed: state.quests.special.claimed.includes(m.id),
       })),
     },
+    context: { recordsByDate: state.records, todayKeyValue: todayKey() },
   });
   renderCalendar(state.records);
   renderSkillTree(computeAllSkillTrees(lifeStatuses));
@@ -338,6 +380,12 @@ function startApp() {
   setOnStatusClick(handleStatusClick);
   initNav();
   renderAll();
+
+  setInterval(() => {
+    const todayRecords = getTodayRecords();
+    updateGreeting();
+    renderAiComment(computeTodayExp(todayRecords), todayRecords.length);
+  }, 5 * 60 * 1000);
 }
 
 async function handleAuthenticated(session) {

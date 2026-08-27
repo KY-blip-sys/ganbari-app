@@ -22,6 +22,7 @@ function buildExtendedContext(records) {
 
   const earlyBirdCount = allRecords.filter((r) => new Date(r.createdAt).getHours() < 7).length;
   const nightOwlCount = allRecords.filter((r) => new Date(r.createdAt).getHours() >= 23).length;
+  const midnightCount = allRecords.filter((r) => new Date(r.createdAt).getHours() < 4).length;
 
   return {
     allRecords,
@@ -31,6 +32,7 @@ function buildExtendedContext(records) {
     categoriesEverUsed: countTouchedCategories(allRecords),
     earlyBirdCount,
     nightOwlCount,
+    midnightCount,
   };
 }
 
@@ -188,6 +190,62 @@ export const ACHIEVEMENT_LIST = [
   // ---------- 生活リズム ----------
   { id: "early-bird", icon: "🌅", name: "早起きは三文の徳", description: "朝7時前に5回記録する", check: (ctx) => ctx.earlyBirdCount >= 5 },
   { id: "night-owl", icon: "🌙", name: "夜型の探求者", description: "夜23時以降に5回記録する", check: (ctx) => ctx.nightOwlCount >= 5 },
+
+  // ---------- シークレット実績 ----------
+  {
+    id: "secret-midnight-dive",
+    icon: "🌌",
+    name: "深夜特化型",
+    description: "深夜4時より前に10回記録する",
+    secret: true,
+    hint: "日付が変わったあとの時間帯によく記録する人に、何かが起きるかもしれない",
+    check: (ctx) => ctx.midnightCount >= 10,
+  },
+  {
+    id: "secret-ultimate-balance",
+    icon: "🌐",
+    name: "究極の均衡",
+    description: "全ての人生ステータスがLv.20以上",
+    secret: true,
+    hint: "すべての力を極限まで高めた者だけが辿り着ける境地",
+    check: (ctx) => Object.values(ctx.lifeStatLevels).every((lv) => lv >= 20),
+  },
+  {
+    id: "secret-mythical-day",
+    icon: "🐉",
+    name: "神話の一日",
+    description: "1日の合計が500EXPを超える",
+    secret: true,
+    hint: "常識を超えた一日を過ごした者だけが目にする光景",
+    check: (ctx) => ctx.bestDayExp >= 500,
+  },
+  {
+    id: "secret-collector-soul",
+    icon: "🗝️",
+    name: "コレクター魂",
+    description: "全カテゴリを使ったことがあり、記録が300件を超える",
+    secret: true,
+    hint: "あらゆる分野をとことん極めた記録魔にだけ見えるもの",
+    check: (ctx) => ctx.categoriesEverUsed >= CATEGORIES.length && ctx.allRecords.length >= 300,
+  },
+  {
+    id: "secret-eternal-streak",
+    icon: "♾️",
+    name: "終わらない鎖",
+    description: "200日連続で記録する",
+    secret: true,
+    hint: "途切れることのない継続の果てに待っている何か",
+    check: (ctx) => ctx.maxStreak >= 200,
+  },
+  {
+    id: "secret-beyond-legend",
+    icon: "🪄",
+    name: "伝説を超えて",
+    description: "累計100000EXP達成",
+    secret: true,
+    hint: "伝説すら通過点にすぎない者に贈られる称号",
+    check: (ctx) => ctx.totalExp >= 100000,
+  },
 ];
 
 export function computeAchievements({ totalExp, records, lifeStatLevels }) {

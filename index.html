@@ -65,7 +65,7 @@
         <header class="home-header">
           <div class="header-text">
             <p class="greeting" id="greeting-main">こんにちは</p>
-            <p class="greeting-sub">今日も自分をレベルアップしましょう</p>
+            <p class="greeting-sub" id="greeting-sub">今日も自分をレベルアップしましょう</p>
           </div>
         </header>
 
@@ -184,6 +184,10 @@
           <h1>ステータス</h1>
         </header>
         <main class="view-flow">
+          <section class="card glass-card status-overview-card">
+            <p class="card-label">総合ステータス</p>
+            <div class="status-overview" id="status-overview-content"></div>
+          </section>
           <section class="card glass-card status-card">
             <p class="card-label">人生ステータス</p>
             <div class="status-list" id="status-list-full"></div>
@@ -395,6 +399,15 @@
       <div class="modal-actions">
         <button id="btn-status-detail-close" class="modal-cancel-button tap-scale">閉じる</button>
       </div>
+    </div>
+  </div>
+
+  <!-- 実績・称号のヒントポップアップ -->
+  <div id="hint-popup-overlay" class="modal-overlay hint-popup-overlay modal-hidden">
+    <div class="hint-popup-sheet glass-card" id="hint-popup-sheet">
+      <span class="hint-popup-icon" id="hint-popup-icon"></span>
+      <p class="hint-popup-title" id="hint-popup-title"></p>
+      <p class="hint-popup-text" id="hint-popup-text"></p>
     </div>
   </div>
 

@@ -29,6 +29,28 @@ export function computeMaxStreak(recordsByDate) {
   return maxStreak;
 }
 
+export function computeCurrentStreak(recordsByDate, todayKeyValue) {
+  const ONE_DAY = 24 * 60 * 60 * 1000;
+  const [ty, tm, td] = todayKeyValue.split("-").map(Number);
+  let cursor = new Date(ty, tm - 1, td).getTime();
+
+  // 今日まだ記録がない場合は、昨日までの連続日数を数える
+  if (!(recordsByDate[todayKeyValue] || []).length) {
+    cursor -= ONE_DAY;
+  }
+
+  let streak = 0;
+  while (true) {
+    const d = new Date(cursor);
+    const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+    if (!(recordsByDate[key] || []).length) break;
+    streak++;
+    cursor -= ONE_DAY;
+  }
+
+  return streak;
+}
+
 export function recordsInWeek(recordsByDate, weekStartKey) {
   return Object.entries(recordsByDate)
     .filter(([key]) => isDateKeyInWeek(key, weekStartKey))

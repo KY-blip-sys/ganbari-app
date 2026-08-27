@@ -48,18 +48,19 @@ function buildRecordItem(record, isNew) {
   li.innerHTML = `
     <div class="record-item-swipe">
       <button class="record-item-delete">削除</button>
-      <div class="record-item-body">
+      <div class="record-item-body" aria-label="タップして編集">
         ${recordCardMarkup(record)}
+        <span class="record-item-chevron" aria-hidden="true">›</span>
       </div>
     </div>
-    <button class="record-edit-btn tap-scale" aria-label="編集">✏️</button>
   `;
 
   const bodyEl = li.querySelector(".record-item-body");
   const deleteBtn = li.querySelector(".record-item-delete");
-  const editBtn = li.querySelector(".record-edit-btn");
 
-  attachSwipeToDelete(li, bodyEl);
+  attachSwipeToDelete(li, bodyEl, () => {
+    if (onEditCallback) onEditCallback(record);
+  });
 
   deleteBtn.addEventListener("click", () => {
     showConfirm({
@@ -71,22 +72,20 @@ function buildRecordItem(record, isNew) {
     });
   });
 
-  editBtn.addEventListener("click", () => {
-    if (onEditCallback) onEditCallback(record);
-  });
-
   return li;
 }
 
-function attachSwipeToDelete(li, bodyEl) {
+function attachSwipeToDelete(li, bodyEl, onTap) {
   let startX = 0;
   let currentX = 0;
   let dragging = false;
+  let moved = false;
   let longPressTimer = null;
 
   bodyEl.addEventListener("pointerdown", (e) => {
     startX = e.clientX;
     dragging = true;
+    moved = false;
     bodyEl.style.transition = "none";
     bodyEl.setPointerCapture(e.pointerId);
 
@@ -100,9 +99,12 @@ function attachSwipeToDelete(li, bodyEl) {
   bodyEl.addEventListener("pointermove", (e) => {
     if (!dragging) return;
     const delta = e.clientX - startX;
-    if (Math.abs(delta) > 6 && longPressTimer) {
-      clearTimeout(longPressTimer);
-      longPressTimer = null;
+    if (Math.abs(delta) > 6) {
+      moved = true;
+      if (longPressTimer) {
+        clearTimeout(longPressTimer);
+        longPressTimer = null;
+      }
     }
     const base = currentX === SWIPE_OPEN_X ? SWIPE_OPEN_X : 0;
     const next = clamp(base + delta, SWIPE_OPEN_X, 0);
@@ -118,6 +120,7 @@ function attachSwipeToDelete(li, bodyEl) {
     dragging = false;
     bodyEl.style.transition = "";
 
+    const wasClosed = currentX !== SWIPE_OPEN_X;
     const delta = e.clientX - startX;
     const base = currentX === SWIPE_OPEN_X ? SWIPE_OPEN_X : 0;
     const finalX = clamp(base + delta, SWIPE_OPEN_X, 0);
@@ -128,6 +131,10 @@ function attachSwipeToDelete(li, bodyEl) {
       currentX = 0;
     }
     setTranslate(bodyEl, currentX);
+
+    if (!moved && wasClosed && currentX === 0 && onTap) {
+      onTap();
+    }
   }
 
   bodyEl.addEventListener("pointerup", endDrag);

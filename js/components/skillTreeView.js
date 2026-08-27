@@ -4,16 +4,12 @@
 
 const containerEl = document.getElementById("skills-content");
 
-export function renderSkillTree(skillTrees) {
-  containerEl.innerHTML = "";
-
-  skillTrees.forEach(({ key, icon, level, nodes }) => {
-    const card = document.createElement("section");
-    card.className = "card glass-card skill-tree-card";
-    card.innerHTML = `
-      <p class="card-label">${icon} ${key}（Lv.${level}）</p>
+function branchMarkup(branch) {
+  return `
+    <div class="skill-branch">
+      <p class="skill-branch-label">${branch.label}</p>
       <div class="skill-chain">
-        ${nodes
+        ${branch.nodes
           .map(
             (n) => `
           <div class="skill-node ${n.unlocked ? "unlocked" : "locked"}">
@@ -27,6 +23,19 @@ export function renderSkillTree(skillTrees) {
           )
           .join("")}
       </div>
+    </div>
+  `;
+}
+
+export function renderSkillTree(skillTrees) {
+  containerEl.innerHTML = "";
+
+  skillTrees.forEach(({ key, icon, level, branches }) => {
+    const card = document.createElement("section");
+    card.className = "card glass-card skill-tree-card";
+    card.innerHTML = `
+      <p class="card-label">${icon} ${key}（Lv.${level}）</p>
+      ${branches.map(branchMarkup).join("")}
     `;
     containerEl.appendChild(card);
   });
