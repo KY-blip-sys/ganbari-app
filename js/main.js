@@ -47,7 +47,7 @@ import { renderTitleGallery } from "./components/titleGalleryView.js";
 import { renderCoach } from "./components/coachView.js";
 import { initNav } from "./nav.js";
 import * as authService from "./auth/authService.js";
-import { initAuthView } from "./auth/authView.js";
+import { initAuthView, resetAuthForm } from "./auth/authView.js";
 import {
   hasRemoteData,
   fetchRemoteState,
@@ -370,11 +370,20 @@ function showAuth() {
   authScreenEl.classList.remove("auth-hidden");
 }
 
+function openLoginScreen() {
+  resetAuthForm();
+  showAuth();
+}
+
+function closeLoginScreen() {
+  showApp();
+}
+
 function startApp() {
   setOnDelete(deleteRecord);
   setOnEdit(openRecordModalForEdit);
   initRecordModal({ onSave: addRecord, onUpdate: updateRecord });
-  initSettingsView(resetAll, () => authService.signOut());
+  initSettingsView(resetAll, () => authService.signOut(), openLoginScreen);
   initCalendar();
   initStatusDetail();
   setOnStatusClick(handleStatusClick);
@@ -414,7 +423,7 @@ async function handleAuthenticated(session) {
 }
 
 async function bootstrap() {
-  initAuthView({ onAuthenticated: handleAuthenticated });
+  initAuthView({ onAuthenticated: handleAuthenticated, onClose: closeLoginScreen });
 
   try {
     authService.onAuthStateChange((event) => {
@@ -431,7 +440,12 @@ async function bootstrap() {
   } catch {
     showSyncError(LOAD_FAIL_MSG);
   }
-  showAuth();
+
+  if (!appStarted) {
+    appStarted = true;
+    startApp();
+  }
+  showApp();
 }
 
 bootstrap();

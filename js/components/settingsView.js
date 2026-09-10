@@ -8,9 +8,11 @@ import { showView } from "../nav.js";
 const closeBtn = document.getElementById("btn-close-settings");
 const resetBtn = document.getElementById("btn-reset-data");
 const logoutBtn = document.getElementById("btn-logout");
+const loginBtn = document.getElementById("btn-login");
+const loginHintEl = document.getElementById("login-hint");
 const accountEmailEl = document.getElementById("account-email");
 
-export function initSettingsView(onResetConfirmed, onLogout) {
+export function initSettingsView(onResetConfirmed, onLogout, onLoginRequested) {
   closeBtn.addEventListener("click", () => showView("home"));
 
   resetBtn.addEventListener("click", () => {
@@ -33,8 +35,22 @@ export function initSettingsView(onResetConfirmed, onLogout) {
       onConfirm: onLogout,
     });
   });
+
+  loginBtn.addEventListener("click", () => {
+    onLoginRequested();
+  });
+
+  setLoggedIn(false);
 }
 
 export function setAccountEmail(email) {
   accountEmailEl.textContent = email || "";
+  setLoggedIn(Boolean(email));
+}
+
+export function setLoggedIn(isLoggedIn) {
+  logoutBtn.classList.toggle("settings-hidden", !isLoggedIn);
+  accountEmailEl.classList.toggle("settings-hidden", !isLoggedIn);
+  loginBtn.classList.toggle("settings-hidden", isLoggedIn);
+  loginHintEl.classList.toggle("settings-hidden", isLoggedIn);
 }

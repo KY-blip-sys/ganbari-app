@@ -11,6 +11,7 @@ const errorEl = document.getElementById("auth-error");
 const infoEl = document.getElementById("auth-info");
 const submitBtn = document.getElementById("btn-auth-submit");
 const toggleBtn = document.getElementById("btn-auth-toggle");
+const closeBtn = document.getElementById("btn-auth-close");
 
 const LOGIN_TITLE = "ログイン";
 const SIGNUP_TITLE = "新規登録";
@@ -21,6 +22,7 @@ const SIGNUP_TOGGLE_LABEL = "すでにアカウントをお持ちの方はこち
 
 let mode = "login";
 let onAuthenticatedCallback = null;
+let onCloseCallback = null;
 
 function canSubmit() {
   return emailEl.value.trim().length > 0 && passwordEl.value.length > 0;
@@ -99,8 +101,9 @@ async function handleSubmit() {
   }
 }
 
-export function initAuthView({ onAuthenticated }) {
+export function initAuthView({ onAuthenticated, onClose }) {
   onAuthenticatedCallback = onAuthenticated;
+  onCloseCallback = onClose;
 
   applyMode();
   updateSubmitState();
@@ -115,4 +118,16 @@ export function initAuthView({ onAuthenticated }) {
     applyMode();
     updateSubmitState();
   });
+
+  closeBtn.addEventListener("click", () => {
+    if (onCloseCallback) onCloseCallback();
+  });
+}
+
+export function resetAuthForm() {
+  mode = "login";
+  emailEl.value = "";
+  passwordEl.value = "";
+  applyMode();
+  updateSubmitState();
 }

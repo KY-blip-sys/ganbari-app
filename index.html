@@ -36,6 +36,12 @@
   <!-- ログイン／新規登録画面 -->
   <div id="auth-screen" class="auth-screen auth-hidden">
     <div class="auth-card card glass-card">
+      <button id="btn-auth-close" class="icon-button auth-close-button tap-scale" aria-label="閉じる">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round" />
+        </svg>
+      </button>
       <p class="auth-logo">⚔️</p>
       <h1 class="auth-title" id="auth-title">ログイン</h1>
 
@@ -265,6 +271,8 @@
           <section class="card glass-card settings-card">
             <p class="account-email" id="account-email"></p>
             <button id="btn-logout" class="logout-button tap-scale">ログアウト</button>
+            <button id="btn-login" class="login-button tap-scale">ログイン / 新規登録</button>
+            <p class="login-hint" id="login-hint">ログインするとデータをクラウドに保存できます</p>
           </section>
 
           <section class="card glass-card settings-card">
