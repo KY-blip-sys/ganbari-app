@@ -3,7 +3,6 @@
 // ==========================================================
 
 import { evaluateQuest } from "../models/questSystem.js";
-import { iconSvg } from "../utils/icons.js";
 import { showView } from "../nav.js";
 
 const cardEl = document.getElementById("quest-summary-card");
@@ -25,7 +24,7 @@ export function renderQuestSummary({ list, records, context }) {
     .map(
       ({ quest, done }) => `
         <li class="quest-summary-item">
-          <span class="quest-summary-check ${done ? "done" : ""}">${done ? iconSvg("check", { size: 12 }) : ""}</span>
+          <span class="quest-summary-check ${done ? "done" : ""}">${done ? "✅" : ""}</span>
           <span class="quest-summary-label ${done ? "done" : ""}">${quest.label}</span>
         </li>
       `

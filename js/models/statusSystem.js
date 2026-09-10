@@ -11,13 +11,13 @@ export const STATUS_EXP_PER_LEVEL = 100;
 
 // 人生ステータスの統一アイコン（ホーム／能力詳細／人生マップ／スキルツリー／実績／称号で共通）
 export const LIFE_STAT_ICON = {
-  学び: "graduation-cap",
-  健康: "heart",
-  メンタル: "moon",
-  お金: "wallet",
-  人間関係: "people",
-  趣味: "palette",
-  生活力: "house",
+  学び: "🧠",
+  健康: "❤️",
+  メンタル: "🧘",
+  お金: "💰",
+  人間関係: "🤝",
+  趣味: "🎨",
+  生活力: "🏠",
 };
 
 export const LIFE_STAT_LIST = Object.keys(LIFE_STAT_ICON).map((key) => ({
@@ -62,7 +62,7 @@ export function computeStatusBreakdown(lifeStatKey, allRecords) {
   return Object.entries(totals)
     .map(([category, exp]) => ({
       category,
-      icon: categoryMeta[category]?.icon || "sparkle",
+      icon: categoryMeta[category]?.icon || "✨",
       exp,
       ratio: total ? exp / total : 0,
     }))

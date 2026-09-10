@@ -109,13 +109,13 @@ export function evaluateQuest(quest, periodRecords, context = {}) {
 // ---------- スペシャル（累計EXPマイルストーン） ----------
 
 export const SPECIAL_MILESTONES = [
-  { id: "sp-300", threshold: 300, reward: 50, icon: "military_tech", label: "累計300EXP到達" },
-  { id: "sp-800", threshold: 800, reward: 80, icon: "military_tech", label: "累計800EXP到達" },
-  { id: "sp-1500", threshold: 1500, reward: 120, icon: "workspace_premium", label: "累計1500EXP到達" },
-  { id: "sp-3000", threshold: 3000, reward: 200, icon: "diamond", label: "累計3000EXP到達" },
-  { id: "sp-5000", threshold: 5000, reward: 300, icon: "workspace_premium", label: "累計5000EXP到達" },
-  { id: "sp-10000", threshold: 10000, reward: 500, icon: "emoji_events", label: "累計10000EXP到達" },
-  { id: "sp-20000", threshold: 20000, reward: 800, icon: "nights_stay", label: "累計20000EXP到達" },
+  { id: "sp-300", threshold: 300, reward: 50, icon: "🎖️", label: "累計300EXP到達" },
+  { id: "sp-800", threshold: 800, reward: 80, icon: "🎖️", label: "累計800EXP到達" },
+  { id: "sp-1500", threshold: 1500, reward: 120, icon: "👑", label: "累計1500EXP到達" },
+  { id: "sp-3000", threshold: 3000, reward: 200, icon: "💎", label: "累計3000EXP到達" },
+  { id: "sp-5000", threshold: 5000, reward: 300, icon: "👑", label: "累計5000EXP到達" },
+  { id: "sp-10000", threshold: 10000, reward: 500, icon: "🏆", label: "累計10000EXP到達" },
+  { id: "sp-20000", threshold: 20000, reward: 800, icon: "🌌", label: "累計20000EXP到達" },
 ];
 
 export function getNextSpecialMilestone(claimedIds) {

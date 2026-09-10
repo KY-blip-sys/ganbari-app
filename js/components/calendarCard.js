@@ -73,7 +73,7 @@ function render() {
     if (hasRecords) cell.classList.add("calendar-cell-recorded");
 
     const flameHtml = isStreakDay(dateKey)
-      ? `<span class="calendar-cell-flame">${iconSvg("flame", { size: 9 })}</span>`
+      ? `<span class="calendar-cell-flame">${iconSvg("🔥", { size: 9 })}</span>`
       : "";
 
     cell.innerHTML = `<span class="calendar-cell-badge">${day}</span>${flameHtml}`;

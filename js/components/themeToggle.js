@@ -21,7 +21,7 @@ function applyTheme(theme) {
   } else {
     delete document.documentElement.dataset.theme;
   }
-  iconEl.innerHTML = iconSvg(theme === "light" ? "sun" : "moon", { size: 20 });
+  iconEl.innerHTML = iconSvg(theme === "light" ? "☀️" : "🌙", { size: 20 });
   if (metaThemeColorEl) metaThemeColorEl.setAttribute("content", THEME_COLOR[theme]);
   try {
     localStorage.setItem(THEME_KEY, theme);

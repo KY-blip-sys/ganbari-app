@@ -49,7 +49,7 @@ function renderContent(direction = "forward") {
       <span class="map-area-icon">${a.icon}</span>
       <span class="map-area-name">${a.name}</span>
       ${a.isCurrent ? '<span class="map-area-here">現在地</span>' : ""}
-      ${!a.unlocked ? '<span class="map-area-lock material-symbols-outlined">lock</span>' : ""}
+      ${!a.unlocked ? '<span class="map-area-lock">🔒</span>' : ""}
     </div>
   `
     )
@@ -63,7 +63,7 @@ function renderContent(direction = "forward") {
     `;
 
   containerEl.innerHTML = `
-    <p class="card-label"><span class="card-label-icon material-symbols-outlined">${currentArea.icon}</span>現在地：${currentArea.name}</p>
+    <p class="card-label"><span class="card-label-icon">${currentArea.icon}</span>現在地：${currentArea.name}</p>
     <div class="map-path">${pathHtml}</div>
     ${progressHtml}
   `;

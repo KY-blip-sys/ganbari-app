@@ -4,8 +4,6 @@
 
 import { evaluateQuest, QUEST_REWARD_EXP } from "../models/questSystem.js";
 import { CATEGORIES } from "../models/categories.js";
-import { iconSvg } from "../utils/icons.js";
-
 const tabsEl = document.getElementById("quest-tabs");
 const cardEl = document.getElementById("quest-card");
 const labelEl = document.getElementById("quest-card-label");
@@ -22,10 +20,10 @@ const RING_CIRCUMFERENCE = 2 * Math.PI * RING_RADIUS;
 heroRingFillEl.style.strokeDasharray = `${RING_CIRCUMFERENCE}`;
 
 const TABS = [
-  { id: "daily", icon: "wb_sunny", label: "今日" },
-  { id: "weekly", icon: "calendar_month", label: "今週" },
-  { id: "monthly", icon: "event", label: "今月" },
-  { id: "special", icon: "star", label: "スペシャル" },
+  { id: "daily", icon: "☀️", label: "今日" },
+  { id: "weekly", icon: "📅", label: "今週" },
+  { id: "monthly", icon: "📅", label: "今月" },
+  { id: "special", icon: "⭐", label: "スペシャル" },
 ];
 
 const PERIOD_LABEL = { daily: "今日", weekly: "今週", monthly: "今月" };
@@ -34,12 +32,12 @@ let selectedTab = "daily";
 let cachedData = null;
 
 const QUEST_TYPE_ICON = {
-  categoryExp: "flag",
-  recordCount: "edit_note",
-  totalExp: "payments",
-  streak: "local_fire_department",
-  timeOfDay: "bedtime",
-  categoryDiversity: "palette",
+  categoryExp: "🚩",
+  recordCount: "📝",
+  totalExp: "💵",
+  streak: "🔥",
+  timeOfDay: "😴",
+  categoryDiversity: "🎨",
 };
 
 // 完了の瞬間だけチェックアニメーションを出すための直前状態の記録
@@ -51,11 +49,11 @@ function questIconName(quest) {
     const cat = CATEGORIES.find((c) => c.key === quest.category);
     if (cat) return cat.emoji;
   }
-  return QUEST_TYPE_ICON[quest.type] || "flag";
+  return QUEST_TYPE_ICON[quest.type] || "🚩";
 }
 
-function rewardChipIcon(name) {
-  return `<span class="material-symbols-outlined quest-reward-chip-icon">${name}</span>`;
+function rewardChipIcon(icon) {
+  return `<span class="quest-reward-chip-icon">${icon}</span>`;
 }
 
 // 期間の達成報酬をクエスト数で割った「ゲーム風」の目安表示（実際の付与は全達成時のみ）
@@ -95,8 +93,8 @@ function renderRewardPanel(period, allDone) {
       <p class="quest-complete-badge">COMPLETE</p>
       <p class="quest-complete-message">${label}はよく頑張りました！</p>
       <div class="quest-reward-chips">
-        <span class="quest-reward-chip quest-reward-chip-lit">${rewardChipIcon("auto_awesome")} +${exp}EXP</span>
-        <span class="quest-reward-chip quest-reward-chip-lit">${rewardChipIcon("military_tech")} 称号</span>
+        <span class="quest-reward-chip quest-reward-chip-lit">${rewardChipIcon("✨")} +${exp}EXP</span>
+        <span class="quest-reward-chip quest-reward-chip-lit">${rewardChipIcon("🎖️")} 称号</span>
       </div>
     `;
   } else {
@@ -104,8 +102,8 @@ function renderRewardPanel(period, allDone) {
     rewardPanelEl.innerHTML = `
       <p class="quest-reward-panel-label">${label}の報酬（全部達成すると）</p>
       <div class="quest-reward-chips">
-        <span class="quest-reward-chip">${rewardChipIcon("auto_awesome")} +${exp}EXP</span>
-        <span class="quest-reward-chip">${rewardChipIcon("military_tech")} 称号</span>
+        <span class="quest-reward-chip">${rewardChipIcon("✨")} +${exp}EXP</span>
+        <span class="quest-reward-chip">${rewardChipIcon("🎖️")} 称号</span>
       </div>
     `;
   }
@@ -136,7 +134,7 @@ function renderQuestList(period, list, records) {
           <div class="quest-item-meta">
             <span class="quest-item-exp">+${perQuestExp}EXP</span>
             <span class="quest-item-status ${done ? "quest-item-status-done" : ""}">${
-              done ? iconSvg("check", { size: 13 }) : "未達成"
+              done ? "✅" : "未達成"
             }</span>
           </div>
         </li>
@@ -159,7 +157,7 @@ function renderSpecial(special) {
   if (!next) {
     listEl.innerHTML = `
       <li class="quest-special-item">
-        <span class="quest-special-icon">emoji_events</span>
+        <span class="quest-special-icon">🏆</span>
         <div class="quest-special-text">
           <p class="quest-special-title">全マイルストーンを制覇しました</p>
           <p class="quest-special-desc">伝説の域に到達しています</p>

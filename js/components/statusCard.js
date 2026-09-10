@@ -20,7 +20,7 @@ export function renderLifeStatuses(containerEl, statuses) {
     row.className = "status-row tap-scale";
     row.innerHTML = `
       <div class="status-row-top">
-        <span class="status-icon">${iconSvg(icon || "badge", { size: 18 })}</span>
+        <span class="status-icon">${iconSvg(icon || "🏅", { size: 18 })}</span>
         <span class="status-name">${key}</span>
         <span class="status-level">Lv.${level}</span>
         <span class="status-chevron">›</span>

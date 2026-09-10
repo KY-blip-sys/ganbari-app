@@ -25,7 +25,7 @@ function branchMarkup(branch) {
           .map(
             (n) => `
           <div class="skill-node ${n.unlocked ? "unlocked" : "locked"}">
-            <span class="skill-node-icon">${n.unlocked ? iconMarkup(n.icon, { size: 18 }) : iconMarkup("lock", { size: 16 })}</span>
+            <span class="skill-node-icon">${n.unlocked ? iconMarkup(n.icon, { size: 18 }) : iconMarkup("🔒", { size: 16 })}</span>
             <div class="skill-node-text">
               <span class="skill-node-name">${n.name}</span>
               <span class="skill-node-req">${n.unlocked ? "解放済み" : `Lv.${n.requiredLevel}で解放`}</span>

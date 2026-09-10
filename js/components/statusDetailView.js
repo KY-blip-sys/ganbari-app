@@ -91,7 +91,7 @@ function renderGoals(nextSkill, nextAchievement) {
   if (nextSkill) {
     items.push(
       goalCardMarkup({
-        badgeIcon: "lock",
+        badgeIcon: "🔒",
         badgeClass: "goal-card-badge-skill",
         label: "次に解放するスキル",
         name: nextSkill.name,
@@ -103,7 +103,7 @@ function renderGoals(nextSkill, nextAchievement) {
   if (nextAchievement) {
     items.push(
       goalCardMarkup({
-        badgeIcon: "trophy",
+        badgeIcon: "🏆",
         badgeClass: "goal-card-badge-trophy",
         label: "次に解放",
         name: nextAchievement.name,
