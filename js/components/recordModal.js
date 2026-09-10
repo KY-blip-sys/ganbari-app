@@ -6,6 +6,8 @@ import { CATEGORIES } from "../models/categories.js";
 import { iconSvg } from "../utils/icons.js";
 import { showView } from "../nav.js";
 import { showExpGainToast } from "./expGainToast.js";
+import { lockBodyScroll, unlockBodyScroll } from "../utils/scrollLock.js";
+import { initSheetDragToClose } from "../utils/sheetDrag.js";
 
 const DEFAULT_EXP = 10;
 const ADD_TITLE = "今日頑張ったことを追加";
@@ -14,6 +16,7 @@ const MODAL_CLOSE_MS = 320;
 
 const overlayEl = document.getElementById("modal-overlay");
 const sheetEl = document.getElementById("modal-sheet");
+const handleEl = sheetEl.querySelector(".modal-handle");
 const modalTitleEl = document.getElementById("modal-title");
 const titleInputEl = document.getElementById("input-title");
 const categoryGridEl = document.getElementById("category-grid");
@@ -50,6 +53,7 @@ export function initRecordModal({ onSave, onUpdate }) {
   overlayEl.addEventListener("click", (e) => {
     if (e.target === overlayEl) closeModal();
   });
+  initSheetDragToClose(handleEl, sheetEl, closeModal);
 
   categoryGridEl.addEventListener("click", (e) => {
     const chip = e.target.closest(".category-chip");
@@ -114,11 +118,13 @@ function openModal(record = null) {
 
   overlayEl.classList.remove("modal-hidden");
   requestAnimationFrame(() => overlayEl.classList.add("modal-visible"));
+  lockBodyScroll();
   setTimeout(() => titleInputEl.focus(), 300);
 }
 
 function closeModal() {
   overlayEl.classList.remove("modal-visible");
+  unlockBodyScroll();
   setTimeout(() => overlayEl.classList.add("modal-hidden"), 300);
 }
 

@@ -1899,22 +1899,6 @@
 
 /* ---------- 設定画面 ---------- */
 
-.settings-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: calc(var(--safe-top) + 20px) 12px 12px;
-}
-
-.settings-header h1 {
-  font-size: 17px;
-  font-weight: 700;
-}
-
-.header-spacer {
-  width: 44px;
-}
-
 .settings-card {
   display: flex;
   flex-direction: column;
@@ -2003,6 +1987,7 @@
   box-shadow: var(--shadow-modal);
   max-height: 88vh;
   overflow-y: auto;
+  overscroll-behavior-y: contain;
 }
 
 /* 記録追加モーダルだけは角丸・余白を少し大きくした専用レイアウトにする
@@ -2020,6 +2005,7 @@
   border-radius: 999px;
   background: var(--color-border);
   margin: 6px auto 16px;
+  touch-action: none;
 }
 
 .modal-title {
@@ -2344,10 +2330,6 @@
   }
 
   /* ---------- 設定画面 ---------- */
-
-  .settings-header {
-    padding: calc(var(--safe-top) + 32px) 40px 16px;
-  }
 
   #view-settings .view-flow {
     align-items: center;

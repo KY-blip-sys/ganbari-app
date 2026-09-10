@@ -5,6 +5,8 @@
 import { todayKey } from "../utils/dateUtils.js";
 import { iconSvg } from "../utils/icons.js";
 import { recordCardMarkup } from "./recordCard.js";
+import { lockBodyScroll, unlockBodyScroll } from "../utils/scrollLock.js";
+import { initSheetDragToClose } from "../utils/sheetDrag.js";
 
 const titleEl = document.getElementById("calendar-title");
 const gridEl = document.getElementById("calendar-grid");
@@ -12,6 +14,8 @@ const prevBtn = document.getElementById("btn-cal-prev");
 const nextBtn = document.getElementById("btn-cal-next");
 
 const dayDetailOverlay = document.getElementById("day-detail-overlay");
+const dayDetailSheetEl = document.getElementById("day-detail-sheet");
+const dayDetailHandleEl = dayDetailSheetEl.querySelector(".modal-handle");
 const dayDetailTitleEl = document.getElementById("day-detail-title");
 const dayDetailListEl = document.getElementById("day-detail-list");
 const dayDetailEmptyEl = document.getElementById("day-detail-empty");
@@ -35,6 +39,7 @@ export function initCalendar() {
   dayDetailOverlay.addEventListener("click", (e) => {
     if (e.target === dayDetailOverlay) closeDayDetail();
   });
+  initSheetDragToClose(dayDetailHandleEl, dayDetailSheetEl, closeDayDetail);
 }
 
 export function renderCalendar(records) {
@@ -109,9 +114,11 @@ function openDayDetail(dateKey, records) {
 
   dayDetailOverlay.classList.remove("modal-hidden");
   requestAnimationFrame(() => dayDetailOverlay.classList.add("modal-visible"));
+  lockBodyScroll();
 }
 
 function closeDayDetail() {
   dayDetailOverlay.classList.remove("modal-visible");
+  unlockBodyScroll();
   setTimeout(() => dayDetailOverlay.classList.add("modal-hidden"), 300);
 }

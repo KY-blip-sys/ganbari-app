@@ -5,7 +5,6 @@
 import { showConfirm } from "./confirmDialog.js";
 import { showView } from "../nav.js";
 
-const closeBtn = document.getElementById("btn-close-settings");
 const resetBtn = document.getElementById("btn-reset-data");
 const logoutBtn = document.getElementById("btn-logout");
 const loginBtn = document.getElementById("btn-login");
@@ -13,8 +12,6 @@ const loginHintEl = document.getElementById("login-hint");
 const accountEmailEl = document.getElementById("account-email");
 
 export function initSettingsView(onResetConfirmed, onLogout, onLoginRequested) {
-  closeBtn.addEventListener("click", () => showView("home"));
-
   resetBtn.addEventListener("click", () => {
     showConfirm({
       title: "本当にリセットしますか？",

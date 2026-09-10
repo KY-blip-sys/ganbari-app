@@ -4,8 +4,12 @@
 
 import { iconSvg, iconMarkup } from "../utils/icons.js";
 import { STATUS_EXP_PER_LEVEL } from "../models/statusSystem.js";
+import { lockBodyScroll, unlockBodyScroll } from "../utils/scrollLock.js";
+import { initSheetDragToClose } from "../utils/sheetDrag.js";
 
 const overlayEl = document.getElementById("status-detail-overlay");
+const sheetEl = document.getElementById("status-detail-sheet");
+const handleEl = sheetEl.querySelector(".modal-handle");
 const iconEl = document.getElementById("status-detail-icon");
 const titleEl = document.getElementById("status-detail-title");
 const levelEl = document.getElementById("status-detail-level");
@@ -22,6 +26,7 @@ export function initStatusDetail() {
   overlayEl.addEventListener("click", (e) => {
     if (e.target === overlayEl) closeStatusDetail();
   });
+  initSheetDragToClose(handleEl, sheetEl, closeStatusDetail);
 }
 
 function renderBreakdown(breakdown) {
@@ -137,9 +142,11 @@ export function openStatusDetail({
 
   overlayEl.classList.remove("modal-hidden");
   requestAnimationFrame(() => overlayEl.classList.add("modal-visible"));
+  lockBodyScroll();
 }
 
 function closeStatusDetail() {
   overlayEl.classList.remove("modal-visible");
+  unlockBodyScroll();
   setTimeout(() => overlayEl.classList.add("modal-hidden"), 300);
 }

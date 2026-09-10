@@ -2,6 +2,9 @@
 // nav.js — 画面遷移（タブバー／サイドバー／その他シート）
 // ==========================================================
 
+import { lockBodyScroll, unlockBodyScroll } from "./utils/scrollLock.js";
+import { initSheetDragToClose } from "./utils/sheetDrag.js";
+
 const VIEWS = [
   { id: "home", elId: "view-home", group: "primary", icon: "home", label: "ホーム" },
   { id: "records", elId: "view-records", group: "primary", icon: "edit_note", label: "記録" },
@@ -19,6 +22,8 @@ const tabBarEl = document.getElementById("tab-bar");
 const sidebarEl = document.getElementById("sidebar-nav");
 const overflowListEl = document.getElementById("overflow-list");
 const overflowOverlayEl = document.getElementById("overflow-sheet-overlay");
+const overflowSheetEl = document.getElementById("overflow-sheet");
+const overflowHandleEl = overflowSheetEl.querySelector(".modal-handle");
 const contentWrapEl = document.getElementById("content-wrap");
 
 let activeId = "home";
@@ -67,12 +72,14 @@ function openOverflowSheet() {
   }
   overflowOverlayEl.classList.remove("modal-hidden");
   requestAnimationFrame(() => overflowOverlayEl.classList.add("modal-visible"));
+  lockBodyScroll();
 }
 
 function closeOverflowSheet() {
   if (!overflowOverlayEl.classList.contains("modal-visible")) return;
 
   overflowOverlayEl.classList.remove("modal-visible");
+  unlockBodyScroll();
   if (closeTimer) clearTimeout(closeTimer);
   closeTimer = setTimeout(() => {
     overflowOverlayEl.classList.add("modal-hidden");
@@ -108,6 +115,7 @@ export function initNav() {
   overflowOverlayEl.addEventListener("click", (e) => {
     if (e.target === overflowOverlayEl) closeOverflowSheet();
   });
+  initSheetDragToClose(overflowHandleEl, overflowSheetEl, closeOverflowSheet);
 
   showView(activeId);
 }
