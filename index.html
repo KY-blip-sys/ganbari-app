@@ -389,6 +389,17 @@
             <p class="login-hint" id="login-hint">ログインするとデータをクラウドに保存できます</p>
           </section>
 
+          <section class="card glass-card settings-list-card">
+            <button id="btn-terms" class="settings-list-item tap-scale">
+              <span class="settings-list-item-label">利用規約</span>
+              <span class="settings-list-item-chevron" aria-hidden="true">›</span>
+            </button>
+            <button id="btn-privacy" class="settings-list-item tap-scale">
+              <span class="settings-list-item-label">プライバシーポリシー</span>
+              <span class="settings-list-item-chevron" aria-hidden="true">›</span>
+            </button>
+          </section>
+
           <section class="card glass-card settings-card">
             <button id="btn-reset-data" class="reset-button tap-scale">データをリセット</button>
             <p class="reset-hint">記録・経験値・レベルがすべて削除されます</p>
@@ -481,6 +492,15 @@
 
       <ul id="day-detail-list" class="record-list"></ul>
       <p id="day-detail-empty" class="record-empty">記録がありません</p>
+    </div>
+  </div>
+
+  <!-- 利用規約・プライバシーポリシーモーダル -->
+  <div id="legal-overlay" class="modal-overlay modal-hidden">
+    <div class="modal-sheet glass-card legal-sheet" id="legal-sheet">
+      <div class="modal-handle"></div>
+      <h2 class="modal-title" id="legal-title"></h2>
+      <div class="legal-body" id="legal-body"></div>
     </div>
   </div>
 

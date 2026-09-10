@@ -37,6 +37,7 @@ import { initRecordModal, openRecordModalForEdit } from "./components/recordModa
 import { initThemeToggle } from "./components/themeToggle.js";
 // import { renderAiComment } from "./components/aiComment.js"; // 一旦非表示
 import { initSettingsView, setAccountEmail } from "./components/settingsView.js";
+import { initLegalModal } from "./components/legalModal.js";
 import { renderTitle } from "./components/titleCard.js";
 import { renderQuests, flashQuestComplete } from "./components/questCard.js";
 import { renderLifeStatuses, setOnStatusClick, renderStatusOverview } from "./components/statusCard.js";
@@ -421,6 +422,7 @@ function startApp() {
   setOnEdit(openRecordModalForEdit);
   initRecordModal({ onSave: addRecord, onUpdate: updateRecord });
   initSettingsView(resetAll, () => authService.signOut(), openLoginScreen);
+  initLegalModal();
   initCalendar();
   initStatusDetail();
   setOnStatusClick(handleStatusClick);

@@ -4,12 +4,15 @@
 
 import { showConfirm } from "./confirmDialog.js";
 import { showView } from "../nav.js";
+import { openTermsModal, openPrivacyModal } from "./legalModal.js";
 
 const resetBtn = document.getElementById("btn-reset-data");
 const logoutBtn = document.getElementById("btn-logout");
 const loginBtn = document.getElementById("btn-login");
 const loginHintEl = document.getElementById("login-hint");
 const accountEmailEl = document.getElementById("account-email");
+const termsBtn = document.getElementById("btn-terms");
+const privacyBtn = document.getElementById("btn-privacy");
 
 export function initSettingsView(onResetConfirmed, onLogout, onLoginRequested) {
   resetBtn.addEventListener("click", () => {
@@ -36,6 +39,9 @@ export function initSettingsView(onResetConfirmed, onLogout, onLoginRequested) {
   loginBtn.addEventListener("click", () => {
     onLoginRequested();
   });
+
+  termsBtn.addEventListener("click", openTermsModal);
+  privacyBtn.addEventListener("click", openPrivacyModal);
 
   setLoggedIn(false);
 }
