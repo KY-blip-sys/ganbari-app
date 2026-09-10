@@ -97,7 +97,6 @@ function renderRewardPanel(period, allDone) {
       <div class="quest-reward-chips">
         <span class="quest-reward-chip quest-reward-chip-lit">${rewardChipIcon("auto_awesome")} +${exp}EXP</span>
         <span class="quest-reward-chip quest-reward-chip-lit">${rewardChipIcon("military_tech")} 称号</span>
-        <span class="quest-reward-chip quest-reward-chip-soon">${rewardChipIcon("savings")} コイン<small>準備中</small></span>
       </div>
     `;
   } else {
@@ -107,7 +106,6 @@ function renderRewardPanel(period, allDone) {
       <div class="quest-reward-chips">
         <span class="quest-reward-chip">${rewardChipIcon("auto_awesome")} +${exp}EXP</span>
         <span class="quest-reward-chip">${rewardChipIcon("military_tech")} 称号</span>
-        <span class="quest-reward-chip quest-reward-chip-soon">${rewardChipIcon("savings")} コイン<small>準備中</small></span>
       </div>
     `;
   }

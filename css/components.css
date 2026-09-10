@@ -469,16 +469,6 @@
   font-size: 13px;
   color: var(--color-text-tertiary);
   font-weight: 500;
-  margin-bottom: 10px;
-}
-
-.record-empty-cta {
-  padding: 11px 22px;
-  border-radius: 999px;
-  background: var(--color-accent);
-  color: #fff;
-  font-size: 14px;
-  font-weight: 700;
 }
 
 .record-item {
@@ -859,15 +849,6 @@
 .quest-reward-chip-icon {
   font-family: "Material Symbols Outlined";
   font-size: 14px;
-}
-
-.quest-reward-chip-soon {
-  opacity: 0.55;
-}
-
-.quest-reward-chip-soon small {
-  font-size: 9.5px;
-  font-weight: 700;
 }
 
 .quest-reward-panel-complete {

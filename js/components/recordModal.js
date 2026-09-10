@@ -21,7 +21,6 @@ const expGridEl = document.getElementById("exp-grid");
 const saveBtn = document.getElementById("btn-save-record");
 const cancelBtn = document.getElementById("btn-cancel-record");
 const addBtn = document.getElementById("btn-add-record");
-const addBtnEmpty = document.getElementById("btn-add-record-empty");
 
 let selectedCategory = null;
 let selectedExp = DEFAULT_EXP;
@@ -47,7 +46,6 @@ export function initRecordModal({ onSave, onUpdate }) {
   buildCategoryGrid();
 
   addBtn.addEventListener("click", () => openModal());
-  if (addBtnEmpty) addBtnEmpty.addEventListener("click", () => openModal());
   cancelBtn.addEventListener("click", closeModal);
   overlayEl.addEventListener("click", (e) => {
     if (e.target === overlayEl) closeModal();
