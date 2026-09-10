@@ -600,6 +600,75 @@
   white-space: nowrap;
 }
 
+/* ---------- クエスト：今日の達成率 ---------- */
+
+.quest-hero {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 18px 20px;
+}
+
+.quest-hero-ring-wrap {
+  position: relative;
+  flex-shrink: 0;
+  width: 84px;
+  height: 84px;
+}
+
+.quest-hero-ring {
+  transform: rotate(-90deg);
+}
+
+.quest-hero-ring-track {
+  fill: none;
+  stroke: var(--color-border);
+  stroke-width: 8;
+}
+
+.quest-hero-ring-fill {
+  fill: none;
+  stroke: url(#quest-hero-gradient);
+  stroke-width: 8;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.quest-hero-ring-percent {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--color-text-primary);
+}
+
+.quest-hero-info {
+  min-width: 0;
+}
+
+.quest-hero-label {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--color-text-tertiary);
+  margin-bottom: 4px;
+}
+
+.quest-hero-fraction {
+  font-size: 17px;
+  font-weight: 800;
+}
+
+.quest-hero-complete .quest-hero-ring-wrap {
+  filter: drop-shadow(0 0 8px rgba(52, 199, 89, 0.45));
+}
+
+.quest-hero-complete .quest-hero-fraction {
+  color: var(--rank-green);
+}
+
 /* ---------- クエスト ---------- */
 
 .quest-tabs {
@@ -609,6 +678,8 @@
   padding-bottom: 4px;
   margin-bottom: 4px;
   scrollbar-width: none;
+  scroll-snap-type: x proximity;
+  -webkit-overflow-scrolling: touch;
 }
 
 .quest-tabs::-webkit-scrollbar {
@@ -627,6 +698,7 @@
   color: var(--color-text-secondary);
   background: var(--color-bg-elevated);
   border: 1px solid var(--color-border);
+  scroll-snap-align: start;
 }
 
 .quest-tab.active {
@@ -646,65 +718,161 @@
   margin-bottom: 14px;
 }
 
-.quest-reward-tag {
-  font-size: 11px;
-  font-weight: 700;
-  color: var(--color-accent);
-  background: rgba(10, 132, 255, 0.12);
-  padding: 4px 9px;
-  border-radius: 999px;
-  flex-shrink: 0;
-}
-
 .quest-list {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
 }
 
 .quest-item {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  background: var(--color-bg);
+  transition: background 0.25s ease;
 }
 
-.quest-checkbox {
-  width: 20px;
-  height: 20px;
-  border-radius: 6px;
-  border: 1.5px solid var(--color-border);
+.quest-item-done {
+  background: rgba(52, 199, 89, 0.08);
+}
+
+.quest-item-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: var(--color-bg-elevated-solid);
+  font-size: 18px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 12px;
-  font-weight: 800;
-  color: #fff;
   flex-shrink: 0;
-  transition: background 0.25s ease, border-color 0.25s ease;
 }
 
-.quest-checkbox.done {
-  background: var(--color-accent);
-  border-color: var(--color-accent);
-}
-
-.quest-text {
+.quest-item-body {
   flex: 1;
-  font-size: 14px;
-  font-weight: 600;
   min-width: 0;
 }
 
-.quest-text.done {
+.quest-item-label {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.quest-item-label.done {
   text-decoration: line-through;
   color: var(--color-text-tertiary);
 }
 
-.quest-progress {
-  font-size: 12px;
+.quest-item-progress {
+  font-size: 11.5px;
   color: var(--color-text-tertiary);
-  font-weight: 700;
+  font-weight: 600;
+  margin-top: 2px;
+}
+
+.quest-item-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 5px;
   flex-shrink: 0;
+}
+
+.quest-item-exp {
+  font-size: 11.5px;
+  font-weight: 800;
+  color: var(--color-exp);
+  white-space: nowrap;
+}
+
+.quest-item-status {
+  font-size: 10.5px;
+  font-weight: 700;
+  color: var(--color-text-tertiary);
+  background: var(--color-bg-elevated-solid);
+  padding: 3px 8px;
+  border-radius: 999px;
+  min-height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+}
+
+.quest-item-status-done {
+  color: #fff;
+  background: var(--color-accent);
+  padding: 4px;
+}
+
+/* ---------- 今日の報酬 ---------- */
+
+.quest-reward-panel {
+  margin-top: 16px;
+  padding: 14px 16px;
+  border-radius: var(--radius-sm);
+  background: var(--color-bg);
+  text-align: center;
+}
+
+.quest-reward-panel-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--color-text-tertiary);
+  margin-bottom: 10px;
+}
+
+.quest-reward-chips {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.quest-reward-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: var(--color-bg-elevated-solid);
+  color: var(--color-text-secondary);
+}
+
+.quest-reward-chip-soon {
+  opacity: 0.55;
+}
+
+.quest-reward-chip-soon small {
+  font-size: 9.5px;
+  font-weight: 700;
+}
+
+.quest-reward-panel-complete {
+  background: linear-gradient(135deg, rgba(10, 132, 255, 0.12), rgba(52, 199, 89, 0.12));
+}
+
+.quest-complete-badge {
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: 1.5px;
+  color: var(--color-accent);
+  margin-bottom: 4px;
+}
+
+.quest-complete-message {
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.quest-reward-chip-lit {
+  background: var(--color-bg-elevated-solid);
+  color: var(--color-accent);
 }
 
 /* ---------- スペシャルクエスト ---------- */

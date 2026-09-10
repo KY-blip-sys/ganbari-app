@@ -157,6 +157,43 @@
   100% { box-shadow: var(--shadow-card); }
 }
 
+.quest-item-pop {
+  animation: quest-item-glow 0.8s ease;
+}
+
+@keyframes quest-item-glow {
+  0% { box-shadow: 0 0 0 0 rgba(52, 199, 89, 0); }
+  30% { box-shadow: 0 0 0 3px rgba(52, 199, 89, 0.28); }
+  100% { box-shadow: 0 0 0 0 rgba(52, 199, 89, 0); }
+}
+
+.quest-item-pop .quest-item-status-done {
+  animation: quest-check-pop 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes quest-check-pop {
+  0% { transform: scale(0.3); opacity: 0; }
+  60% { transform: scale(1.2); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.quest-reward-panel-complete {
+  animation: quest-complete-glow 3s ease-in-out infinite;
+}
+
+@keyframes quest-complete-glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(52, 199, 89, 0); }
+  50% { box-shadow: 0 0 18px 2px rgba(52, 199, 89, 0.18); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .quest-item-pop,
+  .quest-item-pop .quest-item-status-done,
+  .quest-reward-panel-complete {
+    animation: none;
+  }
+}
+
 /* ---------- EXP獲得演出（Sランク以上 / SSランク以上） ---------- */
 
 .hero-card.exp-celebrate-blue {

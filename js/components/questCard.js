@@ -3,12 +3,23 @@
 // ==========================================================
 
 import { evaluateQuest, QUEST_REWARD_EXP } from "../models/questSystem.js";
+import { CATEGORIES } from "../models/categories.js";
+import { iconSvg } from "../utils/icons.js";
 
 const tabsEl = document.getElementById("quest-tabs");
 const cardEl = document.getElementById("quest-card");
 const labelEl = document.getElementById("quest-card-label");
-const rewardTagEl = document.getElementById("quest-reward-tag");
 const listEl = document.getElementById("quest-list");
+const rewardPanelEl = document.getElementById("quest-reward-panel");
+
+const heroEl = document.getElementById("quest-hero");
+const heroRingFillEl = document.getElementById("quest-hero-ring-fill");
+const heroPercentEl = document.getElementById("quest-hero-percent");
+const heroFractionEl = document.getElementById("quest-hero-fraction");
+
+const RING_RADIUS = 36;
+const RING_CIRCUMFERENCE = 2 * Math.PI * RING_RADIUS;
+heroRingFillEl.style.strokeDasharray = `${RING_CIRCUMFERENCE}`;
 
 const TABS = [
   { id: "daily", icon: "☀️", label: "今日" },
@@ -16,6 +27,8 @@ const TABS = [
   { id: "monthly", icon: "🗓️", label: "今月" },
   { id: "special", icon: "🌟", label: "スペシャル" },
 ];
+
+const PERIOD_LABEL = { daily: "今日", weekly: "今週", monthly: "今月" };
 
 let selectedTab = "daily";
 let cachedData = null;
@@ -28,6 +41,25 @@ const QUEST_TYPE_ICON = {
   timeOfDay: "🌙",
   categoryDiversity: "🎨",
 };
+
+// 完了の瞬間だけチェックアニメーションを出すための直前状態の記録
+const previousDone = {};
+const initializedPeriods = new Set();
+
+function questEmoji(quest) {
+  if (quest.type === "categoryExp") {
+    const cat = CATEGORIES.find((c) => c.key === quest.category);
+    if (cat) return cat.emoji;
+  }
+  return QUEST_TYPE_ICON[quest.type] || "🎯";
+}
+
+// 期間の達成報酬をクエスト数で割った「ゲーム風」の目安表示（実際の付与は全達成時のみ）
+function flavorReward(period, count) {
+  if (!count) return 0;
+  const raw = QUEST_REWARD_EXP[period] / count;
+  return Math.max(5, Math.round(raw / 5) * 5);
+}
 
 function renderTabs() {
   tabsEl.innerHTML = TABS.map(
@@ -47,29 +79,75 @@ function renderTabs() {
   });
 }
 
-function renderQuestList(list, records) {
-  labelEl.textContent = { daily: "今日のクエスト", weekly: "今週のクエスト", monthly: "今月のクエスト" }[selectedTab];
-  rewardTagEl.textContent = `全達成で+${QUEST_REWARD_EXP[selectedTab]}EXP`;
-  rewardTagEl.style.display = "";
+function renderRewardPanel(period, allDone) {
+  const exp = QUEST_REWARD_EXP[period];
+  const label = PERIOD_LABEL[period];
 
-  listEl.innerHTML = list
-    .map((quest) => {
-      const { current, target, done } = evaluateQuest(quest, records, cachedData.context);
-      const typeIcon = QUEST_TYPE_ICON[quest.type] || "🎯";
+  if (allDone) {
+    rewardPanelEl.className = "quest-reward-panel quest-reward-panel-complete";
+    rewardPanelEl.innerHTML = `
+      <p class="quest-complete-badge">COMPLETE</p>
+      <p class="quest-complete-message">${label}はよく頑張りました！</p>
+      <div class="quest-reward-chips">
+        <span class="quest-reward-chip quest-reward-chip-lit">✨ +${exp}EXP</span>
+        <span class="quest-reward-chip quest-reward-chip-lit">🏅 称号</span>
+        <span class="quest-reward-chip quest-reward-chip-soon">🪙 コイン<small>準備中</small></span>
+      </div>
+    `;
+  } else {
+    rewardPanelEl.className = "quest-reward-panel";
+    rewardPanelEl.innerHTML = `
+      <p class="quest-reward-panel-label">${label}の報酬（全部達成すると）</p>
+      <div class="quest-reward-chips">
+        <span class="quest-reward-chip">✨ +${exp}EXP</span>
+        <span class="quest-reward-chip">🏅 称号</span>
+        <span class="quest-reward-chip quest-reward-chip-soon">🪙 コイン<small>準備中</small></span>
+      </div>
+    `;
+  }
+}
+
+function renderQuestList(period, list, records) {
+  labelEl.textContent = { daily: "今日のクエスト", weekly: "今週のクエスト", monthly: "今月のクエスト" }[period];
+
+  const seenBefore = initializedPeriods.has(period);
+  const evaluated = list.map((quest) => ({ quest, ...evaluateQuest(quest, records, cachedData.context) }));
+  const doneCount = evaluated.filter((e) => e.done).length;
+  const allDone = evaluated.length > 0 && doneCount === evaluated.length;
+  const perQuestExp = flavorReward(period, evaluated.length);
+
+  listEl.innerHTML = evaluated
+    .map(({ quest, current, target, done }) => {
+      const key = `${period}:${quest.id}`;
+      const justDone = seenBefore && done && !previousDone[key];
+      previousDone[key] = done;
+
       return `
-        <li class="quest-item">
-          <span class="quest-checkbox ${done ? "done" : ""}">${done ? "✓" : ""}</span>
-          <span class="quest-text ${done ? "done" : ""}">${typeIcon} ${quest.label}</span>
-          <span class="quest-progress">${current}/${target}</span>
+        <li class="quest-item ${done ? "quest-item-done" : ""} ${justDone ? "quest-item-pop" : ""}">
+          <span class="quest-item-icon">${questEmoji(quest)}</span>
+          <div class="quest-item-body">
+            <p class="quest-item-label ${done ? "done" : ""}">${quest.label}</p>
+            <p class="quest-item-progress">${current}/${target}</p>
+          </div>
+          <div class="quest-item-meta">
+            <span class="quest-item-exp">+${perQuestExp}EXP</span>
+            <span class="quest-item-status ${done ? "quest-item-status-done" : ""}">${
+              done ? iconSvg("check", { size: 13 }) : "未達成"
+            }</span>
+          </div>
         </li>
       `;
     })
     .join("");
+
+  if (!seenBefore) initializedPeriods.add(period);
+
+  renderRewardPanel(period, allDone);
 }
 
 function renderSpecial(special) {
   labelEl.textContent = "スペシャルクエスト";
-  rewardTagEl.style.display = "none";
+  rewardPanelEl.hidden = true;
 
   const { milestones, totalExp } = special;
   const next = milestones.find((m) => !m.claimed);
@@ -122,15 +200,30 @@ function renderContent() {
   if (selectedTab === "special") {
     renderSpecial(cachedData.special);
   } else {
+    rewardPanelEl.hidden = false;
     const { list, records } = cachedData[selectedTab];
-    renderQuestList(list, records);
+    renderQuestList(selectedTab, list, records);
   }
+}
+
+function renderHero(list, records, context) {
+  const evaluated = list.map((quest) => evaluateQuest(quest, records, context));
+  const doneCount = evaluated.filter((e) => e.done).length;
+  const total = evaluated.length;
+  const ratio = total > 0 ? doneCount / total : 0;
+  const percent = Math.round(ratio * 100);
+
+  heroRingFillEl.style.strokeDashoffset = `${RING_CIRCUMFERENCE * (1 - ratio)}`;
+  heroPercentEl.textContent = `${percent}%`;
+  heroFractionEl.textContent = `${doneCount}/${total} クエスト達成`;
+  heroEl.classList.toggle("quest-hero-complete", total > 0 && doneCount === total);
 }
 
 export function renderQuests(data) {
   cachedData = data;
   if (!tabsEl.childElementCount) renderTabs();
   renderContent();
+  renderHero(data.daily.list, data.daily.records, data.context);
 }
 
 export function flashQuestComplete() {
