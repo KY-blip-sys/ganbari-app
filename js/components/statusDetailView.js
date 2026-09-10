@@ -19,10 +19,8 @@ const hintEl = document.getElementById("status-detail-hint");
 const breakdownEl = document.getElementById("status-detail-breakdown");
 const trendEl = document.getElementById("status-detail-trend");
 const goalsEl = document.getElementById("status-detail-goals");
-const closeBtn = document.getElementById("btn-status-detail-close");
 
 export function initStatusDetail() {
-  closeBtn.addEventListener("click", closeStatusDetail);
   overlayEl.addEventListener("click", (e) => {
     if (e.target === overlayEl) closeStatusDetail();
   });

@@ -19,7 +19,6 @@ const dayDetailHandleEl = dayDetailSheetEl.querySelector(".modal-handle");
 const dayDetailTitleEl = document.getElementById("day-detail-title");
 const dayDetailListEl = document.getElementById("day-detail-list");
 const dayDetailEmptyEl = document.getElementById("day-detail-empty");
-const dayDetailCloseBtn = document.getElementById("btn-day-detail-close");
 
 const displayDate = new Date();
 let cachedRecords = {};
@@ -35,7 +34,6 @@ export function initCalendar() {
     render();
   });
 
-  dayDetailCloseBtn.addEventListener("click", closeDayDetail);
   dayDetailOverlay.addEventListener("click", (e) => {
     if (e.target === dayDetailOverlay) closeDayDetail();
   });
