@@ -74,7 +74,7 @@ export const ACHIEVEMENT_LIST = [
   { id: "record-100", icon: "📖", name: "百戦錬磨", description: "記録を100件追加する", check: (ctx) => ctx.recordCount >= 100 },
   { id: "record-200", icon: "🏆", name: "記録の達人", description: "記録を200件追加する", check: (ctx) => ctx.recordCount >= 200 },
   { id: "record-500", icon: "📁", name: "積み重ねの化身", description: "記録を500件追加する", check: (ctx) => ctx.recordCount >= 500 },
-  { id: "record-1000", icon: "inventory_2", name: "記録の殿堂", description: "記録を1000件追加する", check: (ctx) => ctx.recordCount >= 1000 },
+  { id: "record-1000", icon: "📦", name: "記録の殿堂", description: "記録を1000件追加する", check: (ctx) => ctx.recordCount >= 1000 },
 
   // ---------- 連続記録日数 ----------
   { id: "streak-3", icon: "🔥", name: "3日坊主卒業", description: "3日連続で記録する", check: (ctx) => ctx.maxStreak >= 3 },

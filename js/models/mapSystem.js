@@ -127,7 +127,7 @@ export const MAP_THEMES = [
       { id: "start", icon: "🌱", name: "スタート地点" },
       { id: "cleaning-path", icon: "🧹", name: "掃除の小道" },
       { id: "home-kitchen", icon: "🍽️", name: "自炊キッチン" },
-      { id: "storage-hill", icon: "inventory_2", name: "収納の丘" },
+      { id: "storage-hill", icon: "📦", name: "収納の丘" },
       { id: "planning-bridge", icon: "☑️", name: "段取りの橋" },
       { id: "interior-road", icon: "🛋️", name: "インテリア街道" },
       { id: "efficiency-tower", icon: "⚙️", name: "効率化の塔" },

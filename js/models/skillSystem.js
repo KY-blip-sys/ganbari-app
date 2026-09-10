@@ -151,7 +151,7 @@ export const SKILL_TREES = {
       label: "探究・収集",
       nodes: [
         { id: "deep-diver", icon: "🔍", name: "没頭者", requiredLevel: 3 },
-        { id: "collector", icon: "inventory_2", name: "コレクター", requiredLevel: 9 },
+        { id: "collector", icon: "📦", name: "コレクター", requiredLevel: 9 },
         { id: "explorer-master", icon: "🗺️", name: "探求の達人", requiredLevel: 16 },
         { id: "knowledgeable-collector", icon: "📖", name: "博識のコレクター", requiredLevel: 24 },
       ],
@@ -173,7 +173,7 @@ export const SKILL_TREES = {
       label: "家事",
       nodes: [
         { id: "solo-living", icon: "🧹", name: "一人暮らしの第一歩", requiredLevel: 2 },
-        { id: "tidy-master", icon: "inventory_2", name: "整理整頓の達人", requiredLevel: 8 },
+        { id: "tidy-master", icon: "📦", name: "整理整頓の達人", requiredLevel: 8 },
         { id: "living-craftsman", icon: "🛋️", name: "暮らしの匠", requiredLevel: 14 },
         { id: "household-king", icon: "👑", name: "家事の王", requiredLevel: 22 },
       ],
