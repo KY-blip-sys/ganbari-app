@@ -3,14 +3,17 @@
    ========================================================== */
 
 :root {
-  --color-bg: #f4f4f7;
-  --color-bg-elevated: rgba(255, 255, 255, 0.72);
+  --color-bg: #ffffff;
+  --color-bg-subtle: #f5f5f7;
+  --color-bg-elevated: #ffffff;
   --color-bg-elevated-solid: #ffffff;
-  --color-border: rgba(60, 60, 67, 0.12);
+  --color-border: rgba(60, 60, 67, 0.13);
   --color-text-primary: #1c1c1e;
   --color-text-secondary: #6e6e73;
   --color-text-tertiary: #9a9aa0;
   --color-accent: #0a84ff;
+  --color-success: #34c759;
+  --color-warning: #ff9f0a;
   --color-exp: #ff9f0a;
   --color-danger: #ff3b30;
   --color-danger-bg: rgba(255, 59, 48, 0.1);
@@ -19,21 +22,20 @@
   --rank-blue: #0a84ff;
   --rank-orange: #ff9f0a;
   --rank-red: #ff453a;
-  --rank-gold: #b8860b;
+  --rank-gold: #0a84ff;
 
-  --shadow-card: 0 8px 30px rgba(0, 0, 0, 0.06);
-  --shadow-modal: 0 -10px 40px rgba(0, 0, 0, 0.12);
+  --shadow-card: 0 2px 12px rgba(0, 0, 0, 0.05);
+  --shadow-modal: 0 -4px 24px rgba(0, 0, 0, 0.08);
 
-  --radius-lg: 28px;
+  --radius-lg: 22px;
   --radius-md: 20px;
-  --radius-sm: 14px;
+  --radius-sm: 16px;
   --radius-home: 22px;
+
+  --button-height: 56px;
 
   --safe-bottom: env(safe-area-inset-bottom, 0px);
   --safe-top: env(safe-area-inset-top, 0px);
-
-  --flame-opacity-min: 0.12;
-  --flame-opacity-max: 0.22;
 
   color-scheme: light;
 }
@@ -41,16 +43,15 @@
 @media (prefers-color-scheme: dark) {
   :root {
     --color-bg: #000000;
-    --color-bg-elevated: rgba(28, 28, 30, 0.72);
+    --color-bg-subtle: #1c1c1e;
+    --color-bg-elevated: #1c1c1e;
     --color-bg-elevated-solid: #1c1c1e;
     --color-border: rgba(255, 255, 255, 0.12);
     --color-text-primary: #f5f5f7;
     --color-text-secondary: #a1a1a6;
     --color-text-tertiary: #7c7c80;
     --color-danger-bg: rgba(255, 69, 58, 0.16);
-    --shadow-card: 0 8px 30px rgba(0, 0, 0, 0.35);
-    --flame-opacity-min: 0.22;
-    --flame-opacity-max: 0.4;
+    --shadow-card: 0 2px 14px rgba(0, 0, 0, 0.4);
     color-scheme: dark;
   }
 }
@@ -122,4 +123,22 @@ ul {
   list-style: none;
   margin: 0;
   padding: 0;
+}
+
+/* ---------- アイコン（Material Symbols に統一。絵文字は使用しない） ---------- */
+
+.material-symbols-outlined {
+  font-family: "Material Symbols Outlined";
+  font-weight: 400;
+  font-style: normal;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-smoothing: antialiased;
+  -webkit-font-feature-settings: "liga";
+  font-feature-settings: "liga";
 }

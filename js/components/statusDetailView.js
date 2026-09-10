@@ -64,7 +64,7 @@ function renderGoals(nextSkill, nextAchievement) {
   if (nextSkill) {
     items.push(`
       <div class="status-detail-goal-item">
-        <span class="status-detail-goal-icon">🔒</span>
+        <span class="status-detail-goal-icon">lock</span>
         <div class="status-detail-goal-text">
           <p class="status-detail-goal-title">${nextSkill.name}</p>
           <p class="status-detail-goal-desc">Lv.${nextSkill.requiredLevel}で解放</p>

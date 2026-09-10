@@ -33,8 +33,12 @@
 
 .auth-logo {
   text-align: center;
-  font-size: 28px;
   margin-bottom: 4px;
+}
+
+.auth-logo .material-symbols-outlined {
+  font-size: 32px;
+  color: var(--color-accent);
 }
 
 .auth-title {
@@ -74,25 +78,27 @@
   text-align: center;
 }
 
-.logout-button {
+.logout-button,
+.login-button {
   width: 100%;
-  padding: 15px;
-  border-radius: var(--radius-md);
-  background: var(--color-bg-elevated-solid);
-  border: 1px solid var(--color-border);
-  color: var(--color-text-primary);
+  height: var(--button-height);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 18px;
   font-size: 15px;
   font-weight: 700;
 }
 
+.logout-button {
+  background: var(--color-bg-elevated-solid);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-primary);
+}
+
 .login-button {
-  width: 100%;
-  padding: 15px;
-  border-radius: var(--radius-md);
   background: var(--color-accent);
   color: #fff;
-  font-size: 15px;
-  font-weight: 700;
 }
 
 .login-hint {

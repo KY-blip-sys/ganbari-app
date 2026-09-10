@@ -13,7 +13,7 @@ function branchMarkup(branch) {
           .map(
             (n) => `
           <div class="skill-node ${n.unlocked ? "unlocked" : "locked"}">
-            <span class="skill-node-icon">${n.unlocked ? n.icon : "🔒"}</span>
+            <span class="skill-node-icon">${n.unlocked ? n.icon : "lock"}</span>
             <div class="skill-node-text">
               <span class="skill-node-name">${n.name}</span>
               <span class="skill-node-req">${n.unlocked ? "解放済み" : `Lv.${n.requiredLevel}で解放`}</span>
@@ -34,7 +34,7 @@ export function renderSkillTree(skillTrees) {
     const card = document.createElement("section");
     card.className = "card glass-card skill-tree-card";
     card.innerHTML = `
-      <p class="card-label">${icon} ${key}（Lv.${level}）</p>
+      <p class="card-label"><span class="card-label-icon material-symbols-outlined">${icon}</span>${key}（Lv.${level}）</p>
       ${branches.map(branchMarkup).join("")}
     `;
     containerEl.appendChild(card);

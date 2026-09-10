@@ -3,16 +3,14 @@
    ========================================================== */
 
 .glass-card {
-  background: var(--color-bg-elevated);
-  backdrop-filter: blur(24px) saturate(1.6);
-  -webkit-backdrop-filter: blur(24px) saturate(1.6);
+  background: var(--color-bg-elevated-solid);
   border: 1px solid var(--color-border);
   box-shadow: var(--shadow-card);
 }
 
 .card {
   border-radius: var(--radius-lg);
-  padding: 24px;
+  padding: 20px;
 }
 
 /* ---------- ヘッダー ---------- */
@@ -55,7 +53,7 @@
   padding: 12px 20px 0;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 20px;
 }
 
 .view-flow {
@@ -63,7 +61,7 @@
   padding: 12px 20px 0;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 20px;
 }
 
 .card-label {
@@ -71,6 +69,14 @@
   color: var(--color-text-secondary);
   font-weight: 600;
   margin-bottom: 12px;
+}
+
+.card-label-icon {
+  font-family: "Material Symbols Outlined";
+  font-size: 15px;
+  color: var(--color-accent);
+  vertical-align: -2px;
+  margin-right: 2px;
 }
 
 /* ---------- ホームカード共通（非グラス・Apple風の白背景） ---------- */
@@ -87,7 +93,8 @@
 
 .hero-card {
   position: relative;
-  padding: 24px 20px;
+  padding: 20px;
+  transition: border-color 0.2s ease;
 }
 
 /* ---------- 記録保存直後の「+EXP」演出 ---------- */
@@ -102,7 +109,7 @@
   color: #fff;
   font-size: 15px;
   font-weight: 800;
-  box-shadow: 0 6px 18px rgba(10, 132, 255, 0.35);
+  box-shadow: var(--shadow-card);
   opacity: 0;
   transform: translateY(6px) scale(0.9);
   pointer-events: none;
@@ -239,7 +246,7 @@
 .home-mini-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 16px;
+  gap: 20px;
 }
 
 .home-card-mini {
@@ -300,8 +307,8 @@
   height: 100%;
   width: 0%;
   border-radius: 999px;
-  background: linear-gradient(90deg, #0a84ff, #34c759);
-  transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  background: var(--color-accent);
+  transition: width 0.3s ease;
 }
 
 .exp-hint {
@@ -382,7 +389,7 @@
   width: 0%;
   border-radius: 999px;
   background: var(--color-accent);
-  transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: width 0.3s ease;
 }
 
 .record-exp-goal-text {
@@ -408,13 +415,15 @@
 
 .add-record-button {
   width: 100%;
-  padding: 18px;
-  border-radius: var(--radius-lg);
+  height: var(--button-height);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 18px;
   background: var(--color-accent);
   color: #fff;
   font-size: 15.5px;
   font-weight: 700;
-  box-shadow: 0 8px 20px rgba(10, 132, 255, 0.2);
 }
 
 .record-list {
@@ -519,7 +528,7 @@
 }
 
 .record-item-body:active {
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.14);
+  box-shadow: var(--shadow-card);
 }
 
 .record-item-static {
@@ -628,10 +637,10 @@
 
 .quest-hero-ring-fill {
   fill: none;
-  stroke: url(#quest-hero-gradient);
+  stroke: var(--color-accent);
   stroke-width: 8;
   stroke-linecap: round;
-  transition: stroke-dashoffset 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: stroke-dashoffset 0.3s ease;
 }
 
 .quest-hero-ring-percent {
@@ -659,10 +668,6 @@
 .quest-hero-fraction {
   font-size: 17px;
   font-weight: 800;
-}
-
-.quest-hero-complete .quest-hero-ring-wrap {
-  filter: drop-shadow(0 0 8px rgba(52, 199, 89, 0.45));
 }
 
 .quest-hero-complete .quest-hero-fraction {
@@ -708,7 +713,8 @@
 }
 
 .quest-tab-icon {
-  font-size: 15px;
+  font-family: "Material Symbols Outlined";
+  font-size: 16px;
 }
 
 .quest-header {
@@ -730,19 +736,21 @@
   gap: 12px;
   padding: 10px 12px;
   border-radius: var(--radius-sm);
-  background: var(--color-bg);
-  transition: background 0.25s ease;
+  background: var(--color-bg-subtle);
+  transition: background 0.2s ease;
 }
 
 .quest-item-done {
-  background: rgba(52, 199, 89, 0.08);
+  background: rgba(52, 199, 89, 0.1);
 }
 
 .quest-item-icon {
   width: 34px;
   height: 34px;
   border-radius: 10px;
-  background: var(--color-bg-elevated-solid);
+  background: var(--color-bg-subtle);
+  color: var(--color-accent);
+  font-family: "Material Symbols Outlined";
   font-size: 18px;
   display: flex;
   align-items: center;
@@ -813,7 +821,7 @@
   margin-top: 16px;
   padding: 14px 16px;
   border-radius: var(--radius-sm);
-  background: var(--color-bg);
+  background: var(--color-bg-subtle);
   text-align: center;
 }
 
@@ -840,7 +848,13 @@
   padding: 6px 12px;
   border-radius: 999px;
   background: var(--color-bg-elevated-solid);
+  border: 1px solid var(--color-border);
   color: var(--color-text-secondary);
+}
+
+.quest-reward-chip-icon {
+  font-family: "Material Symbols Outlined";
+  font-size: 14px;
 }
 
 .quest-reward-chip-soon {
@@ -853,7 +867,7 @@
 }
 
 .quest-reward-panel-complete {
-  background: linear-gradient(135deg, rgba(10, 132, 255, 0.12), rgba(52, 199, 89, 0.12));
+  background: rgba(52, 199, 89, 0.1);
 }
 
 .quest-complete-badge {
@@ -891,7 +905,9 @@
 }
 
 .quest-special-icon {
-  font-size: 28px;
+  font-family: "Material Symbols Outlined";
+  font-size: 26px;
+  color: var(--color-accent);
   flex-shrink: 0;
 }
 
@@ -975,7 +991,7 @@
   gap: 2px;
   padding: 12px 4px;
   border-radius: var(--radius-sm);
-  background: var(--color-bg);
+  background: var(--color-bg-subtle);
 }
 
 .status-summary-stat-value {
@@ -1033,7 +1049,8 @@
 }
 
 .status-radar-label {
-  font-size: 13px;
+  font-family: "Material Symbols Outlined";
+  font-size: 15px;
   fill: var(--color-text-secondary);
 }
 
@@ -1047,7 +1064,7 @@
   gap: 10px;
   padding: 18px 16px;
   border-radius: var(--radius-sm);
-  background: linear-gradient(135deg, rgba(10, 132, 255, 0.14), rgba(10, 132, 255, 0.04));
+  background: rgba(10, 132, 255, 0.08);
   border: 1px solid var(--color-border);
 }
 
@@ -1099,8 +1116,7 @@
   gap: 2px;
   padding: 10px 4px;
   border-radius: var(--radius-sm);
-  background: var(--color-bg-elevated-solid);
-  border: 1px solid var(--color-border);
+  background: var(--color-bg-subtle);
 }
 
 .status-overview-stat-label {
@@ -1179,8 +1195,8 @@
   display: block;
   height: 100%;
   border-radius: 999px;
-  background: linear-gradient(90deg, #0a84ff, #5e5ce6);
-  transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  background: var(--color-accent);
+  transition: width 0.3s ease;
 }
 
 .status-level {
@@ -1208,7 +1224,9 @@
 }
 
 .status-detail-icon {
-  font-size: 36px;
+  font-family: "Material Symbols Outlined";
+  font-size: 32px;
+  color: var(--color-accent);
   flex-shrink: 0;
 }
 
@@ -1237,8 +1255,10 @@
 }
 
 .status-detail-breakdown-icon {
-  font-size: 15px;
+  font-family: "Material Symbols Outlined";
+  font-size: 16px;
   width: 20px;
+  color: var(--color-text-secondary);
   text-align: center;
   flex-shrink: 0;
 }
@@ -1282,7 +1302,7 @@
   width: 100%;
   min-height: 4px;
   border-radius: 4px 4px 0 0;
-  background: linear-gradient(180deg, #0a84ff, #5e5ce6);
+  background: var(--color-accent);
 }
 
 .status-detail-goals {
@@ -1298,12 +1318,13 @@
   gap: 12px;
   padding: 10px 12px;
   border-radius: var(--radius-sm);
-  background: var(--color-bg-elevated-solid);
-  border: 1px solid var(--color-border);
+  background: var(--color-bg-subtle);
 }
 
 .status-detail-goal-icon {
+  font-family: "Material Symbols Outlined";
   font-size: 22px;
+  color: var(--color-accent);
   flex-shrink: 0;
 }
 
@@ -1367,21 +1388,22 @@
 }
 
 .skill-node-icon {
-  font-size: 20px;
+  font-family: "Material Symbols Outlined";
+  font-size: 18px;
   width: 36px;
   height: 36px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--color-bg-elevated-solid);
-  border: 1px solid var(--color-border);
+  color: var(--color-text-secondary);
+  background: var(--color-bg-subtle);
   flex-shrink: 0;
 }
 
 .skill-node.unlocked .skill-node-icon {
   background: var(--color-accent);
-  border-color: var(--color-accent);
+  color: #fff;
 }
 
 .skill-node.locked .skill-node-name,
@@ -1422,8 +1444,7 @@
   gap: 4px;
   padding: 16px 8px;
   border-radius: var(--radius-sm);
-  background: var(--color-bg-elevated-solid);
-  border: 1px solid var(--color-border);
+  background: var(--color-bg-subtle);
   cursor: pointer;
   width: 100%;
   font: inherit;
@@ -1435,7 +1456,9 @@
 }
 
 .achievement-tile-icon {
+  font-family: "Material Symbols Outlined";
   font-size: 26px;
+  color: var(--color-accent);
 }
 
 .achievement-tile-name {
@@ -1485,7 +1508,8 @@
 }
 
 .map-tab-icon {
-  font-size: 15px;
+  font-family: "Material Symbols Outlined";
+  font-size: 16px;
 }
 
 .map-path {
@@ -1517,21 +1541,22 @@
 }
 
 .map-area-icon {
-  font-size: 22px;
+  font-family: "Material Symbols Outlined";
+  font-size: 19px;
   width: 40px;
   height: 40px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--color-bg-elevated-solid);
-  border: 1px solid var(--color-border);
+  color: var(--color-text-secondary);
+  background: var(--color-bg-subtle);
   flex-shrink: 0;
 }
 
 .map-area.current .map-area-icon {
   background: var(--color-accent);
-  border-color: var(--color-accent);
+  color: #fff;
 }
 
 .map-area.locked {
@@ -1555,7 +1580,9 @@
 }
 
 .map-area-lock {
-  font-size: 13px;
+  font-family: "Material Symbols Outlined";
+  font-size: 15px;
+  color: var(--color-text-tertiary);
   flex-shrink: 0;
 }
 
@@ -1570,8 +1597,8 @@
 .map-progress-fill {
   height: 100%;
   border-radius: 999px;
-  background: linear-gradient(90deg, #0a84ff, #34c759);
-  transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  background: var(--color-accent);
+  transition: width 0.3s ease;
 }
 
 .map-progress-hint {
@@ -1597,8 +1624,7 @@
   gap: 6px;
   padding: 16px 8px;
   border-radius: var(--radius-sm);
-  background: var(--color-bg-elevated-solid);
-  border: 1px solid var(--color-border);
+  background: var(--color-bg-subtle);
   cursor: pointer;
   width: 100%;
   font: inherit;
@@ -1610,7 +1636,9 @@
 }
 
 .title-gallery-icon {
-  font-size: 28px;
+  font-family: "Material Symbols Outlined";
+  font-size: 26px;
+  color: var(--color-accent);
 }
 
 .title-gallery-name {
@@ -1732,9 +1760,7 @@
   align-items: center;
   justify-content: center;
   pointer-events: none;
-  background: var(--color-bg-elevated);
-  backdrop-filter: blur(28px) saturate(1.4);
-  -webkit-backdrop-filter: blur(28px) saturate(1.4);
+  background: rgba(0, 0, 0, 0.35);
 }
 
 .level-up-hidden {
@@ -1744,40 +1770,39 @@
 .level-up-content {
   position: relative;
   text-align: center;
+  background: var(--color-bg-elevated-solid);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  padding: 32px 36px;
 }
 
-.level-up-glow {
-  position: absolute;
-  inset: -70px;
+.level-up-icon {
+  font-family: "Material Symbols Outlined";
+  font-size: 32px;
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 14px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(10, 132, 255, 0.32), transparent 70%);
-  filter: blur(12px);
+  color: #fff;
+  background: var(--color-accent);
 }
 
 .level-up-label {
-  position: relative;
-  font-size: 42px;
-  font-weight: 900;
-  letter-spacing: 2px;
-  margin: 0 0 10px;
-  background: linear-gradient(135deg, #0a84ff, #5e5ce6, #ff9f0a);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: var(--color-accent);
+  margin: 0 0 6px;
 }
 
 .level-up-sublabel {
-  position: relative;
   display: inline-block;
   font-size: 15px;
-  font-weight: 700;
-  color: var(--color-text-primary);
-  background: var(--color-bg-elevated);
-  padding: 7px 18px;
-  border-radius: 999px;
-  border: 1px solid var(--color-border);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  font-weight: 600;
+  color: var(--color-text-secondary);
 }
 
 /* ---------- AIコメント ---------- */
@@ -1791,7 +1816,9 @@
 }
 
 .ai-comment-icon {
-  font-size: 18px;
+  font-family: "Material Symbols Outlined";
+  font-size: 20px;
+  color: var(--color-accent);
   flex-shrink: 0;
   line-height: 1.5;
 }
@@ -1831,8 +1858,11 @@
 
 .reset-button {
   width: 100%;
-  padding: 15px;
-  border-radius: var(--radius-md);
+  height: var(--button-height);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 18px;
   background: var(--color-danger-bg);
   color: var(--color-danger);
   font-size: 15px;
@@ -1876,7 +1906,9 @@
 }
 
 .hint-popup-icon {
-  font-size: 32px;
+  font-family: "Material Symbols Outlined";
+  font-size: 30px;
+  color: var(--color-accent);
 }
 
 .hint-popup-title {
@@ -2022,12 +2054,18 @@
   background: var(--color-bg-elevated-solid);
   border: 1.5px solid var(--color-border);
   text-align: center;
-  transition: transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.15s ease, border-color 0.15s ease;
+  transition: background 0.2s ease, border-color 0.2s ease;
 }
 
-.exp-chip-emoji {
-  font-size: 24px;
+.exp-chip-icon {
+  font-family: "Material Symbols Outlined";
+  font-size: 22px;
   line-height: 1;
+  color: var(--color-text-secondary);
+}
+
+.exp-chip.selected .exp-chip-icon {
+  color: #fff;
 }
 
 .exp-chip-value {
@@ -2047,7 +2085,6 @@
 .exp-chip.selected {
   background: var(--color-accent);
   border-color: var(--color-accent);
-  transform: scale(1.06);
 }
 
 .exp-chip.selected .exp-chip-value {
@@ -2068,8 +2105,11 @@
 .modal-save-button,
 .confirm-danger-button {
   flex: 1;
-  padding: 15px;
-  border-radius: var(--radius-md);
+  height: var(--button-height);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 18px;
   font-size: 15px;
   font-weight: 700;
   text-align: center;
@@ -2182,7 +2222,7 @@
   /* ---------- カードサイズの拡大 ---------- */
 
   .card {
-    padding: 30px;
+    padding: 24px;
   }
 
   .card-label {
@@ -2190,7 +2230,7 @@
   }
 
   .hero-card {
-    padding: 30px;
+    padding: 24px;
   }
 
   .hero-level-value {
@@ -2215,7 +2255,7 @@
   /* ---------- AIコメントを他カードと同じグリッドカードに ---------- */
 
   .ai-comment-bar {
-    padding: 30px;
+    padding: 24px;
     border-radius: var(--radius-lg);
   }
 

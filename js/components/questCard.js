@@ -22,10 +22,10 @@ const RING_CIRCUMFERENCE = 2 * Math.PI * RING_RADIUS;
 heroRingFillEl.style.strokeDasharray = `${RING_CIRCUMFERENCE}`;
 
 const TABS = [
-  { id: "daily", icon: "☀️", label: "今日" },
-  { id: "weekly", icon: "📅", label: "今週" },
-  { id: "monthly", icon: "🗓️", label: "今月" },
-  { id: "special", icon: "🌟", label: "スペシャル" },
+  { id: "daily", icon: "wb_sunny", label: "今日" },
+  { id: "weekly", icon: "calendar_month", label: "今週" },
+  { id: "monthly", icon: "event", label: "今月" },
+  { id: "special", icon: "star", label: "スペシャル" },
 ];
 
 const PERIOD_LABEL = { daily: "今日", weekly: "今週", monthly: "今月" };
@@ -34,24 +34,28 @@ let selectedTab = "daily";
 let cachedData = null;
 
 const QUEST_TYPE_ICON = {
-  categoryExp: "🎯",
-  recordCount: "📝",
-  totalExp: "💰",
-  streak: "🔥",
-  timeOfDay: "🌙",
-  categoryDiversity: "🎨",
+  categoryExp: "flag",
+  recordCount: "edit_note",
+  totalExp: "payments",
+  streak: "local_fire_department",
+  timeOfDay: "bedtime",
+  categoryDiversity: "palette",
 };
 
 // 完了の瞬間だけチェックアニメーションを出すための直前状態の記録
 const previousDone = {};
 const initializedPeriods = new Set();
 
-function questEmoji(quest) {
+function questIconName(quest) {
   if (quest.type === "categoryExp") {
     const cat = CATEGORIES.find((c) => c.key === quest.category);
     if (cat) return cat.emoji;
   }
-  return QUEST_TYPE_ICON[quest.type] || "🎯";
+  return QUEST_TYPE_ICON[quest.type] || "flag";
+}
+
+function rewardChipIcon(name) {
+  return `<span class="material-symbols-outlined quest-reward-chip-icon">${name}</span>`;
 }
 
 // 期間の達成報酬をクエスト数で割った「ゲーム風」の目安表示（実際の付与は全達成時のみ）
@@ -89,9 +93,9 @@ function renderRewardPanel(period, allDone) {
       <p class="quest-complete-badge">COMPLETE</p>
       <p class="quest-complete-message">${label}はよく頑張りました！</p>
       <div class="quest-reward-chips">
-        <span class="quest-reward-chip quest-reward-chip-lit">✨ +${exp}EXP</span>
-        <span class="quest-reward-chip quest-reward-chip-lit">🏅 称号</span>
-        <span class="quest-reward-chip quest-reward-chip-soon">🪙 コイン<small>準備中</small></span>
+        <span class="quest-reward-chip quest-reward-chip-lit">${rewardChipIcon("auto_awesome")} +${exp}EXP</span>
+        <span class="quest-reward-chip quest-reward-chip-lit">${rewardChipIcon("military_tech")} 称号</span>
+        <span class="quest-reward-chip quest-reward-chip-soon">${rewardChipIcon("savings")} コイン<small>準備中</small></span>
       </div>
     `;
   } else {
@@ -99,9 +103,9 @@ function renderRewardPanel(period, allDone) {
     rewardPanelEl.innerHTML = `
       <p class="quest-reward-panel-label">${label}の報酬（全部達成すると）</p>
       <div class="quest-reward-chips">
-        <span class="quest-reward-chip">✨ +${exp}EXP</span>
-        <span class="quest-reward-chip">🏅 称号</span>
-        <span class="quest-reward-chip quest-reward-chip-soon">🪙 コイン<small>準備中</small></span>
+        <span class="quest-reward-chip">${rewardChipIcon("auto_awesome")} +${exp}EXP</span>
+        <span class="quest-reward-chip">${rewardChipIcon("military_tech")} 称号</span>
+        <span class="quest-reward-chip quest-reward-chip-soon">${rewardChipIcon("savings")} コイン<small>準備中</small></span>
       </div>
     `;
   }
@@ -124,7 +128,7 @@ function renderQuestList(period, list, records) {
 
       return `
         <li class="quest-item ${done ? "quest-item-done" : ""} ${justDone ? "quest-item-pop" : ""}">
-          <span class="quest-item-icon">${questEmoji(quest)}</span>
+          <span class="quest-item-icon">${questIconName(quest)}</span>
           <div class="quest-item-body">
             <p class="quest-item-label ${done ? "done" : ""}">${quest.label}</p>
             <p class="quest-item-progress">${current}/${target}</p>
@@ -155,7 +159,7 @@ function renderSpecial(special) {
   if (!next) {
     listEl.innerHTML = `
       <li class="quest-special-item">
-        <span class="quest-special-icon">🏆</span>
+        <span class="quest-special-icon">emoji_events</span>
         <div class="quest-special-text">
           <p class="quest-special-title">全マイルストーンを制覇しました</p>
           <p class="quest-special-desc">伝説の域に到達しています</p>

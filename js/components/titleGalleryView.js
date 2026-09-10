@@ -10,7 +10,7 @@ function tileMarkup(t, index) {
   const secretLocked = !t.earned && t.secret;
   return `
     <button type="button" class="title-gallery-tile tap-scale ${t.earned ? "unlocked" : "locked"}" data-index="${index}">
-      <span class="title-gallery-icon">${t.earned ? t.icon : secretLocked ? "❔" : "🔒"}</span>
+      <span class="title-gallery-icon">${t.earned ? t.icon : secretLocked ? "help" : "lock"}</span>
       <span class="title-gallery-name">${t.earned ? t.name : secretLocked ? "？？？（シークレット）" : "？？？"}</span>
     </button>
   `;
@@ -32,9 +32,9 @@ export function renderTitleGallery(titles) {
       if (t.earned) {
         showHint({ icon: t.icon, title: t.name, text: t.description || "獲得済みの称号です" });
       } else if (t.secret) {
-        showHint({ icon: "❔", title: "シークレット称号", text: t.hint || "まだ手がかりがありません" });
+        showHint({ icon: "help", title: "シークレット称号", text: t.hint || "まだ手がかりがありません" });
       } else {
-        showHint({ icon: "🔒", title: "未獲得の称号", text: t.description || "条件はまだ不明です" });
+        showHint({ icon: "lock", title: "未獲得の称号", text: t.description || "条件はまだ不明です" });
       }
     });
   });

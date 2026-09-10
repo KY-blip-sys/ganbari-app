@@ -10,7 +10,7 @@ function tileMarkup(a, index) {
   const secretLocked = !a.unlocked && a.secret;
   return `
     <button type="button" class="achievement-tile tap-scale ${a.unlocked ? "unlocked" : "locked"}" data-index="${index}">
-      <span class="achievement-tile-icon">${a.unlocked ? a.icon : secretLocked ? "❔" : "🔒"}</span>
+      <span class="achievement-tile-icon">${a.unlocked ? a.icon : secretLocked ? "help" : "lock"}</span>
       <span class="achievement-tile-name">${a.unlocked ? a.name : secretLocked ? "？？？（シークレット）" : "？？？"}</span>
       <span class="achievement-tile-desc">${a.unlocked ? a.description : "タップしてヒントを見る"}</span>
     </button>
@@ -33,9 +33,9 @@ export function renderAchievements(achievements) {
       if (a.unlocked) {
         showHint({ icon: a.icon, title: a.name, text: a.description });
       } else if (a.secret) {
-        showHint({ icon: "❔", title: "シークレット実績", text: a.hint || "まだ手がかりがありません" });
+        showHint({ icon: "help", title: "シークレット実績", text: a.hint || "まだ手がかりがありません" });
       } else {
-        showHint({ icon: "🔒", title: "未達成の実績", text: a.description });
+        showHint({ icon: "lock", title: "未達成の実績", text: a.description });
       }
     });
   });

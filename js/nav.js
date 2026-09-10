@@ -3,16 +3,16 @@
 // ==========================================================
 
 const VIEWS = [
-  { id: "home", elId: "view-home", group: "primary", icon: "🏠", label: "ホーム" },
-  { id: "records", elId: "view-records", group: "primary", icon: "📝", label: "記録" },
-  { id: "quests", elId: "view-quests", group: "primary", icon: "🎯", label: "クエスト" },
-  { id: "status", elId: "view-status", group: "primary", icon: "📊", label: "ステータス" },
-  { id: "map", elId: "view-map", group: "overflow", icon: "🌍", label: "人生マップ" },
-  { id: "skills", elId: "view-skills", group: "overflow", icon: "🌳", label: "スキルツリー" },
-  { id: "achievements", elId: "view-achievements", group: "overflow", icon: "🏆", label: "実績" },
-  { id: "titles", elId: "view-titles", group: "overflow", icon: "🏅", label: "称号" },
-  // { id: "coach", elId: "view-coach", group: "overflow", icon: "🤖", label: "AIコーチ" }, // 一旦非表示
-  { id: "settings", elId: "view-settings", group: "overflow", icon: "⚙️", label: "設定" },
+  { id: "home", elId: "view-home", group: "primary", icon: "home", label: "ホーム" },
+  { id: "records", elId: "view-records", group: "primary", icon: "edit_note", label: "記録" },
+  { id: "quests", elId: "view-quests", group: "primary", icon: "flag", label: "クエスト" },
+  { id: "status", elId: "view-status", group: "primary", icon: "bar_chart", label: "ステータス" },
+  { id: "map", elId: "view-map", group: "overflow", icon: "public", label: "人生マップ" },
+  { id: "skills", elId: "view-skills", group: "overflow", icon: "park", label: "スキルツリー" },
+  { id: "achievements", elId: "view-achievements", group: "overflow", icon: "emoji_events", label: "実績" },
+  { id: "titles", elId: "view-titles", group: "overflow", icon: "military_tech", label: "称号" },
+  // { id: "coach", elId: "view-coach", group: "overflow", icon: "smart_toy", label: "AIコーチ" }, // 一旦非表示
+  { id: "settings", elId: "view-settings", group: "overflow", icon: "settings", label: "設定" },
 ];
 
 const tabBarEl = document.getElementById("tab-bar");
@@ -27,7 +27,7 @@ function navButton(view, className) {
   const btn = document.createElement("button");
   btn.className = `${className} tap-scale`;
   btn.dataset.navId = view.id;
-  btn.innerHTML = `<span class="${className}-icon">${view.icon}</span><span class="${className}-label">${view.label}</span>`;
+  btn.innerHTML = `<span class="${className}-icon material-symbols-outlined">${view.icon}</span><span class="${className}-label">${view.label}</span>`;
   btn.addEventListener("click", () => showView(view.id));
   return btn;
 }
@@ -41,7 +41,7 @@ function buildTabBar() {
   const moreBtn = document.createElement("button");
   moreBtn.className = "tab-bar-btn tap-scale";
   moreBtn.dataset.navId = "__more__";
-  moreBtn.innerHTML = `<span class="tab-bar-btn-icon">⋯</span><span class="tab-bar-btn-label">その他</span>`;
+  moreBtn.innerHTML = `<span class="tab-bar-btn-icon material-symbols-outlined">more_horiz</span><span class="tab-bar-btn-label">その他</span>`;
   moreBtn.addEventListener("click", openOverflowSheet);
   tabBarEl.appendChild(moreBtn);
 }
