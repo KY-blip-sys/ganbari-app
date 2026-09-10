@@ -166,10 +166,36 @@
         </header>
         <main class="view-flow">
 
-          <!-- 今日の記録 -->
-          <section class="card glass-card record-section" id="record-section">
+          <!-- 今日の記録カード -->
+          <section class="card home-card record-today-card" id="record-today-card">
+            <p class="card-label">今日の記録</p>
+            <div class="record-today-row">
+              <div class="record-today-block">
+                <span class="record-today-icon">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M12 3c1.8 3 3.6 5 3.6 8.4a4.6 4.6 0 0 1-9.2 0c0-1.9.9-3.2 1.9-4.6.1 1.4.8 2.2 1.6 2.2.8 0 1.1-.7.8-1.7-.4-1.6 0-2.9 1.3-4.3Z"/>
+                  </svg>
+                </span>
+                <p class="record-today-label">今日の獲得EXP</p>
+                <p class="record-today-value" id="record-today-exp">0<span class="record-today-unit">EXP</span></p>
+              </div>
+              <div class="record-today-divider" aria-hidden="true"></div>
+              <div class="record-today-block">
+                <span class="record-today-icon">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M9 6.5h11"/><path d="M9 12h11"/><path d="M9 17.5h11"/><circle cx="4.5" cy="6.5" r="1.3" fill="currentColor" stroke="none"/><circle cx="4.5" cy="12" r="1.3" fill="currentColor" stroke="none"/><circle cx="4.5" cy="17.5" r="1.3" fill="currentColor" stroke="none"/>
+                  </svg>
+                </span>
+                <p class="record-today-label">記録数</p>
+                <p class="record-today-value" id="record-today-count">0<span class="record-today-unit">件</span></p>
+              </div>
+            </div>
+          </section>
+
+          <!-- 今日の記録一覧 -->
+          <section class="card home-card record-section" id="record-section">
             <div class="record-section-header">
-              <h2>今日の記録</h2>
+              <h2>今日の記録一覧</h2>
             </div>
 
             <button id="btn-add-record" class="add-record-button tap-scale">
@@ -178,11 +204,24 @@
 
             <ul id="record-list" class="record-list"></ul>
 
-            <p id="record-empty" class="record-empty">まだ記録がありません</p>
+            <div id="record-empty" class="record-empty">
+              <p class="record-empty-title">今日はまだ記録がありません</p>
+              <p class="record-empty-sub">まずは小さな一歩から始めましょう。</p>
+              <button id="btn-add-record-empty" class="record-empty-cta tap-scale">記録する</button>
+            </div>
+          </section>
+
+          <!-- 今日の獲得EXP -->
+          <section class="card home-card record-exp-goal-card" id="record-exp-goal-card">
+            <p class="card-label">今日の獲得EXP</p>
+            <div class="record-exp-goal-track">
+              <div class="record-exp-goal-fill" id="record-exp-goal-fill"></div>
+            </div>
+            <p class="record-exp-goal-text" id="record-exp-goal-text">0 / 20EXP</p>
           </section>
 
           <!-- 今月の記録（カレンダー） -->
-          <section class="card glass-card calendar-card" id="calendar-card">
+          <section class="card home-card calendar-card" id="calendar-card">
             <div class="calendar-header">
               <button id="btn-cal-prev" class="icon-button-sm tap-scale" aria-label="前の月">‹</button>
               <p class="calendar-title" id="calendar-title">2026年8月</p>

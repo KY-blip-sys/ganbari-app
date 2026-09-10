@@ -3,7 +3,7 @@
 // ==========================================================
 
 import { todayKey } from "../utils/dateUtils.js";
-import { getCalendarDayTier } from "../utils/scoreUtils.js";
+import { iconSvg } from "../utils/icons.js";
 import { recordCardMarkup } from "./recordCard.js";
 
 const titleEl = document.getElementById("calendar-title");
@@ -63,23 +63,34 @@ function render() {
     const dateKey = `${year}-${String(month + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
     const dayRecords = cachedRecords[dateKey] || [];
     const hasRecords = dayRecords.length > 0;
-    const dayExp = dayRecords.reduce((sum, r) => sum + r.exp, 0);
 
     const cell = document.createElement("button");
     cell.className = "calendar-cell tap-scale";
     if (dateKey === today) cell.classList.add("calendar-cell-today");
+    if (hasRecords) cell.classList.add("calendar-cell-recorded");
 
-    let starHtml = "";
-    if (hasRecords) {
-      const tier = getCalendarDayTier(dayExp);
-      cell.classList.add(`calendar-cell-${tier}`);
-      if (tier === "gold") starHtml = '<span class="calendar-cell-star">★</span>';
-    }
+    const flameHtml = isStreakDay(dateKey)
+      ? `<span class="calendar-cell-flame">${iconSvg("flame", { size: 9 })}</span>`
+      : "";
 
-    cell.innerHTML = `<span class="calendar-cell-day">${day}</span>${starHtml}`;
+    cell.innerHTML = `<span class="calendar-cell-badge">${day}</span>${flameHtml}`;
     cell.addEventListener("click", () => openDayDetail(dateKey, dayRecords));
     gridEl.appendChild(cell);
   }
+}
+
+function shiftDateKey(dateKey, deltaDays) {
+  const [y, m, d] = dateKey.split("-").map(Number);
+  const dt = new Date(y, m - 1, d);
+  dt.setDate(dt.getDate() + deltaDays);
+  return `${dt.getFullYear()}-${String(dt.getMonth() + 1).padStart(2, "0")}-${String(dt.getDate()).padStart(2, "0")}`;
+}
+
+function isStreakDay(dateKey) {
+  if (!(cachedRecords[dateKey] || []).length) return false;
+  const prevHasRecords = (cachedRecords[shiftDateKey(dateKey, -1)] || []).length > 0;
+  const nextHasRecords = (cachedRecords[shiftDateKey(dateKey, 1)] || []).length > 0;
+  return prevHasRecords || nextHasRecords;
 }
 
 function openDayDetail(dateKey, records) {

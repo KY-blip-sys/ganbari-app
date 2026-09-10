@@ -14,6 +14,12 @@ const PATHS = {
   trophy: `<path d="M7 4h10v3.2a5 5 0 0 1-5 5 5 5 0 0 1-5-5V4Z"/><path d="M7 5.2H4.3A2.8 2.8 0 0 0 7 8.6"/><path d="M17 5.2h2.7A2.8 2.8 0 0 1 17 8.6"/><path d="M12 12.2V15"/><path d="M9 19.5h6"/><path d="M9.8 16.5h4.4l1 3h-6.4l1-3Z"/>`,
   badge: `<circle cx="12" cy="9.3" r="5.3"/><path d="M9 13.9 7.4 20.5l4.6-2.4 4.6 2.4-1.6-6.6"/>`,
   check: `<path d="M5 12.5 9.5 17 19 7"/>`,
+  dumbbell: `<path d="M9.3 12h5.4"/><rect x="3.3" y="9" width="2.6" height="6" rx="1"/><rect x="18.1" y="9" width="2.6" height="6" rx="1"/><path d="M6 10.5v3"/><path d="M18 10.5v3"/>`,
+  briefcase: `<rect x="3" y="8" width="18" height="11" rx="2.2"/><path d="M8.5 8V6.3A1.8 1.8 0 0 1 10.3 4.5h3.4A1.8 1.8 0 0 1 15.5 6.3V8"/><path d="M3 13.5h18"/>`,
+  broom: `<path d="M19 4 10 13"/><path d="M10 13c-2.2.4-4.2 1.2-6 3-1.6 1.6-2 3.6-2 5 1.4 0 3.4-.4 5-2 1.8-1.8 2.6-3.8 3-6Z"/><path d="M7.5 15.5 9 17"/>`,
+  sparkle: `<path d="M12 3c.7 3.6 1.9 5.7 4.1 6.8 2.2 1.1 4.9 1.2 4.9 1.2s-2.7.1-4.9 1.2c-2.2 1.1-3.4 3.2-4.1 6.8-.7-3.6-1.9-5.7-4.1-6.8C5.7 11 3 10.9 3 10.9s2.7-.1 4.9-1.2C10.1 8.6 11.3 6.5 12 3Z"/>`,
+  flame: `<path d="M12 3c1.8 3 3.6 5 3.6 8.4a4.6 4.6 0 0 1-9.2 0c0-1.9.9-3.2 1.9-4.6.1 1.4.8 2.2 1.6 2.2.8 0 1.1-.7.8-1.7-.4-1.6 0-2.9 1.3-4.3Z"/>`,
+  list: `<path d="M9 6.5h11"/><path d="M9 12h11"/><path d="M9 17.5h11"/><circle cx="4.5" cy="6.5" r="1.3" fill="currentColor" stroke="none"/><circle cx="4.5" cy="12" r="1.3" fill="currentColor" stroke="none"/><circle cx="4.5" cy="17.5" r="1.3" fill="currentColor" stroke="none"/>`,
 };
 
 export function iconSvg(name, { size = 20 } = {}) {

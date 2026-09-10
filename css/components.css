@@ -284,13 +284,95 @@
   color: var(--color-text-tertiary);
 }
 
+/* ---------- 今日の記録カード（サマリー） ---------- */
+
+.record-today-row {
+  display: flex;
+  align-items: stretch;
+  gap: 16px;
+}
+
+.record-today-block {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 4px;
+  padding: 4px 0;
+}
+
+.record-today-divider {
+  width: 1px;
+  background: var(--color-border);
+}
+
+.record-today-icon {
+  display: flex;
+  color: var(--color-exp);
+  margin-bottom: 2px;
+}
+
+.record-today-block:last-child .record-today-icon {
+  color: var(--color-accent);
+}
+
+.record-today-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+}
+
+.record-today-value {
+  font-size: 24px;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--color-exp);
+}
+
+.record-today-block:last-child .record-today-value {
+  color: var(--color-text-primary);
+}
+
+.record-today-unit {
+  font-size: 12px;
+  font-weight: 600;
+  margin-left: 2px;
+}
+
+/* ---------- 今日の獲得EXP（進捗バー） ---------- */
+
+.record-exp-goal-track {
+  width: 100%;
+  height: 10px;
+  border-radius: 999px;
+  background: var(--color-border);
+  overflow: hidden;
+  margin-top: 4px;
+}
+
+.record-exp-goal-fill {
+  height: 100%;
+  width: 0%;
+  border-radius: 999px;
+  background: var(--color-accent);
+  transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.record-exp-goal-text {
+  margin-top: 10px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--color-exp);
+  text-align: right;
+}
+
 /* ---------- 記録セクション ---------- */
 
 .record-section {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  margin-top: 4px;
 }
 
 .record-section-header h2 {
@@ -300,19 +382,20 @@
 
 .add-record-button {
   width: 100%;
-  padding: 15px;
-  border-radius: var(--radius-md);
+  padding: 18px;
+  border-radius: var(--radius-lg);
   background: var(--color-accent);
   color: #fff;
-  font-size: 15px;
+  font-size: 15.5px;
   font-weight: 700;
+  box-shadow: 0 8px 20px rgba(10, 132, 255, 0.2);
 }
 
 .record-list {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  max-height: 336px;
+  gap: 14px;
+  max-height: 400px;
   overflow-y: auto;
   overflow-x: hidden;
   padding-right: 2px;
@@ -329,10 +412,34 @@
 }
 
 .record-empty {
+  display: none;
+  flex-direction: column;
+  align-items: center;
   text-align: center;
-  padding: 24px 0;
+  gap: 6px;
+  padding: 32px 12px;
+}
+
+.record-empty-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.record-empty-sub {
+  font-size: 13px;
   color: var(--color-text-tertiary);
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+
+.record-empty-cta {
+  padding: 11px 22px;
+  border-radius: 999px;
+  background: var(--color-accent);
+  color: #fff;
   font-size: 14px;
+  font-weight: 700;
 }
 
 .record-item {
@@ -377,7 +484,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 14px 16px;
+  padding: 18px 16px;
   border-radius: var(--radius-sm);
   background: var(--color-bg-elevated-solid);
   border: 1px solid var(--color-border);
@@ -400,15 +507,22 @@
   min-width: 0;
 }
 
-.record-card-emoji {
-  font-size: 20px;
+.record-card-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(10, 132, 255, 0.08);
+  color: var(--color-accent);
   flex-shrink: 0;
 }
 
 .record-card-text {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 4px;
   min-width: 0;
 }
 
@@ -421,15 +535,40 @@
 }
 
 .record-card-meta {
+  display: flex;
+  align-items: center;
+  gap: 4px;
   font-size: 11.5px;
+}
+
+.record-card-category {
+  font-weight: 400;
+  color: var(--color-text-secondary);
+}
+
+.record-card-dot {
   color: var(--color-text-tertiary);
-  font-weight: 600;
+}
+
+.record-card-stars-filled {
+  color: var(--color-accent);
+  letter-spacing: 1px;
+}
+
+.record-card-stars-empty {
+  color: var(--color-border);
+  letter-spacing: 1px;
+}
+
+.record-card-time {
+  font-weight: 300;
+  color: var(--color-text-tertiary);
 }
 
 .record-card-exp {
   font-size: 13.5px;
-  font-weight: 800;
-  color: var(--color-accent);
+  font-weight: 700;
+  color: var(--color-exp);
   flex-shrink: 0;
   margin-left: 12px;
   white-space: nowrap;
@@ -1225,42 +1364,28 @@
   align-items: center;
   justify-content: center;
   position: relative;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--color-text-secondary);
 }
 
 .calendar-cell-empty {
   visibility: hidden;
 }
 
-.calendar-cell-red {
-  background: rgba(255, 69, 58, 0.14);
-  color: var(--rank-red);
-  font-weight: 800;
+.calendar-cell-badge {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  transition: background 0.2s ease, color 0.2s ease;
 }
 
-.calendar-cell-orange {
-  background: rgba(255, 159, 10, 0.16);
-  color: var(--rank-orange);
-  font-weight: 800;
-}
-
-.calendar-cell-blue {
-  background: rgba(10, 132, 255, 0.14);
-  color: var(--rank-blue);
-  font-weight: 800;
-}
-
-.calendar-cell-green {
-  background: rgba(52, 199, 89, 0.16);
-  color: var(--rank-green);
-  font-weight: 800;
-}
-
-.calendar-cell-gold {
-  background: linear-gradient(135deg, rgba(255, 214, 10, 0.28), rgba(255, 159, 10, 0.24));
-  color: #b8860b;
+.calendar-cell-recorded .calendar-cell-badge {
+  background: var(--color-accent);
+  color: #fff;
   font-weight: 800;
 }
 
@@ -1268,11 +1393,12 @@
   box-shadow: inset 0 0 0 2px var(--color-accent);
 }
 
-.calendar-cell-star {
+.calendar-cell-flame {
   position: absolute;
   top: 2px;
-  right: 4px;
-  font-size: 8px;
+  right: 3px;
+  line-height: 0;
+  color: var(--color-exp);
 }
 
 /* ---------- レベルアップ演出 ---------- */
@@ -1688,8 +1814,8 @@
   .record-list {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
-    max-height: 220px;
+    gap: 14px;
+    max-height: 280px;
   }
 
   /* ---------- AIコメントを他カードと同じグリッドカードに ---------- */
@@ -1707,7 +1833,9 @@
     margin-right: auto;
   }
 
-  .calendar-cell {
+  .calendar-cell-badge {
+    width: 34px;
+    height: 34px;
     font-size: 15px;
   }
 

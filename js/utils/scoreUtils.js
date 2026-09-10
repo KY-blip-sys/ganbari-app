@@ -17,6 +17,13 @@ export function computeRank(todayExp) {
   return RANK_TIERS.find((t) => todayExp >= t.min);
 }
 
-export function getCalendarDayTier(todayExp) {
-  return computeRank(todayExp).tier;
+// 記録画面の「今日の獲得EXP」バー用：次のランクまでの到達度
+export function computeTodayExpGoal(todayExp) {
+  const idx = RANK_TIERS.findIndex((t) => todayExp >= t.min);
+  if (idx <= 0) {
+    const goal = Math.max(todayExp, RANK_TIERS[0].min);
+    return { goal, ratio: 1 };
+  }
+  const goal = RANK_TIERS[idx - 1].min;
+  return { goal, ratio: Math.min(1, todayExp / goal) };
 }

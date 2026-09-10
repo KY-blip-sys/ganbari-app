@@ -26,7 +26,7 @@ export function setOnEdit(callback) {
 
 export function renderRecords(records) {
   listEl.innerHTML = "";
-  emptyEl.style.display = records.length === 0 ? "block" : "none";
+  emptyEl.style.display = records.length === 0 ? "flex" : "none";
 
   const fragment = document.createDocumentFragment();
   records

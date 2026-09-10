@@ -5,6 +5,7 @@
 import { CATEGORIES, DEFAULT_CATEGORY, normalizeCategory } from "./categories.js";
 
 export const CATEGORY_EMOJI = Object.fromEntries(CATEGORIES.map((c) => [c.key, c.emoji]));
+export const CATEGORY_ICON = Object.fromEntries(CATEGORIES.map((c) => [c.key, c.icon]));
 
 export function createRecord(title, category, exp) {
   return {
@@ -18,4 +19,8 @@ export function createRecord(title, category, exp) {
 
 export function emojiForCategory(category) {
   return CATEGORY_EMOJI[category] || CATEGORY_EMOJI[DEFAULT_CATEGORY];
+}
+
+export function iconForCategory(category) {
+  return CATEGORY_ICON[category] || CATEGORY_ICON[DEFAULT_CATEGORY];
 }

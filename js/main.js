@@ -31,6 +31,7 @@ import { renderExp } from "./components/scoreCard.js";
 import { renderRank } from "./components/rankCard.js";
 import { renderLevel } from "./components/levelCard.js";
 import { renderRecords, setOnDelete, setOnEdit } from "./components/recordList.js";
+import { renderRecordToday, renderRecordExpGoal } from "./components/recordSummaryCard.js";
 import { initRecordModal, openRecordModalForEdit } from "./components/recordModal.js";
 // import { renderAiComment } from "./components/aiComment.js"; // 一旦非表示
 import { initSettingsView, setAccountEmail } from "./components/settingsView.js";
@@ -231,6 +232,8 @@ function renderAll({ animate = false } = {}) {
   renderRank(rankInfo);
   renderLevel(levelInfo);
   renderRecords(todayRecords);
+  renderRecordToday(todayExp, todayRecords.length);
+  renderRecordExpGoal(todayExp);
   // renderAiComment(todayExp, todayRecords.length); // 一旦非表示
   renderTitle(computeTodayTitle(todayRecords));
   renderLifeStatuses(statusListHomeEl, lifeStatuses);
