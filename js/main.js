@@ -4,7 +4,7 @@
 
 import { loadState, saveState, clearState } from "./utils/storage.js";
 import { todayKey, weekKey, monthKey } from "./utils/dateUtils.js";
-import { recordsInWeek, recordsInMonth } from "./utils/recordStats.js";
+import { recordsInWeek, recordsInMonth, computeCurrentStreak } from "./utils/recordStats.js";
 import { createRecord } from "./models/record.js";
 import { normalizeCategory } from "./models/categories.js";
 import { computeLevel } from "./models/levelSystem.js";
@@ -38,6 +38,7 @@ import { initSettingsView, setAccountEmail } from "./components/settingsView.js"
 import { renderTitle } from "./components/titleCard.js";
 import { renderQuests, flashQuestComplete } from "./components/questCard.js";
 import { renderLifeStatuses, setOnStatusClick, renderStatusOverview } from "./components/statusCard.js";
+import { renderStatusSummary } from "./components/statusSummaryCard.js";
 import { renderQuestSummary } from "./components/questSummaryCard.js";
 import { initStatusDetail, openStatusDetail } from "./components/statusDetailView.js";
 import { initCalendar, renderCalendar } from "./components/calendarCard.js";
@@ -227,6 +228,7 @@ function renderAll({ animate = false } = {}) {
 
   const wKey = weekKey();
   const mKey = monthKey();
+  const monthExp = recordsInMonth(state.records, mKey).reduce((sum, r) => sum + r.exp, 0);
 
   renderExp(todayExp, animate);
   renderRank(rankInfo);
@@ -239,6 +241,14 @@ function renderAll({ animate = false } = {}) {
   renderLifeStatuses(statusListHomeEl, lifeStatuses);
   renderLifeStatuses(statusListFullEl, lifeStatuses);
   renderStatusOverview(statusOverviewEl, computeStatusOverview(lifeStatuses));
+  renderStatusSummary({
+    level: levelInfo.level,
+    expToNext: levelInfo.expToNext,
+    progressRatio: levelInfo.progressRatio,
+    totalExp: state.totalExp,
+    streak: computeCurrentStreak(state.records, todayKey()),
+    monthExp,
+  });
   renderQuests({
     daily: { list: state.quests.daily[todayKey()].list, records: todayRecords },
     weekly: { list: state.quests.weekly[wKey].list, records: recordsInWeek(state.records, wKey) },
@@ -341,7 +351,10 @@ function handleStatusClick(key) {
     lifeStatLevels,
   });
 
-  const skillNodes = computeSkillTree(key, stat.level);
+  const lockedSkillNodes = computeSkillTree(key, stat.level)
+    .flatMap((branch) => branch.nodes)
+    .filter((n) => !n.unlocked)
+    .sort((a, b) => a.requiredLevel - b.requiredLevel);
 
   openStatusDetail({
     key,
@@ -351,7 +364,7 @@ function handleStatusClick(key) {
     expToNext: stat.expToNext,
     breakdown: computeStatusBreakdown(key, allRecords),
     trend: computeStatusWeeklyTrend(key, state.records),
-    nextSkill: skillNodes.find((n) => !n.unlocked) || null,
+    nextSkill: lockedSkillNodes[0] || null,
     nextAchievement: achievements.find((a) => a.id.startsWith(`stat-${key}-`) && !a.unlocked) || null,
   });
 }

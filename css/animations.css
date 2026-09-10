@@ -217,6 +217,33 @@
   100% { box-shadow: var(--shadow-card); }
 }
 
+/* ---------- レーダーチャート表示演出 ---------- */
+
+.status-radar-base {
+  animation: status-radar-fade-in 0.5s ease both;
+}
+
+.status-radar-shape-group {
+  animation: status-radar-grow 0.9s 0.15s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes status-radar-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes status-radar-grow {
+  from { transform: scale(0.3); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .status-radar-base,
+  .status-radar-shape-group {
+    animation: none;
+  }
+}
+
 /* ---------- レベルアップ演出 ---------- */
 
 .level-up-overlay {

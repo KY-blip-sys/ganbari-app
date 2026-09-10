@@ -283,6 +283,34 @@
           <h1>ステータス</h1>
         </header>
         <main class="view-flow">
+
+          <!-- 総合カード：レベル／次のレベルまで／総EXP／連続記録／今月EXP -->
+          <section class="card home-card status-summary-card" id="status-summary-card">
+            <div class="status-summary-level-row">
+              <div class="status-summary-level-block">
+                <p class="status-summary-level-label">総合レベル</p>
+                <p class="status-summary-level-value" id="status-summary-level">Lv.1</p>
+              </div>
+              <p class="status-summary-level-hint" id="status-summary-level-hint">あと100EXP</p>
+            </div>
+            <div class="exp-bar-track"><div class="exp-bar-fill" id="status-summary-bar-fill"></div></div>
+
+            <div class="status-summary-stats">
+              <div class="status-summary-stat">
+                <p class="status-summary-stat-value" id="status-summary-total-exp">0</p>
+                <p class="status-summary-stat-label">総EXP</p>
+              </div>
+              <div class="status-summary-stat">
+                <p class="status-summary-stat-value" id="status-summary-streak">0<span class="status-summary-stat-unit">日</span></p>
+                <p class="status-summary-stat-label">連続記録</p>
+              </div>
+              <div class="status-summary-stat">
+                <p class="status-summary-stat-value" id="status-summary-month-exp">0</p>
+                <p class="status-summary-stat-label">今月EXP</p>
+              </div>
+            </div>
+          </section>
+
           <section class="card glass-card status-overview-card">
             <p class="card-label">総合ステータス</p>
             <div class="status-overview" id="status-overview-content"></div>

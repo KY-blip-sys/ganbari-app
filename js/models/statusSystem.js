@@ -66,20 +66,21 @@ export function computeStatusBreakdown(lifeStatKey, allRecords) {
 const RADAR_LEVEL_CAP = 30;
 
 const OVERALL_RANK_TIERS = [
-  { min: 25, rank: "SSS", label: "伝説" },
-  { min: 20, rank: "SS", label: "覚醒" },
-  { min: 15, rank: "S", label: "熟練" },
-  { min: 10, rank: "A", label: "上級" },
-  { min: 6, rank: "B", label: "中級" },
-  { min: 3, rank: "C", label: "初級" },
-  { min: 0, rank: "D", label: "駆け出し" },
+  { min: 25, rank: "SSS", label: "伝説", tier: "gold" },
+  { min: 20, rank: "SS", label: "覚醒", tier: "gold" },
+  { min: 15, rank: "S", label: "熟練", tier: "green" },
+  { min: 10, rank: "A", label: "上級", tier: "green" },
+  { min: 6, rank: "B", label: "中級", tier: "blue" },
+  { min: 3, rank: "C", label: "初級", tier: "blue" },
+  { min: 0, rank: "D", label: "駆け出し", tier: "orange" },
 ];
 
 // レーダーチャート・総合ランクなど、ステータス画面上部のサマリー表示用データ
 export function computeStatusOverview(lifeStatuses) {
+  const n = lifeStatuses.length;
   const totalLevel = lifeStatuses.reduce((sum, s) => sum + s.level, 0);
   const totalExp = lifeStatuses.reduce((sum, s) => sum + s.exp, 0);
-  const averageLevel = totalLevel / lifeStatuses.length;
+  const averageLevel = totalLevel / n;
 
   const radar = lifeStatuses.map(({ key, icon, level }) => ({
     key,
@@ -88,9 +89,24 @@ export function computeStatusOverview(lifeStatuses) {
     ratio: Math.min(1, level / RADAR_LEVEL_CAP),
   }));
 
-  const rank = OVERALL_RANK_TIERS.find((t) => averageLevel >= t.min);
+  const rankIndex = OVERALL_RANK_TIERS.findIndex((t) => averageLevel >= t.min);
+  const rank = OVERALL_RANK_TIERS[rankIndex];
+  const nextRank = rankIndex > 0 ? OVERALL_RANK_TIERS[rankIndex - 1] : null;
 
-  return { radar, totalLevel, totalExp, averageLevel, rank };
+  // 次ランクまでのEXP：全ステータスの「今のレベル内の端数EXP」を差し引いた必要レベル数から逆算
+  let expToNextRank = null;
+  let rankProgressRatio = 1;
+  if (nextRank) {
+    const partialExp = totalExp - (totalLevel - n) * STATUS_EXP_PER_LEVEL;
+    const targetTotalLevel = nextRank.min * n;
+    const neededLevels = targetTotalLevel - totalLevel;
+    expToNextRank = Math.max(0, neededLevels * STATUS_EXP_PER_LEVEL - partialExp);
+
+    const spanExp = (targetTotalLevel - rank.min * n) * STATUS_EXP_PER_LEVEL;
+    rankProgressRatio = spanExp > 0 ? Math.min(1, Math.max(0, 1 - expToNextRank / spanExp)) : 1;
+  }
+
+  return { radar, totalLevel, totalExp, averageLevel, rank, nextRank, expToNextRank, rankProgressRatio };
 }
 
 // 直近N週間、そのステータスが週ごとに何EXP積み上がったか

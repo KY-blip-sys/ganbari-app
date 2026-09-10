@@ -927,18 +927,86 @@
   margin-bottom: 0;
 }
 
+/* ---------- 総合カード（レベル／総EXP／連続記録／今月EXP） ---------- */
+
+.status-summary-card {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.status-summary-level-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.status-summary-level-label {
+  font-size: 12.5px;
+  color: var(--color-text-secondary);
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.status-summary-level-value {
+  font-size: 32px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.5px;
+}
+
+.status-summary-level-hint {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--color-accent);
+}
+
+.status-summary-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.status-summary-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 12px 4px;
+  border-radius: var(--radius-sm);
+  background: var(--color-bg);
+}
+
+.status-summary-stat-value {
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.status-summary-stat-unit {
+  font-size: 12px;
+  font-weight: 700;
+  margin-left: 1px;
+}
+
+.status-summary-stat-label {
+  font-size: 11px;
+  color: var(--color-text-tertiary);
+  font-weight: 700;
+}
+
 /* ---------- 総合ステータス（レーダーチャート） ---------- */
 
 .status-overview {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 12px;
+  gap: 16px;
 }
 
 .status-radar-svg {
   width: 100%;
-  max-width: 260px;
+  max-width: 300px;
   height: auto;
 }
 
@@ -954,7 +1022,7 @@
 }
 
 .status-radar-shape {
-  fill: rgba(94, 92, 230, 0.28);
+  fill: rgba(10, 132, 255, 0.24);
   stroke: var(--color-accent);
   stroke-width: 2;
   stroke-linejoin: round;
@@ -965,13 +1033,61 @@
 }
 
 .status-radar-label {
-  font-size: 12px;
+  font-size: 13px;
   fill: var(--color-text-secondary);
+}
+
+/* ---------- 総合ランク ---------- */
+
+.status-rank-badge {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 18px 16px;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(135deg, rgba(10, 132, 255, 0.14), rgba(10, 132, 255, 0.04));
+  border: 1px solid var(--color-border);
+}
+
+.status-rank-badge-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--color-text-secondary);
+}
+
+.status-rank-badge-value {
+  font-size: 36px;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--rank-color, var(--color-accent));
+}
+
+.status-rank-badge-sub {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-text-secondary);
+  margin-left: 8px;
+}
+
+.status-rank-badge-progress {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.status-rank-badge-hint {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--color-text-tertiary);
+  text-align: center;
 }
 
 .status-overview-stats {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 8px;
   width: 100%;
 }
@@ -999,28 +1115,34 @@
   color: var(--color-accent);
 }
 
-.status-overview-stat-sub {
-  font-size: 11px;
-  font-weight: 700;
-  color: var(--color-text-secondary);
-  margin-left: 4px;
-}
-
 /* ---------- 人生ステータス ---------- */
 
 .status-list {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 16px;
 }
 
 .status-row {
   display: flex;
-  align-items: center;
-  gap: 10px;
+  flex-direction: column;
+  gap: 7px;
   width: 100%;
   padding: 4px 0;
   text-align: left;
+}
+
+.status-row-top {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.status-row-bottom {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-left: 30px;
 }
 
 .status-icon {
@@ -1035,9 +1157,8 @@
 .status-name {
   font-size: 13px;
   font-weight: 700;
-  width: 62px;
+  flex: 1;
   color: var(--color-text-secondary);
-  flex-shrink: 0;
 }
 
 .status-chevron {
@@ -1066,9 +1187,15 @@
   font-size: 12px;
   font-weight: 800;
   color: var(--color-accent);
-  width: 40px;
-  text-align: right;
   flex-shrink: 0;
+}
+
+.status-next-exp {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--color-text-tertiary);
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 
 /* ---------- ステータス詳細モーダル ---------- */
