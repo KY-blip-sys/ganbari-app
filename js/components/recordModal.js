@@ -2,9 +2,15 @@
 // recordModal.js — 記録追加・編集モーダルの制御（共通コンポーネント）
 // ==========================================================
 
+import { CATEGORIES } from "../models/categories.js";
+import { iconSvg } from "../utils/icons.js";
+import { showView } from "../nav.js";
+import { showExpGainToast } from "./expGainToast.js";
+
 const DEFAULT_EXP = 10;
 const ADD_TITLE = "今日頑張ったことを追加";
 const EDIT_TITLE = "記録を編集";
+const MODAL_CLOSE_MS = 320;
 
 const overlayEl = document.getElementById("modal-overlay");
 const sheetEl = document.getElementById("modal-sheet");
@@ -24,9 +30,21 @@ let editingId = null;
 let onSaveCallback = null;
 let onUpdateCallback = null;
 
+function buildCategoryGrid() {
+  categoryGridEl.innerHTML = CATEGORIES.map(
+    (c) => `
+      <button class="category-chip tap-scale" data-category="${c.key}">
+        <span class="category-chip-icon">${iconSvg(c.icon, { size: 20 })}</span>
+        <span class="category-chip-label">${c.key}</span>
+      </button>`
+  ).join("");
+}
+
 export function initRecordModal({ onSave, onUpdate }) {
   onSaveCallback = onSave;
   onUpdateCallback = onUpdate;
+
+  buildCategoryGrid();
 
   addBtn.addEventListener("click", () => openModal());
   if (addBtnEmpty) addBtnEmpty.addEventListener("click", () => openModal());
@@ -63,10 +81,17 @@ export function initRecordModal({ onSave, onUpdate }) {
 
     if (mode === "edit") {
       onUpdateCallback(editingId, data);
-    } else {
-      onSaveCallback(data);
+      closeModal();
+      return;
     }
+
+    // 保存 → モーダルが閉じる → ホームへ戻る → EXPバーが伸びる → 「+EXP」表示
     closeModal();
+    setTimeout(() => {
+      showView("home");
+      onSaveCallback(data);
+      showExpGainToast(data.exp);
+    }, MODAL_CLOSE_MS);
   });
 }
 

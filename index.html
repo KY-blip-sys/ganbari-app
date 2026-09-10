@@ -99,6 +99,8 @@
               <div class="exp-bar-fill" id="exp-bar-fill"></div>
             </div>
             <p class="hero-hint" id="exp-hint">あと100EXPでレベルアップ</p>
+
+            <div class="exp-gain-toast" id="exp-gain-toast">+<span id="exp-gain-amount">0</span>EXP</div>
           </section>
 
           <!-- 今日のクエスト -->
@@ -363,37 +365,26 @@
 
   <!-- 記録追加モーダル -->
   <div id="modal-overlay" class="modal-overlay modal-hidden">
-    <div class="modal-sheet glass-card" id="modal-sheet">
+    <div class="modal-sheet" id="modal-sheet">
 
       <div class="modal-handle"></div>
       <h2 class="modal-title" id="modal-title">今日頑張ったことを追加</h2>
 
       <label class="modal-label" for="input-title">タイトル</label>
-      <input id="input-title" class="modal-input" type="text" placeholder="例：英語1時間" maxlength="30">
+      <input id="input-title" class="modal-input" type="text" placeholder="例：英語を30分勉強した" maxlength="30">
 
       <p class="modal-label">カテゴリ</p>
-      <div class="category-grid" id="category-grid">
-        <button class="category-chip tap-scale" data-category="勉強">📚 勉強</button>
-        <button class="category-chip tap-scale" data-category="運動">💪 運動</button>
-        <button class="category-chip tap-scale" data-category="健康">❤️ 健康</button>
-        <button class="category-chip tap-scale" data-category="メンタル">🧘 メンタル</button>
-        <button class="category-chip tap-scale" data-category="仕事">💼 仕事</button>
-        <button class="category-chip tap-scale" data-category="趣味">🎨 趣味</button>
-        <button class="category-chip tap-scale" data-category="家事">🧹 家事</button>
-        <button class="category-chip tap-scale" data-category="アルバイト">💵 アルバイト</button>
-        <button class="category-chip tap-scale" data-category="人間関係">🤝 人間関係</button>
-        <button class="category-chip tap-scale" data-category="その他">✨ その他</button>
-      </div>
+      <div class="category-grid" id="category-grid"></div>
 
       <p class="modal-label">獲得EXP</p>
       <div class="exp-grid" id="exp-grid">
         <button class="exp-chip tap-scale" data-exp="5">
-          <span class="exp-chip-emoji">😊</span>
+          <span class="exp-chip-emoji">🙂</span>
           <span class="exp-chip-value">+5</span>
           <span class="exp-chip-label">少し頑張った</span>
         </button>
         <button class="exp-chip tap-scale selected" data-exp="10">
-          <span class="exp-chip-emoji">🙂</span>
+          <span class="exp-chip-emoji">😊</span>
           <span class="exp-chip-value">+10</span>
           <span class="exp-chip-label">頑張った</span>
         </button>
@@ -415,8 +406,8 @@
       </div>
 
       <div class="modal-actions">
-        <button id="btn-cancel-record" class="modal-cancel-button tap-scale">キャンセル</button>
         <button id="btn-save-record" class="modal-save-button tap-scale" disabled>保存</button>
+        <button id="btn-cancel-record" class="modal-cancel-button tap-scale">キャンセル</button>
       </div>
     </div>
   </div>
