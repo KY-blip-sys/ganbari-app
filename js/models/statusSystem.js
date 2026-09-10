@@ -9,15 +9,21 @@ import { recordsInWeek } from "../utils/recordStats.js";
 
 export const STATUS_EXP_PER_LEVEL = 100;
 
-export const LIFE_STAT_LIST = [
-  { key: "学び", icon: "psychology" },
-  { key: "健康", icon: "favorite" },
-  { key: "メンタル", icon: "self_improvement" },
-  { key: "お金", icon: "payments" },
-  { key: "人間関係", icon: "handshake" },
-  { key: "趣味", icon: "palette" },
-  { key: "生活力", icon: "home_work" },
-];
+// 人生ステータスの統一アイコン（ホーム／能力詳細／人生マップ／スキルツリー／実績／称号で共通）
+export const LIFE_STAT_ICON = {
+  学び: "graduation-cap",
+  健康: "heart",
+  メンタル: "moon",
+  お金: "wallet",
+  人間関係: "people",
+  趣味: "palette",
+  生活力: "house",
+};
+
+export const LIFE_STAT_LIST = Object.keys(LIFE_STAT_ICON).map((key) => ({
+  key,
+  icon: LIFE_STAT_ICON[key],
+}));
 
 export const CATEGORY_LIFESTAT_MAP = Object.fromEntries(
   CATEGORIES.filter((c) => c.lifeStat).map((c) => [c.key, c.lifeStat])
@@ -56,7 +62,7 @@ export function computeStatusBreakdown(lifeStatKey, allRecords) {
   return Object.entries(totals)
     .map(([category, exp]) => ({
       category,
-      icon: categoryMeta[category]?.emoji || "auto_awesome",
+      icon: categoryMeta[category]?.icon || "sparkle",
       exp,
       ratio: total ? exp / total : 0,
     }))

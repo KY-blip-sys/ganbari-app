@@ -14,6 +14,7 @@ import {
   computeStatusBreakdown,
   computeStatusWeeklyTrend,
   computeStatusOverview,
+  STATUS_EXP_PER_LEVEL,
 } from "./models/statusSystem.js";
 import { computeTodayTitle, computeAllEarnedTitles } from "./models/titleSystem.js";
 import {
@@ -351,21 +352,36 @@ function handleStatusClick(key) {
     lifeStatLevels,
   });
 
+  // 現在のレベル内の端数EXPを差し引いて、次の解放まで実際に必要なEXPを逆算する
+  const expNeededForLevel = (targetLevel) =>
+    Math.max(0, (targetLevel - stat.level) * STATUS_EXP_PER_LEVEL - stat.expIntoLevel);
+
   const lockedSkillNodes = computeSkillTree(key, stat.level)
     .flatMap((branch) => branch.nodes)
     .filter((n) => !n.unlocked)
     .sort((a, b) => a.requiredLevel - b.requiredLevel);
 
+  const nextSkillNode = lockedSkillNodes[0] || null;
+  const nextSkill = nextSkillNode
+    ? { ...nextSkillNode, expToNext: expNeededForLevel(nextSkillNode.requiredLevel) }
+    : null;
+
+  const nextAchievementRaw = achievements.find((a) => a.id.startsWith(`stat-${key}-`) && !a.unlocked) || null;
+  const nextAchievement = nextAchievementRaw
+    ? { ...nextAchievementRaw, expToNext: expNeededForLevel(Number(nextAchievementRaw.id.split("-").pop())) }
+    : null;
+
   openStatusDetail({
     key,
     icon: stat.icon,
     level: stat.level,
+    expIntoLevel: stat.expIntoLevel,
     progressRatio: stat.progressRatio,
     expToNext: stat.expToNext,
     breakdown: computeStatusBreakdown(key, allRecords),
     trend: computeStatusWeeklyTrend(key, state.records),
-    nextSkill: lockedSkillNodes[0] || null,
-    nextAchievement: achievements.find((a) => a.id.startsWith(`stat-${key}-`) && !a.unlocked) || null,
+    nextSkill,
+    nextAchievement,
   });
 }
 

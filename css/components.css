@@ -3,7 +3,7 @@
    ========================================================== */
 
 .glass-card {
-  background: var(--color-bg-elevated-solid);
+  background: var(--card-gradient), var(--color-bg-elevated-solid);
   border: 1px solid var(--color-border);
   box-shadow: var(--shadow-card);
 }
@@ -19,7 +19,7 @@
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  padding: calc(var(--safe-top) + 24px) 20px 8px;
+  padding: calc(var(--safe-top) + 24px) var(--space-page-x) 8px;
 }
 
 .greeting {
@@ -50,18 +50,18 @@
 
 .view-main {
   flex: 1;
-  padding: 12px 20px 0;
+  padding: 12px var(--space-page-x) 0;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: var(--space-section);
 }
 
 .view-flow {
   flex: 1;
-  padding: 12px 20px 0;
+  padding: 12px var(--space-page-x) 0;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: var(--space-section);
 }
 
 .card-label {
@@ -72,28 +72,32 @@
 }
 
 .card-label-icon {
+  display: inline-flex;
+  align-items: center;
   font-family: "Material Symbols Outlined";
   font-size: 15px;
   color: var(--color-accent);
-  vertical-align: -2px;
-  margin-right: 2px;
+  vertical-align: -3px;
+  margin-right: 3px;
 }
 
 /* ---------- ホームカード共通（非グラス・Apple風の白背景） ---------- */
 
 .home-card {
-  background: var(--color-bg-elevated-solid);
+  background: var(--card-gradient), var(--color-bg-elevated-solid);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-home);
   box-shadow: var(--shadow-card);
-  padding: 20px;
+  padding: var(--space-card-pad);
 }
 
 /* ---------- Heroカード：レベル＋今日のEXP ---------- */
 
 .hero-card {
   position: relative;
-  padding: 20px;
+  padding: 22px 20px;
+  border-radius: var(--radius-hero);
+  box-shadow: var(--shadow-hero), var(--glow-accent);
   transition: border-color 0.2s ease;
 }
 
@@ -308,7 +312,7 @@
   width: 0%;
   border-radius: 999px;
   background: var(--color-accent);
-  transition: width 0.3s ease;
+  transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .exp-hint {
@@ -389,7 +393,7 @@
   width: 0%;
   border-radius: 999px;
   background: var(--color-accent);
-  transition: width 0.3s ease;
+  transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .record-exp-goal-text {
@@ -1049,9 +1053,12 @@
 }
 
 .status-radar-label {
-  font-family: "Material Symbols Outlined";
-  font-size: 15px;
-  fill: var(--color-text-secondary);
+  color: var(--color-text-secondary);
+  fill: none;
+  stroke: var(--color-text-secondary);
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 /* ---------- 総合ランク ---------- */
@@ -1196,7 +1203,7 @@
   height: 100%;
   border-radius: 999px;
   background: var(--color-accent);
-  transition: width 0.3s ease;
+  transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .status-level {
@@ -1214,81 +1221,119 @@
   white-space: nowrap;
 }
 
-/* ---------- ステータス詳細モーダル ---------- */
+/* ---------- 能力詳細画面（ステータス詳細モーダル） ---------- */
 
-.status-detail-header {
-  display: flex;
+.ability-sheet {
+  padding-top: 12px;
+}
+
+.ability-section {
+  margin-top: var(--space-section);
+}
+
+.ability-section:first-of-type {
+  margin-top: 22px;
+}
+
+/* Heroカード：濃いネイビー＋薄いグラデーション＋ほんの少しだけ発光 */
+.ability-hero-card {
+  position: relative;
+  padding: 26px 22px;
+  border-radius: var(--radius-hero);
+  text-align: center;
+  background: var(--card-gradient), linear-gradient(180deg, var(--color-bg-elevated-2), var(--color-bg-elevated));
+  border: 1px solid var(--color-border-strong);
+  box-shadow: var(--shadow-hero), var(--glow-accent);
+}
+
+.ability-hero-icon {
+  display: inline-flex;
   align-items: center;
-  gap: 14px;
-  margin-bottom: 16px;
-}
-
-.status-detail-icon {
-  font-family: "Material Symbols Outlined";
-  font-size: 32px;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 18px;
+  margin-bottom: 12px;
   color: var(--color-accent);
-  flex-shrink: 0;
+  background: var(--color-accent-bg);
 }
 
-.status-detail-heading .modal-title {
-  text-align: left;
-  margin-bottom: 2px;
+.ability-hero-name {
+  font-size: 17px;
+  font-weight: 800;
+  margin-bottom: 6px;
 }
 
-.status-detail-level {
+.ability-hero-level {
+  font-size: 34px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  color: var(--color-accent-strong);
+  margin-bottom: 18px;
+}
+
+.ability-hero-bar-track {
+  height: 12px;
+}
+
+.ability-hero-fraction {
+  margin-top: 10px;
   font-size: 13px;
   font-weight: 700;
+  color: var(--color-text-secondary);
+}
+
+.ability-hero-hint {
+  margin-top: 4px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--color-text-tertiary);
+}
+
+/* カテゴリ内訳：ミニカードグリッド */
+.status-detail-breakdown {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.breakdown-mini-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 6px;
+  padding: 16px 8px;
+  border-radius: var(--radius-sm);
+  background: var(--card-gradient), var(--color-bg-subtle);
+  border: 1px solid var(--color-border);
+}
+
+.breakdown-mini-icon {
+  display: inline-flex;
   color: var(--color-accent);
 }
 
-.status-detail-breakdown {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-bottom: 20px;
-}
-
-.status-detail-breakdown-row {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.status-detail-breakdown-icon {
-  font-family: "Material Symbols Outlined";
-  font-size: 16px;
-  width: 20px;
-  color: var(--color-text-secondary);
-  text-align: center;
-  flex-shrink: 0;
-}
-
-.status-detail-breakdown-name {
+.breakdown-mini-name {
   font-size: 12.5px;
   font-weight: 700;
-  width: 62px;
   color: var(--color-text-secondary);
-  flex-shrink: 0;
 }
 
-.status-detail-breakdown-exp {
-  font-size: 11.5px;
-  font-weight: 700;
-  color: var(--color-text-tertiary);
-  width: 52px;
-  text-align: right;
-  flex-shrink: 0;
+.breakdown-mini-percent {
+  font-size: 18px;
+  font-weight: 800;
 }
 
-.status-detail-trend {
-  margin-bottom: 20px;
-}
-
+/* 直近8週間の推移グラフ */
 .trend-bars {
   display: flex;
   align-items: flex-end;
   gap: 6px;
-  height: 64px;
+  height: 88px;
+  padding: 10px 6px 0;
+  border-radius: var(--radius-sm);
+  background: var(--color-bg-subtle);
 }
 
 .trend-bar-col {
@@ -1301,42 +1346,75 @@
 .trend-bar {
   width: 100%;
   min-height: 4px;
-  border-radius: 4px 4px 0 0;
-  background: var(--color-accent);
+  border-radius: 6px 6px 2px 2px;
+  background: linear-gradient(180deg, var(--color-accent-strong), var(--color-accent));
+  transition: height 0.6s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .trend-bar {
+    transition: none;
+  }
+}
+
+/* 次の目標カード */
 .status-detail-goals {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  margin-bottom: 4px;
 }
 
-.status-detail-goal-item {
+.goal-card {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 10px 12px;
+  gap: 14px;
+  padding: 14px;
   border-radius: var(--radius-sm);
-  background: var(--color-bg-subtle);
+  background: var(--card-gradient), var(--color-bg-subtle);
+  border: 1px solid var(--color-border);
 }
 
-.status-detail-goal-icon {
-  font-family: "Material Symbols Outlined";
-  font-size: 22px;
-  color: var(--color-accent);
+.goal-card-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
   flex-shrink: 0;
 }
 
-.status-detail-goal-title {
-  font-size: 13.5px;
-  font-weight: 700;
+.goal-card-badge-skill {
+  color: var(--color-accent);
+  background: var(--color-accent-bg);
 }
 
-.status-detail-goal-desc {
-  font-size: 11.5px;
+.goal-card-badge-trophy {
+  color: var(--rank-gold);
+  background: rgba(227, 180, 81, 0.14);
+}
+
+.goal-card-text {
+  min-width: 0;
+}
+
+.goal-card-label {
+  font-size: 11px;
+  font-weight: 700;
   color: var(--color-text-tertiary);
-  font-weight: 600;
+  margin-bottom: 2px;
+}
+
+.goal-card-name {
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.goal-card-sub {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--color-accent-strong);
+  margin-top: 2px;
 }
 
 /* ---------- スキルツリー ---------- */
@@ -1456,6 +1534,9 @@
 }
 
 .achievement-tile-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   font-family: "Material Symbols Outlined";
   font-size: 26px;
   color: var(--color-accent);
@@ -1508,6 +1589,8 @@
 }
 
 .map-tab-icon {
+  display: inline-flex;
+  align-items: center;
   font-family: "Material Symbols Outlined";
   font-size: 16px;
 }
@@ -1598,7 +1681,7 @@
   height: 100%;
   border-radius: 999px;
   background: var(--color-accent);
-  transition: width 0.3s ease;
+  transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .map-progress-hint {
@@ -1636,6 +1719,9 @@
 }
 
 .title-gallery-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   font-family: "Material Symbols Outlined";
   font-size: 26px;
   color: var(--color-accent);
@@ -1906,6 +1992,9 @@
 }
 
 .hint-popup-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   font-family: "Material Symbols Outlined";
   font-size: 30px;
   color: var(--color-accent);
@@ -1935,13 +2024,13 @@
   overflow-y: auto;
 }
 
-/* 記録追加モーダルだけは「ゲームの記録画面」として白背景・軽いシャドウの
-   専用スタイルにする（他のモーダルの glass-card 見た目には影響させない） */
+/* 記録追加モーダルだけは角丸・余白を少し大きくした専用レイアウトにする
+   （背景・影は他のモーダルと共通のデザインシステムに合わせる） */
 #modal-sheet {
-  background: var(--color-bg-elevated-solid);
+  background: var(--card-gradient), var(--color-bg-elevated-solid);
   border-radius: 24px 24px 0 0;
   padding: 14px 24px calc(var(--safe-bottom) + 28px);
-  box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.08);
+  box-shadow: var(--shadow-modal);
 }
 
 .modal-handle {

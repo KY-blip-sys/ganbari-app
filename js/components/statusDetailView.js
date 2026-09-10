@@ -1,12 +1,16 @@
 // ==========================================================
-// statusDetailView.js — ステータス詳細（内訳／推移／次の目標）モーダル
+// statusDetailView.js — 能力詳細画面（Heroカード／内訳／推移／次の目標）
 // ==========================================================
+
+import { iconSvg, iconMarkup } from "../utils/icons.js";
+import { STATUS_EXP_PER_LEVEL } from "../models/statusSystem.js";
 
 const overlayEl = document.getElementById("status-detail-overlay");
 const iconEl = document.getElementById("status-detail-icon");
 const titleEl = document.getElementById("status-detail-title");
 const levelEl = document.getElementById("status-detail-level");
 const barFillEl = document.getElementById("status-detail-bar-fill");
+const fractionEl = document.getElementById("status-detail-fraction");
 const hintEl = document.getElementById("status-detail-hint");
 const breakdownEl = document.getElementById("status-detail-breakdown");
 const trendEl = document.getElementById("status-detail-trend");
@@ -29,11 +33,10 @@ function renderBreakdown(breakdown) {
   breakdownEl.innerHTML = breakdown
     .map(
       (b) => `
-    <div class="status-detail-breakdown-row">
-      <span class="status-detail-breakdown-icon">${b.icon}</span>
-      <span class="status-detail-breakdown-name">${b.category}</span>
-      <span class="status-bar-track"><span class="status-bar-fill" style="width:${Math.round(b.ratio * 100)}%"></span></span>
-      <span class="status-detail-breakdown-exp">${b.exp}EXP</span>
+    <div class="breakdown-mini-card">
+      <span class="breakdown-mini-icon">${iconSvg(b.icon, { size: 20 })}</span>
+      <span class="breakdown-mini-name">${b.category}</span>
+      <span class="breakdown-mini-percent">${Math.round(b.ratio * 100)}%</span>
     </div>
   `
     )
@@ -49,11 +52,32 @@ function renderTrend(trend) {
         .map(
           (t) => `
         <div class="trend-bar-col" title="${t.exp}EXP">
-          <div class="trend-bar" style="height:${Math.max(4, Math.round((t.exp / maxExp) * 100))}%"></div>
+          <div class="trend-bar" style="height:0%" data-target-height="${Math.max(4, Math.round((t.exp / maxExp) * 100))}"></div>
         </div>
       `
         )
         .join("")}
+    </div>
+  `;
+
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      trendEl.querySelectorAll(".trend-bar").forEach((bar) => {
+        bar.style.height = `${bar.dataset.targetHeight}%`;
+      });
+    });
+  });
+}
+
+function goalCardMarkup({ badgeIcon, badgeClass, label, name, expToNext }) {
+  return `
+    <div class="goal-card">
+      <span class="goal-card-badge ${badgeClass}">${iconMarkup(badgeIcon, { size: 20 })}</span>
+      <div class="goal-card-text">
+        <p class="goal-card-label">${label}</p>
+        <p class="goal-card-name">${name}</p>
+        <p class="goal-card-sub">あと${expToNext}EXP</p>
+      </div>
     </div>
   `;
 }
@@ -62,27 +86,27 @@ function renderGoals(nextSkill, nextAchievement) {
   const items = [];
 
   if (nextSkill) {
-    items.push(`
-      <div class="status-detail-goal-item">
-        <span class="status-detail-goal-icon">lock</span>
-        <div class="status-detail-goal-text">
-          <p class="status-detail-goal-title">${nextSkill.name}</p>
-          <p class="status-detail-goal-desc">Lv.${nextSkill.requiredLevel}で解放</p>
-        </div>
-      </div>
-    `);
+    items.push(
+      goalCardMarkup({
+        badgeIcon: "lock",
+        badgeClass: "goal-card-badge-skill",
+        label: "次に解放するスキル",
+        name: nextSkill.name,
+        expToNext: nextSkill.expToNext,
+      })
+    );
   }
 
   if (nextAchievement) {
-    items.push(`
-      <div class="status-detail-goal-item">
-        <span class="status-detail-goal-icon">${nextAchievement.icon}</span>
-        <div class="status-detail-goal-text">
-          <p class="status-detail-goal-title">${nextAchievement.name}</p>
-          <p class="status-detail-goal-desc">${nextAchievement.description}</p>
-        </div>
-      </div>
-    `);
+    items.push(
+      goalCardMarkup({
+        badgeIcon: "trophy",
+        badgeClass: "goal-card-badge-trophy",
+        label: "次に解放",
+        name: nextAchievement.name,
+        expToNext: nextAchievement.expToNext,
+      })
+    );
   }
 
   goalsEl.innerHTML = items.length ? items.join("") : `<p class="record-empty">すべての目標を達成しました</p>`;
@@ -92,6 +116,7 @@ export function openStatusDetail({
   key,
   icon,
   level,
+  expIntoLevel,
   progressRatio,
   expToNext,
   breakdown,
@@ -99,11 +124,12 @@ export function openStatusDetail({
   nextSkill,
   nextAchievement,
 }) {
-  iconEl.textContent = icon;
+  iconEl.innerHTML = iconSvg(icon, { size: 32 });
   titleEl.textContent = key;
   levelEl.textContent = `Lv.${level}`;
   barFillEl.style.width = `${Math.round(progressRatio * 100)}%`;
-  hintEl.textContent = `あと${expToNext}EXPでレベルアップ`;
+  fractionEl.textContent = `${expIntoLevel} / ${STATUS_EXP_PER_LEVEL} EXP`;
+  hintEl.textContent = `あと${expToNext}EXPでLv.${level + 1}`;
 
   renderBreakdown(breakdown);
   renderTrend(trend);

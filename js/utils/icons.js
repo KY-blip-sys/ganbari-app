@@ -26,3 +26,20 @@ export function iconSvg(name, { size = 20 } = {}) {
   const inner = PATHS[name] || "";
   return `<svg class="icon-svg" width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${inner}</svg>`;
 }
+
+// name が統一SVGアイコン（PATHS）に存在するかどうか
+export function hasIconSvg(name) {
+  return Boolean(PATHS[name]);
+}
+
+// 他のSVG（レーダーチャートなど）の中に <g> として直接埋め込むための、生のパスだけを返す
+export function iconPathsMarkup(name) {
+  return PATHS[name] || PATHS.badge;
+}
+
+// アイコン名が統一SVGセットにあればそれを、なければ Material Symbols のリガチャとして
+// 描画する（実績・称号など、SVGアイコンと未移行のアイコン名が混在する箇所向け）
+export function iconMarkup(name, { size = 20 } = {}) {
+  if (hasIconSvg(name)) return iconSvg(name, { size });
+  return `<span class="material-symbols-outlined" style="font-size:${size}px">${name}</span>`;
+}

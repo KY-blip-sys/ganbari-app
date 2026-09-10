@@ -126,7 +126,7 @@
 /* ---------- 汎用ビューヘッダー（記録／クエスト／ステータス等） ---------- */
 
 .view-header {
-  padding: calc(var(--safe-top) + 24px) 20px 8px;
+  padding: calc(var(--safe-top) + 24px) var(--space-page-x) 8px;
 }
 
 .view-header h1 {

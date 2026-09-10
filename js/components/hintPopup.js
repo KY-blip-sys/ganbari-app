@@ -3,6 +3,8 @@
 // ヒント文を見せる軽量ポップアップ（達成/称号ギャラリーで共用）
 // ==========================================================
 
+import { iconMarkup } from "../utils/icons.js";
+
 const overlayEl = document.getElementById("hint-popup-overlay");
 const sheetEl = document.getElementById("hint-popup-sheet");
 const iconEl = document.getElementById("hint-popup-icon");
@@ -10,7 +12,7 @@ const titleEl = document.getElementById("hint-popup-title");
 const textEl = document.getElementById("hint-popup-text");
 
 export function showHint({ icon, title, text }) {
-  iconEl.textContent = icon;
+  iconEl.innerHTML = iconMarkup(icon, { size: 28 });
   titleEl.textContent = title;
   textEl.textContent = text;
 

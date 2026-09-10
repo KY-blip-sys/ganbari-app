@@ -76,9 +76,11 @@ function renderTabs() {
 
   tabsEl.querySelectorAll(".quest-tab").forEach((btn) => {
     btn.addEventListener("click", () => {
+      const fromIndex = TABS.findIndex((t) => t.id === selectedTab);
+      const toIndex = TABS.findIndex((t) => t.id === btn.dataset.tabId);
       selectedTab = btn.dataset.tabId;
       renderTabs();
-      renderContent();
+      renderContent(toIndex > fromIndex ? "forward" : "backward");
     });
   });
 }
@@ -198,7 +200,7 @@ function renderSpecial(special) {
   `;
 }
 
-function renderContent() {
+function renderContent(direction = "forward") {
   if (!cachedData) return;
 
   if (selectedTab === "special") {
@@ -208,6 +210,10 @@ function renderContent() {
     const { list, records } = cachedData[selectedTab];
     renderQuestList(selectedTab, list, records);
   }
+
+  cardEl.classList.remove("tab-content-in-forward", "tab-content-in-backward");
+  void cardEl.offsetWidth;
+  cardEl.classList.add(direction === "backward" ? "tab-content-in-backward" : "tab-content-in-forward");
 }
 
 function renderHero(list, records, context) {

@@ -3,14 +3,16 @@
 // ==========================================================
 
 import { showHint } from "./hintPopup.js";
+import { iconMarkup } from "../utils/icons.js";
 
 const containerEl = document.getElementById("titles-content");
 
 function tileMarkup(t, index) {
   const secretLocked = !t.earned && t.secret;
+  const iconName = t.earned ? t.icon : secretLocked ? "help" : "lock";
   return `
     <button type="button" class="title-gallery-tile tap-scale ${t.earned ? "unlocked" : "locked"}" data-index="${index}">
-      <span class="title-gallery-icon">${t.earned ? t.icon : secretLocked ? "help" : "lock"}</span>
+      <span class="title-gallery-icon">${iconMarkup(iconName, { size: 26 })}</span>
       <span class="title-gallery-name">${t.earned ? t.name : secretLocked ? "？？？（シークレット）" : "？？？"}</span>
     </button>
   `;

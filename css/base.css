@@ -3,57 +3,57 @@
    ========================================================== */
 
 :root {
-  --color-bg: #ffffff;
-  --color-bg-subtle: #f5f5f7;
-  --color-bg-elevated: #ffffff;
-  --color-bg-elevated-solid: #ffffff;
-  --color-border: rgba(60, 60, 67, 0.13);
-  --color-text-primary: #1c1c1e;
-  --color-text-secondary: #6e6e73;
-  --color-text-tertiary: #9a9aa0;
-  --color-accent: #0a84ff;
-  --color-success: #34c759;
-  --color-warning: #ff9f0a;
-  --color-exp: #ff9f0a;
-  --color-danger: #ff3b30;
-  --color-danger-bg: rgba(255, 59, 48, 0.1);
+  /* ---------- ベースカラー（濃いネイビー〜チャコールグレー基調） ---------- */
+  --color-bg: #0a0e1a;
+  --color-bg-subtle: #131a2c;
+  --color-bg-elevated: #151c30;
+  --color-bg-elevated-solid: #151c30;
+  --color-bg-elevated-2: #1b2338;
+  --color-border: rgba(255, 255, 255, 0.08);
+  --color-border-strong: rgba(255, 255, 255, 0.14);
+  --color-text-primary: #f3f5f9;
+  --color-text-secondary: #97a1b8;
+  --color-text-tertiary: #636d84;
 
-  --rank-green: #34c759;
+  --color-accent: #0a84ff;
+  --color-accent-strong: #3d9bff;
+  --color-accent-bg: rgba(10, 132, 255, 0.14);
+  --color-success: #32d74b;
+  --color-warning: #ff9f0a;
+  --color-exp: #ffb340;
+  --color-danger: #ff453a;
+  --color-danger-bg: rgba(255, 69, 58, 0.16);
+
+  --rank-green: #32d74b;
   --rank-blue: #0a84ff;
   --rank-orange: #ff9f0a;
   --rank-red: #ff453a;
-  --rank-gold: #0a84ff;
+  --rank-gold: #e3b451;
 
-  --shadow-card: 0 2px 12px rgba(0, 0, 0, 0.05);
-  --shadow-modal: 0 -4px 24px rgba(0, 0, 0, 0.08);
+  /* カード共通：薄いグラデーション＋影＋細いボーダー */
+  --card-gradient: linear-gradient(160deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0) 55%);
+  --shadow-card: 0 4px 18px rgba(0, 0, 0, 0.35);
+  --shadow-hero: 0 10px 32px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(255, 255, 255, 0.03);
+  --glow-accent: 0 0 28px rgba(10, 132, 255, 0.18);
+  --shadow-modal: 0 -8px 28px rgba(0, 0, 0, 0.4);
 
-  --radius-lg: 22px;
+  --radius-lg: 24px;
   --radius-md: 20px;
   --radius-sm: 16px;
-  --radius-home: 22px;
+  --radius-home: 24px;
+  --radius-hero: 28px;
 
   --button-height: 56px;
+
+  /* ---------- 余白ルール（全画面で共通） ---------- */
+  --space-page-x: 20px;
+  --space-section: 20px;
+  --space-card-pad: 20px;
 
   --safe-bottom: env(safe-area-inset-bottom, 0px);
   --safe-top: env(safe-area-inset-top, 0px);
 
-  color-scheme: light;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --color-bg: #000000;
-    --color-bg-subtle: #1c1c1e;
-    --color-bg-elevated: #1c1c1e;
-    --color-bg-elevated-solid: #1c1c1e;
-    --color-border: rgba(255, 255, 255, 0.12);
-    --color-text-primary: #f5f5f7;
-    --color-text-secondary: #a1a1a6;
-    --color-text-tertiary: #7c7c80;
-    --color-danger-bg: rgba(255, 69, 58, 0.16);
-    --shadow-card: 0 2px 14px rgba(0, 0, 0, 0.4);
-    color-scheme: dark;
-  }
+  color-scheme: dark;
 }
 
 * {

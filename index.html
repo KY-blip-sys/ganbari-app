@@ -7,7 +7,7 @@
     content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
   <title>人生RPG</title>
   <meta name="description" content="頑張りを可視化するアプリ">
-  <meta name="theme-color" content="#0a84ff">
+  <meta name="theme-color" content="#0a0e1a">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
@@ -330,7 +330,10 @@
         <header class="view-header">
           <h1>スキルツリー</h1>
         </header>
-        <main class="view-flow" id="skills-content"></main>
+        <main class="view-flow">
+          <div class="map-tabs" id="skills-tabs"></div>
+          <div id="skills-content"></div>
+        </main>
       </section>
 
       <!-- 実績画面 -->
@@ -481,30 +484,36 @@
     </div>
   </div>
 
-  <!-- ステータス詳細モーダル -->
+  <!-- ステータス詳細モーダル（能力詳細画面） -->
   <div id="status-detail-overlay" class="modal-overlay modal-hidden">
-    <div class="modal-sheet glass-card" id="status-detail-sheet">
+    <div class="modal-sheet glass-card ability-sheet" id="status-detail-sheet">
       <div class="modal-handle"></div>
 
-      <div class="status-detail-header">
-        <span class="status-detail-icon" id="status-detail-icon"></span>
-        <div class="status-detail-heading">
-          <h2 class="modal-title" id="status-detail-title"></h2>
-          <p class="status-detail-level" id="status-detail-level"></p>
-        </div>
+      <!-- Heroカード -->
+      <div class="ability-hero-card">
+        <span class="ability-hero-icon" id="status-detail-icon"></span>
+        <p class="ability-hero-name" id="status-detail-title"></p>
+        <p class="ability-hero-level" id="status-detail-level"></p>
+
+        <div class="exp-bar-track ability-hero-bar-track"><div class="exp-bar-fill" id="status-detail-bar-fill"></div></div>
+        <p class="ability-hero-fraction" id="status-detail-fraction"></p>
+        <p class="ability-hero-hint" id="status-detail-hint"></p>
       </div>
 
-      <div class="exp-bar-track"><div class="exp-bar-fill" id="status-detail-bar-fill"></div></div>
-      <p class="exp-hint" id="status-detail-hint"></p>
+      <section class="ability-section">
+        <p class="modal-label">カテゴリ内訳</p>
+        <div id="status-detail-breakdown" class="status-detail-breakdown"></div>
+      </section>
 
-      <p class="modal-label">カテゴリ内訳</p>
-      <div id="status-detail-breakdown" class="status-detail-breakdown"></div>
+      <section class="ability-section">
+        <p class="modal-label">直近8週間の推移</p>
+        <div id="status-detail-trend" class="status-detail-trend"></div>
+      </section>
 
-      <p class="modal-label">直近8週間の推移</p>
-      <div id="status-detail-trend" class="status-detail-trend"></div>
-
-      <p class="modal-label">次の目標</p>
-      <div id="status-detail-goals" class="status-detail-goals"></div>
+      <section class="ability-section">
+        <p class="modal-label">次の目標</p>
+        <div id="status-detail-goals" class="status-detail-goals"></div>
+      </section>
 
       <div class="modal-actions">
         <button id="btn-status-detail-close" class="modal-cancel-button tap-scale">閉じる</button>

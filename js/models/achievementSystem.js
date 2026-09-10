@@ -5,6 +5,7 @@
 // ==========================================================
 
 import { CATEGORIES } from "./categories.js";
+import { LIFE_STAT_ICON } from "./statusSystem.js";
 import { computeMaxStreak, countTouchedCategories } from "../utils/recordStats.js";
 
 function buildExtendedContext(records) {
@@ -36,20 +37,10 @@ function buildExtendedContext(records) {
   };
 }
 
-const STAT_ICON = {
-  学び: "psychology",
-  健康: "favorite",
-  メンタル: "self_improvement",
-  お金: "payments",
-  人間関係: "handshake",
-  趣味: "palette",
-  生活力: "home_work",
-};
-
-const STAT_ACHIEVEMENTS = Object.keys(STAT_ICON).flatMap((key) =>
+const STAT_ACHIEVEMENTS = Object.keys(LIFE_STAT_ICON).flatMap((key) =>
   [5, 10, 20].map((level) => ({
     id: `stat-${key}-${level}`,
-    icon: STAT_ICON[key],
+    icon: LIFE_STAT_ICON[key],
     name: `${key}Lv.${level}`,
     description: `人生ステータス「${key}」がLv.${level}に到達`,
     check: (ctx) => (ctx.lifeStatLevels[key] || 1) >= level,
@@ -58,7 +49,7 @@ const STAT_ACHIEVEMENTS = Object.keys(STAT_ICON).flatMap((key) =>
 
 const CATEGORY_ACHIEVEMENTS = CATEGORIES.map((c) => ({
   id: `cat-total-${c.key}`,
-  icon: c.emoji,
+  icon: c.icon,
   name: `${c.key}の探求者`,
   description: `「${c.key}」で累計200EXP達成`,
   check: (ctx) => (ctx.categoryTotals[c.key] || 0) >= 200,

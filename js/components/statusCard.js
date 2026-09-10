@@ -4,18 +4,7 @@
 // 呼べるよう、対象コンテナを引数で受け取る。
 // ==========================================================
 
-import { iconSvg } from "../utils/icons.js";
-
-// 絵文字を使わず統一アイコンで表示するための、ステータス名→アイコン名の対応表
-const STATUS_ICON_NAME = {
-  学び: "graduation-cap",
-  健康: "heart",
-  メンタル: "moon",
-  お金: "wallet",
-  人間関係: "people",
-  趣味: "palette",
-  生活力: "house",
-};
+import { iconSvg, iconPathsMarkup } from "../utils/icons.js";
 
 let onStatusClickCallback = null;
 
@@ -26,12 +15,12 @@ export function setOnStatusClick(callback) {
 export function renderLifeStatuses(containerEl, statuses) {
   containerEl.innerHTML = "";
 
-  statuses.forEach(({ key, level, progressRatio, expToNext }) => {
+  statuses.forEach(({ key, icon, level, progressRatio, expToNext }) => {
     const row = document.createElement("button");
     row.className = "status-row tap-scale";
     row.innerHTML = `
       <div class="status-row-top">
-        <span class="status-icon">${iconSvg(STATUS_ICON_NAME[key] || "badge", { size: 18 })}</span>
+        <span class="status-icon">${iconSvg(icon || "badge", { size: 18 })}</span>
         <span class="status-name">${key}</span>
         <span class="status-level">Lv.${level}</span>
         <span class="status-chevron">›</span>
@@ -83,10 +72,14 @@ function radarChartMarkup(radar) {
     })
     .join("");
 
+  const LABEL_ICON_SCALE = 0.72;
+  const LABEL_ICON_HALF = 12 * LABEL_ICON_SCALE;
   const labels = radar
     .map((s, i) => {
       const p = radarXY(i, total, 1.22);
-      return `<text class="status-radar-label" x="${p.x.toFixed(1)}" y="${p.y.toFixed(1)}" text-anchor="middle" dominant-baseline="middle">${s.icon}</text>`;
+      const x = (p.x - LABEL_ICON_HALF).toFixed(1);
+      const y = (p.y - LABEL_ICON_HALF).toFixed(1);
+      return `<g class="status-radar-label" transform="translate(${x},${y}) scale(${LABEL_ICON_SCALE})">${iconPathsMarkup(s.icon)}</g>`;
     })
     .join("");
 

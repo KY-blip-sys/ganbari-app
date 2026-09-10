@@ -3,14 +3,19 @@
 // ==========================================================
 
 import { showHint } from "./hintPopup.js";
+import { iconMarkup } from "../utils/icons.js";
 
 const containerEl = document.getElementById("achievements-content");
 
-function tileMarkup(a, index) {
+// 達成の瞬間だけカードが拡大して光る演出を出すための、直前の解放状態
+let previousUnlockedIds = null;
+
+function tileMarkup(a, index, justUnlocked) {
   const secretLocked = !a.unlocked && a.secret;
+  const iconName = a.unlocked ? a.icon : secretLocked ? "help" : "lock";
   return `
-    <button type="button" class="achievement-tile tap-scale ${a.unlocked ? "unlocked" : "locked"}" data-index="${index}">
-      <span class="achievement-tile-icon">${a.unlocked ? a.icon : secretLocked ? "help" : "lock"}</span>
+    <button type="button" class="achievement-tile tap-scale ${a.unlocked ? "unlocked" : "locked"} ${justUnlocked ? "achievement-tile-pop" : ""}" data-index="${index}">
+      <span class="achievement-tile-icon">${iconMarkup(iconName, { size: 26 })}</span>
       <span class="achievement-tile-name">${a.unlocked ? a.name : secretLocked ? "？？？（シークレット）" : "？？？"}</span>
       <span class="achievement-tile-desc">${a.unlocked ? a.description : "タップしてヒントを見る"}</span>
     </button>
@@ -19,13 +24,19 @@ function tileMarkup(a, index) {
 
 export function renderAchievements(achievements) {
   const unlockedCount = achievements.filter((a) => a.unlocked).length;
+  const currentUnlockedIds = new Set(achievements.filter((a) => a.unlocked).map((a) => a.id));
+  const seenBefore = previousUnlockedIds !== null;
 
   containerEl.innerHTML = `
     <p class="card-label">達成済み ${unlockedCount} / ${achievements.length}</p>
     <div class="achievement-grid">
-      ${achievements.map(tileMarkup).join("")}
+      ${achievements
+        .map((a, index) => tileMarkup(a, index, seenBefore && a.unlocked && !previousUnlockedIds.has(a.id)))
+        .join("")}
     </div>
   `;
+
+  previousUnlockedIds = currentUnlockedIds;
 
   containerEl.querySelectorAll(".achievement-tile").forEach((tileEl) => {
     tileEl.addEventListener("click", () => {

@@ -151,6 +151,51 @@
   }
 }
 
+/* ---------- タブ切替時の演出（フェード＋スライド） ---------- */
+
+.tab-content-in-forward {
+  animation: tab-slide-in-forward 0.28s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.tab-content-in-backward {
+  animation: tab-slide-in-backward 0.28s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes tab-slide-in-forward {
+  from { opacity: 0; transform: translateX(14px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes tab-slide-in-backward {
+  from { opacity: 0; transform: translateX(-14px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tab-content-in-forward,
+  .tab-content-in-backward {
+    animation: none;
+  }
+}
+
+/* ---------- 実績解放の瞬間（拡大＋発光） ---------- */
+
+.achievement-tile-pop {
+  animation: achievement-pop 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes achievement-pop {
+  0% { transform: scale(1); box-shadow: none; }
+  45% { transform: scale(1.08); box-shadow: 0 0 0 1px var(--color-accent), var(--glow-accent); }
+  100% { transform: scale(1); box-shadow: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .achievement-tile-pop {
+    animation: none;
+  }
+}
+
 /* ---------- レベルアップ演出（フェードのみ） ---------- */
 
 .level-up-overlay {

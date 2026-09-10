@@ -26,7 +26,7 @@ export const MAP_THEMES = [
   {
     id: "学び",
     label: "叡智の道",
-    icon: "menu_book",
+    icon: "graduation-cap",
     statKey: "学び",
     areas: [
       { id: "start", icon: "eco", name: "スタート地点" },
@@ -45,7 +45,7 @@ export const MAP_THEMES = [
   {
     id: "健康",
     label: "鍛錬の道",
-    icon: "favorite",
+    icon: "heart",
     statKey: "健康",
     areas: [
       { id: "start", icon: "eco", name: "スタート地点" },
@@ -64,7 +64,7 @@ export const MAP_THEMES = [
   {
     id: "お金",
     label: "繁栄の道",
-    icon: "payments",
+    icon: "wallet",
     statKey: "お金",
     areas: [
       { id: "start", icon: "eco", name: "スタート地点" },
@@ -83,7 +83,7 @@ export const MAP_THEMES = [
   {
     id: "人間関係",
     label: "絆の道",
-    icon: "handshake",
+    icon: "people",
     statKey: "人間関係",
     areas: [
       { id: "start", icon: "eco", name: "スタート地点" },
@@ -121,7 +121,7 @@ export const MAP_THEMES = [
   {
     id: "生活力",
     label: "暮らしの道",
-    icon: "home_work",
+    icon: "house",
     statKey: "生活力",
     areas: [
       { id: "start", icon: "eco", name: "スタート地点" },
@@ -140,7 +140,7 @@ export const MAP_THEMES = [
   {
     id: "メンタル",
     label: "静寂の道",
-    icon: "self_improvement",
+    icon: "moon",
     statKey: "メンタル",
     areas: [
       { id: "start", icon: "eco", name: "スタート地点" },
