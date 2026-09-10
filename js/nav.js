@@ -11,7 +11,7 @@ const VIEWS = [
   { id: "skills", elId: "view-skills", group: "overflow", icon: "🌳", label: "スキルツリー" },
   { id: "achievements", elId: "view-achievements", group: "overflow", icon: "🏆", label: "実績" },
   { id: "titles", elId: "view-titles", group: "overflow", icon: "🏅", label: "称号" },
-  { id: "coach", elId: "view-coach", group: "overflow", icon: "🤖", label: "AIコーチ" },
+  // { id: "coach", elId: "view-coach", group: "overflow", icon: "🤖", label: "AIコーチ" }, // 一旦非表示
   { id: "settings", elId: "view-settings", group: "overflow", icon: "⚙️", label: "設定" },
 ];
 

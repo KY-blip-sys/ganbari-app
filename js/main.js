@@ -25,14 +25,14 @@ import {
 } from "./models/questSystem.js";
 import { computeAllSkillTrees, computeSkillTree } from "./models/skillSystem.js";
 import { computeAchievements } from "./models/achievementSystem.js";
-import { computeCoachTips } from "./models/coachSystem.js";
+// import { computeCoachTips } from "./models/coachSystem.js"; // 一旦非表示
 
 import { renderExp } from "./components/scoreCard.js";
 import { renderRank } from "./components/rankCard.js";
 import { renderLevel } from "./components/levelCard.js";
 import { renderRecords, setOnDelete, setOnEdit } from "./components/recordList.js";
 import { initRecordModal, openRecordModalForEdit } from "./components/recordModal.js";
-import { renderAiComment } from "./components/aiComment.js";
+// import { renderAiComment } from "./components/aiComment.js"; // 一旦非表示
 import { initSettingsView, setAccountEmail } from "./components/settingsView.js";
 import { renderTitle } from "./components/titleCard.js";
 import { renderQuests, flashQuestComplete } from "./components/questCard.js";
@@ -44,7 +44,7 @@ import { renderSkillTree } from "./components/skillTreeView.js";
 import { renderAchievements } from "./components/achievementView.js";
 import { renderMap } from "./components/mapView.js";
 import { renderTitleGallery } from "./components/titleGalleryView.js";
-import { renderCoach } from "./components/coachView.js";
+// import { renderCoach } from "./components/coachView.js"; // 一旦非表示
 import { initNav } from "./nav.js";
 import * as authService from "./auth/authService.js";
 import { initAuthView, resetAuthForm } from "./auth/authView.js";
@@ -233,7 +233,7 @@ function renderAll({ animate = false } = {}) {
   renderRank(rankInfo);
   renderLevel(levelInfo);
   renderRecords(todayRecords);
-  renderAiComment(todayExp, todayRecords.length);
+  // renderAiComment(todayExp, todayRecords.length); // 一旦非表示
   renderTitle(computeTodayTitle(todayRecords));
   renderLifeStatuses(statusListHomeEl, lifeStatuses);
   renderLifeStatuses(statusListFullEl, lifeStatuses);
@@ -256,7 +256,7 @@ function renderAll({ animate = false } = {}) {
   renderAchievements(achievements);
   renderMap({ totalExp: state.totalExp, lifeStatuses });
   renderTitleGallery(computeAllEarnedTitles(state.records));
-  renderCoach(computeCoachTips({ lifeStatuses, achievements, todayRecords }));
+  // renderCoach(computeCoachTips({ lifeStatuses, achievements, todayRecords })); // 一旦非表示
 }
 
 function addRecord({ title, category, exp }) {
@@ -391,9 +391,10 @@ function startApp() {
   renderAll();
 
   setInterval(() => {
-    const todayRecords = getTodayRecords();
     updateGreeting();
-    renderAiComment(computeTodayExp(todayRecords), todayRecords.length);
+    // 一旦非表示: AIコメントの時間帯更新
+    // const todayRecords = getTodayRecords();
+    // renderAiComment(computeTodayExp(todayRecords), todayRecords.length);
   }, 5 * 60 * 1000);
 }
 
