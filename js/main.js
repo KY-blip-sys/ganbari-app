@@ -37,6 +37,7 @@ import { initSettingsView, setAccountEmail } from "./components/settingsView.js"
 import { renderTitle } from "./components/titleCard.js";
 import { renderQuests, flashQuestComplete } from "./components/questCard.js";
 import { renderLifeStatuses, setOnStatusClick, renderStatusOverview } from "./components/statusCard.js";
+import { renderQuestSummary } from "./components/questSummaryCard.js";
 import { initStatusDetail, openStatusDetail } from "./components/statusDetailView.js";
 import { initCalendar, renderCalendar } from "./components/calendarCard.js";
 import { showLevelUp } from "./components/levelUpOverlay.js";
@@ -65,6 +66,7 @@ const LOAD_FAIL_MSG = "データの読み込みに失敗しました 通信状�
 
 let state = loadState();
 let currentUserId = null;
+let currentUserEmail = null;
 let appStarted = false;
 
 const appEl = document.getElementById("app");
@@ -75,30 +77,15 @@ const statusListFullEl = document.getElementById("status-list-full");
 const statusOverviewEl = document.getElementById("status-overview-content");
 const greetingMainEl = document.getElementById("greeting-main");
 const greetingSubEl = document.getElementById("greeting-sub");
+const homeQuoteEl = document.getElementById("home-quote");
 
-const TIME_BUCKETS = [
-  { id: "morning", test: (h) => h >= 5 && h < 11 },
-  { id: "noon", test: (h) => h >= 11 && h < 14 },
-  { id: "afternoon", test: (h) => h >= 14 && h < 18 },
-  { id: "evening", test: (h) => h >= 18 && h < 22 },
-  { id: "night", test: (h) => h >= 22 || h < 5 },
+const HOME_QUOTES = [
+  "小さな一歩が、未来を変えます。",
+  "焦らず、自分のペースで。",
+  "続けることが、一番の力になる。",
+  "今日の積み重ねが、明日を作る。",
+  "完璧じゃなくていい、進めばいい。",
 ];
-
-const GREETINGS = {
-  morning: ["おはようございます", "おはよう！今日も一日始めましょう", "今日も素敵な朝ですね", "気持ちのいい朝です"],
-  noon: ["こんにちは", "お昼の時間ですね", "午前中もお疲れさまでした", "いい調子で進んでいますか？"],
-  afternoon: ["こんにちは", "午後も頑張っていきましょう", "少し一息つくのもいいですね", "今日も残り半分です"],
-  evening: ["こんばんは", "今日も一日お疲れさまでした", "夕方のひととき、いい調子です", "今日の頑張りを記録しましょう"],
-  night: ["こんばんは", "夜も頑張っていますね", "そろそろ一日を振り返ってみましょう", "今日もよく頑張りました"],
-};
-
-const GREETING_SUBS = {
-  morning: ["今日も自分をレベルアップしましょう", "小さな一歩から始めましょう", "今日はどんな成長をしますか？", "新しい一日の始まりです"],
-  noon: ["午後も充実させていきましょう", "ここまでの調子はどうですか？", "一息ついたら再開しましょう"],
-  afternoon: ["今日も自分をレベルアップしましょう", "ラストスパートといきましょう", "集中力を切らさずいきましょう"],
-  evening: ["今日の振り返りをしてみましょう", "あと少し、頑張りどころです", "一日の成果を記録しましょう"],
-  night: ["今日も一日お疲れさまでした", "無理せず、ゆっくり休むのも大切です", "明日に向けて準備しましょう"],
-};
 
 function hashSeed(str) {
   let seed = 0;
@@ -110,14 +97,25 @@ function pickBySeed(list, seedStr) {
   return list[hashSeed(seedStr) % list.length];
 }
 
+function greetingWordForHour(hour) {
+  if (hour >= 5 && hour < 11) return "おはよう";
+  if (hour >= 11 && hour < 18) return "こんにちは";
+  return "こんばんは";
+}
+
+function getDisplayName(email) {
+  if (!email) return "";
+  return email.split("@")[0].split(/[.+_]/)[0];
+}
+
 function updateGreeting() {
   const now = new Date();
-  const hour = now.getHours();
-  const bucket = (TIME_BUCKETS.find((b) => b.test(hour)) || TIME_BUCKETS[0]).id;
-  const seed = `${todayKey(now)}-${hour}`;
+  const word = greetingWordForHour(now.getHours());
+  const name = getDisplayName(currentUserEmail);
 
-  greetingMainEl.textContent = pickBySeed(GREETINGS[bucket], seed);
-  greetingSubEl.textContent = pickBySeed(GREETING_SUBS[bucket], `sub-${seed}`);
+  greetingMainEl.textContent = name ? `${word}、${name}さん` : word;
+  greetingSubEl.textContent = "今日も一歩ずつ進んでいきましょう";
+  homeQuoteEl.textContent = pickBySeed(HOME_QUOTES, `quote-${todayKey(now)}`);
 }
 
 updateGreeting();
@@ -249,6 +247,11 @@ function renderAll({ animate = false } = {}) {
         claimed: state.quests.special.claimed.includes(m.id),
       })),
     },
+    context: { recordsByDate: state.records, todayKeyValue: todayKey() },
+  });
+  renderQuestSummary({
+    list: state.quests.daily[todayKey()].list,
+    records: todayRecords,
     context: { recordsByDate: state.records, todayKeyValue: todayKey() },
   });
   renderCalendar(state.records);
@@ -400,7 +403,9 @@ function startApp() {
 
 async function handleAuthenticated(session) {
   currentUserId = session.user.id;
+  currentUserEmail = session.user.email;
   setAccountEmail(session.user.email);
+  updateGreeting();
 
   try {
     const remoteHasData = await hasRemoteData(currentUserId);

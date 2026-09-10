@@ -4,6 +4,19 @@
 // 呼べるよう、対象コンテナを引数で受け取る。
 // ==========================================================
 
+import { iconSvg } from "../utils/icons.js";
+
+// 絵文字を使わず統一アイコンで表示するための、ステータス名→アイコン名の対応表
+const STATUS_ICON_NAME = {
+  学び: "graduation-cap",
+  健康: "heart",
+  メンタル: "moon",
+  お金: "wallet",
+  人間関係: "people",
+  趣味: "palette",
+  生活力: "house",
+};
+
 let onStatusClickCallback = null;
 
 export function setOnStatusClick(callback) {
@@ -13,11 +26,11 @@ export function setOnStatusClick(callback) {
 export function renderLifeStatuses(containerEl, statuses) {
   containerEl.innerHTML = "";
 
-  statuses.forEach(({ key, icon, level, progressRatio }) => {
+  statuses.forEach(({ key, level, progressRatio }) => {
     const row = document.createElement("button");
     row.className = "status-row tap-scale";
     row.innerHTML = `
-      <span class="status-icon">${icon}</span>
+      <span class="status-icon">${iconSvg(STATUS_ICON_NAME[key] || "badge", { size: 18 })}</span>
       <span class="status-name">${key}</span>
       <span class="status-bar-track"><span class="status-bar-fill" style="width:${Math.round(progressRatio * 100)}%"></span></span>
       <span class="status-level">Lv.${level}</span>

@@ -77,53 +77,76 @@
         <header class="home-header">
           <div class="header-text">
             <p class="greeting" id="greeting-main">こんにちは</p>
-            <p class="greeting-sub" id="greeting-sub">今日も自分をレベルアップしましょう</p>
+            <p class="greeting-sub" id="greeting-sub">今日も一歩ずつ進んでいきましょう</p>
           </div>
         </header>
 
         <main class="view-main">
 
-          <!-- 今日の獲得EXP -->
-          <section class="card glass-card grid-card grid-card-center exp-card" id="exp-card">
-            <p class="card-label">今日の獲得EXP</p>
-            <p class="exp-today-value">
-              <span id="exp-number">0</span><span class="exp-today-unit">EXP</span>
-            </p>
-          </section>
-
-          <!-- 今日の評価 -->
-          <section class="card glass-card grid-card grid-card-center rank-card" id="rank-card">
-            <p class="card-label">🏆 今日の評価</p>
-            <p class="rank-value" id="rank-value">Eランク</p>
-            <p class="rank-message" id="rank-message"></p>
-          </section>
-
-          <!-- レベル -->
-          <section class="card glass-card grid-card level-card" id="level-card">
-            <div class="level-row">
-              <p class="level-label">現在レベル</p>
-              <p class="level-value" id="level-value">Lv.1</p>
+          <!-- Heroカード：レベル＋今日のEXP -->
+          <section class="home-card hero-card" id="hero-card">
+            <div class="hero-top">
+              <div class="hero-level-block">
+                <p class="hero-block-label">現在レベル</p>
+                <p class="hero-level-value" id="level-value">Lv.1</p>
+              </div>
+              <div class="hero-exp-block">
+                <p class="hero-block-label">今日のEXP</p>
+                <p class="hero-exp-value"><span id="exp-number">0</span><span class="hero-exp-unit">EXP</span></p>
+              </div>
             </div>
             <div class="exp-bar-track">
               <div class="exp-bar-fill" id="exp-bar-fill"></div>
             </div>
-            <p class="exp-hint" id="exp-hint">あと100EXPでレベルアップ</p>
+            <p class="hero-hint" id="exp-hint">あと100EXPでレベルアップ</p>
           </section>
 
-          <!-- 今日の称号 -->
-          <section class="card glass-card grid-card grid-card-center title-card" id="title-card">
-            <p class="card-label">今日の称号</p>
-            <div class="title-content">
-              <span class="title-icon" id="title-icon">💤</span>
-              <span class="title-name" id="title-name">まだ記録なし</span>
+          <!-- 今日のクエスト -->
+          <section class="home-card quest-summary-card tap-scale" id="quest-summary-card">
+            <div class="quest-summary-header">
+              <p class="card-label">今日のクエスト</p>
+              <span class="quest-summary-badge" id="quest-summary-badge">0/4</span>
             </div>
+            <ul class="quest-summary-list" id="quest-summary-list"></ul>
           </section>
+
+          <!-- 今日の評価／今日の称号 -->
+          <div class="home-mini-row">
+            <section class="home-card home-card-mini" id="rank-card">
+              <span class="mini-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M7 4h10v3.2a5 5 0 0 1-5 5 5 5 0 0 1-5-5V4Z"/>
+                  <path d="M7 5.2H4.3A2.8 2.8 0 0 0 7 8.6"/>
+                  <path d="M17 5.2h2.7A2.8 2.8 0 0 1 17 8.6"/>
+                  <path d="M12 12.2V15"/>
+                  <path d="M9 19.5h6"/>
+                  <path d="M9.8 16.5h4.4l1 3h-6.4l1-3Z"/>
+                </svg>
+              </span>
+              <p class="mini-label">今日の評価</p>
+              <p class="mini-value" id="rank-value">Eランク</p>
+              <p class="mini-sub" id="rank-message"></p>
+            </section>
+
+            <section class="home-card home-card-mini" id="title-card">
+              <span class="mini-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <circle cx="12" cy="9.3" r="5.3"/>
+                  <path d="M9 13.9 7.4 20.5l4.6-2.4 4.6 2.4-1.6-6.6"/>
+                </svg>
+              </span>
+              <p class="mini-label">今日の称号</p>
+              <p class="mini-value" id="title-name">まだ記録なし</p>
+            </section>
+          </div>
 
           <!-- 人生ステータス -->
-          <section class="card glass-card grid-card status-card" id="status-card-home">
+          <section class="home-card" id="status-card-home">
             <p class="card-label">人生ステータス</p>
             <div class="status-list" id="status-list-home"></div>
           </section>
+
+          <p class="home-quote" id="home-quote">小さな一歩が、未来を変えます。</p>
 
           <!-- AIコメント（一旦非表示）
           <section class="card glass-card grid-card ai-comment-bar" id="ai-comment-bar">

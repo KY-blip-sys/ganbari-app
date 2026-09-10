@@ -5,7 +5,7 @@
 import { computeRank } from "../utils/scoreUtils.js";
 
 const expNumberEl = document.getElementById("exp-number");
-const expCardEl = document.getElementById("exp-card");
+const expCardEl = document.getElementById("hero-card");
 
 const COUNT_UP_MS = 500;
 

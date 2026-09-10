@@ -66,13 +66,6 @@
   gap: 16px;
 }
 
-/* ---------- 今日の獲得EXPカード ---------- */
-
-.exp-card {
-  text-align: center;
-  padding: 32px 24px;
-}
-
 .card-label {
   font-size: 14px;
   color: var(--color-text-secondary);
@@ -80,67 +73,193 @@
   margin-bottom: 12px;
 }
 
-.exp-today-value {
-  font-size: 56px;
+/* ---------- ホームカード共通（非グラス・Apple風の白背景） ---------- */
+
+.home-card {
+  background: var(--color-bg-elevated-solid);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-home);
+  box-shadow: var(--shadow-card);
+  padding: 20px;
+}
+
+/* ---------- Heroカード：レベル＋今日のEXP ---------- */
+
+.hero-card {
+  padding: 24px 20px;
+}
+
+.hero-top {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  gap: 12px;
+}
+
+.hero-block-label {
+  font-size: 12.5px;
+  color: var(--color-text-secondary);
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.hero-level-value {
+  font-size: 36px;
   font-weight: 800;
   line-height: 1;
-  letter-spacing: -1px;
+  letter-spacing: -0.5px;
+}
+
+.hero-exp-block {
+  text-align: right;
+}
+
+.hero-exp-value {
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1;
   color: var(--color-accent);
 }
 
-.exp-today-unit {
-  font-size: 24px;
+.hero-exp-unit {
+  font-size: 13px;
   font-weight: 600;
-  margin-left: 6px;
+  margin-left: 2px;
 }
 
-/* ---------- 今日の評価（ランク）カード ---------- */
-
-.rank-card {
-  text-align: center;
-  padding: 28px 24px;
-}
-
-.rank-value {
-  font-size: 38px;
-  font-weight: 800;
-  line-height: 1;
-  color: var(--rank-color, var(--color-accent));
-  margin-bottom: 8px;
-  transition: color 0.4s ease;
-}
-
-.rank-message {
+.hero-hint {
+  margin-top: 12px;
   font-size: 13.5px;
-  color: var(--color-text-secondary);
   font-weight: 600;
+  color: var(--color-text-secondary);
 }
 
-/* ---------- レベルカード ---------- */
+/* ---------- 今日のクエスト（ホーム簡易表示） ---------- */
 
-.level-card {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+.quest-summary-card {
+  padding: 20px;
 }
 
-.level-row {
+.quest-summary-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 14px;
+  margin-bottom: 4px;
 }
 
-.level-label {
+.quest-summary-header .card-label {
+  margin-bottom: 0;
+}
+
+.quest-summary-badge {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--color-text-secondary);
+  background: var(--color-bg);
+  padding: 4px 10px;
+  border-radius: 999px;
+  flex-shrink: 0;
+}
+
+.quest-summary-badge-complete {
+  color: var(--color-accent);
+  background: rgba(10, 132, 255, 0.12);
+}
+
+.quest-summary-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.quest-summary-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.quest-summary-check {
+  width: 20px;
+  height: 20px;
+  border-radius: 6px;
+  border: 1.5px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  flex-shrink: 0;
+  transition: background 0.25s ease, border-color 0.25s ease;
+}
+
+.quest-summary-check.done {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+.quest-summary-label {
   font-size: 14px;
+  font-weight: 600;
+}
+
+.quest-summary-label.done {
+  color: var(--color-text-tertiary);
+  text-decoration: line-through;
+}
+
+/* ---------- 今日の評価／今日の称号（コンパクト2カラム） ---------- */
+
+.home-mini-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.home-card-mini {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 3px;
+  padding: 18px 12px;
+}
+
+.mini-icon {
+  color: var(--color-accent);
+  margin-bottom: 4px;
+}
+
+.mini-label {
+  font-size: 11.5px;
+  color: var(--color-text-tertiary);
+  font-weight: 600;
+}
+
+.mini-value {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+#rank-card .mini-value {
+  color: var(--rank-color, var(--color-text-primary));
+  transition: color 0.4s ease;
+}
+
+.mini-sub {
+  font-size: 11.5px;
   color: var(--color-text-secondary);
   font-weight: 600;
 }
 
-.level-value {
-  font-size: 20px;
-  font-weight: 800;
-  color: var(--color-accent);
+/* ---------- 今日の一言 ---------- */
+
+.home-quote {
+  text-align: center;
+  font-size: 12.5px;
+  color: var(--color-text-tertiary);
+  font-weight: 500;
+  padding: 4px 12px 8px;
 }
 
 .exp-bar-track {
@@ -314,24 +433,6 @@
   flex-shrink: 0;
   margin-left: 12px;
   white-space: nowrap;
-}
-
-/* ---------- 今日の称号 ---------- */
-
-.title-content {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.title-icon {
-  font-size: 30px;
-  line-height: 1;
-}
-
-.title-name {
-  font-size: 18px;
-  font-weight: 800;
 }
 
 /* ---------- クエスト ---------- */
@@ -590,9 +691,11 @@
 }
 
 .status-icon {
-  font-size: 17px;
   width: 20px;
-  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-secondary);
   flex-shrink: 0;
 }
 
@@ -612,7 +715,7 @@
 
 .status-bar-track {
   flex: 1;
-  height: 8px;
+  height: 10px;
   border-radius: 999px;
   background: var(--color-border);
   overflow: hidden;
@@ -1544,24 +1647,16 @@
     font-size: 15px;
   }
 
-  /* ---------- 2カラムグリッド（ホーム画面） ---------- */
+  /* ---------- ホーム画面：中央寄せの1カラム表示 ---------- */
 
   .view-main {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    align-items: stretch;
-    gap: 24px 28px;
-    padding: 24px 40px 0;
+    max-width: 560px;
+    margin: 0 auto;
+    padding: 24px 40px 40px;
   }
 
   .view-flow {
     padding: 24px 40px 0;
-  }
-
-  /* AIコメントと人生ステータスは幅いっぱいに使う（カード5枚の非対称を解消） */
-  .ai-comment-bar,
-  #status-card-home {
-    grid-column: 1 / -1;
   }
 
   /* ---------- カードサイズの拡大 ---------- */
@@ -1570,47 +1665,24 @@
     padding: 30px;
   }
 
-  /* 高さ・余白を統一するカード群（可変の「今日の記録」は対象外） */
-  .grid-card {
-    min-height: 228px;
-  }
-
-  .grid-card-center {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-
-  .exp-today-value {
-    font-size: 68px;
-  }
-
-  .exp-today-unit {
-    font-size: 28px;
-  }
-
-  .rank-value {
-    font-size: 46px;
-  }
-
-  .rank-message {
-    font-size: 15px;
-  }
-
   .card-label {
     font-size: 15px;
   }
 
-  .level-value {
-    font-size: 22px;
+  .hero-card {
+    padding: 30px;
   }
 
-  .title-icon {
-    font-size: 34px;
+  .hero-level-value {
+    font-size: 42px;
   }
 
-  .title-name {
-    font-size: 20px;
+  .hero-exp-value {
+    font-size: 26px;
+  }
+
+  .mini-value {
+    font-size: 18px;
   }
 
   .record-list {
