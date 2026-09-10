@@ -7,6 +7,7 @@ const PATHS = {
   "graduation-cap": `<path d="M12 5 21 9.5 12 14 3 9.5 12 5Z"/><path d="M7 11.5V15c0 1.4 2 2.5 5 2.5s5-1.1 5-2.5v-3.5"/><path d="M21 9.5V15"/>`,
   heart: `<path d="M20.8 5.6a5 5 0 0 0-7.1 0L12 6.9l-1.7-1.3a5 5 0 0 0-7.1 7.1L12 21l8.8-8.3a5 5 0 0 0 0-7.1Z"/>`,
   moon: `<path d="M20.5 14.5A8.5 8.5 0 1 1 9.9 3.9a6.8 6.8 0 0 0 10.6 10.6Z"/>`,
+  sun: `<circle cx="12" cy="12" r="4.2"/><path d="M12 3v2.4"/><path d="M12 18.6V21"/><path d="M4.9 4.9l1.7 1.7"/><path d="M17.4 17.4l1.7 1.7"/><path d="M3 12h2.4"/><path d="M18.6 12H21"/><path d="M4.9 19.1l1.7-1.7"/><path d="M17.4 6.6l1.7-1.7"/>`,
   wallet: `<rect x="3" y="6.5" width="18" height="12" rx="2.5"/><path d="M3 10.5h18"/><circle cx="16.5" cy="14" r="1.1" fill="currentColor" stroke="none"/>`,
   people: `<circle cx="9" cy="8.2" r="3"/><path d="M3.5 19c0-3.3 2.5-5.6 5.5-5.6s5.5 2.3 5.5 5.6"/><circle cx="17" cy="9" r="2.3"/><path d="M15 13.8c2.6.5 4.5 2.5 4.5 5.2"/>`,
   palette: `<path d="M12 3a9 9 0 1 0 0 18c1 0 1.8-.8 1.8-1.7 0-.5-.2-.9-.5-1.2-.3-.3-.5-.7-.5-1.2 0-.9.8-1.7 1.8-1.7H16a5 5 0 0 0 5-5c0-4-4-6.2-9-6.2Z"/><circle cx="7.6" cy="11" r="1.1" fill="currentColor" stroke="none"/><circle cx="9.4" cy="7.3" r="1.1" fill="currentColor" stroke="none"/><circle cx="13.8" cy="6.8" r="1.1" fill="currentColor" stroke="none"/><circle cx="16.3" cy="10" r="1.1" fill="currentColor" stroke="none"/>`,

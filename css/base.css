@@ -56,6 +56,30 @@
   color-scheme: dark;
 }
 
+:root[data-theme="light"] {
+  --color-bg: #f5f6fa;
+  --color-bg-subtle: #ffffff;
+  --color-bg-elevated: #ffffff;
+  --color-bg-elevated-solid: #ffffff;
+  --color-bg-elevated-2: #eef1f7;
+  --color-border: rgba(10, 14, 26, 0.08);
+  --color-border-strong: rgba(10, 14, 26, 0.14);
+  --color-text-primary: #12172a;
+  --color-text-secondary: #5b6478;
+  --color-text-tertiary: #8891a3;
+
+  --color-accent-bg: rgba(10, 132, 255, 0.1);
+  --color-danger-bg: rgba(255, 69, 58, 0.1);
+
+  --card-gradient: linear-gradient(160deg, rgba(10, 14, 26, 0.035), rgba(10, 14, 26, 0) 55%);
+  --shadow-card: 0 4px 18px rgba(20, 30, 60, 0.08);
+  --shadow-hero: 0 10px 32px rgba(20, 30, 60, 0.1), 0 0 0 1px rgba(10, 14, 26, 0.04);
+  --glow-accent: 0 0 28px rgba(10, 132, 255, 0.12);
+  --shadow-modal: 0 -8px 28px rgba(20, 30, 60, 0.12);
+
+  color-scheme: light;
+}
+
 * {
   box-sizing: border-box;
   -webkit-tap-highlight-color: transparent;
@@ -74,6 +98,7 @@ body {
   color: var(--color-text-primary);
   -webkit-font-smoothing: antialiased;
   user-select: none;
+  transition: background-color 0.25s ease, color 0.25s ease;
 }
 
 #app {

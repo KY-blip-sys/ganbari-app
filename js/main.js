@@ -34,6 +34,7 @@ import { renderLevel } from "./components/levelCard.js";
 import { renderRecords, setOnDelete, setOnEdit } from "./components/recordList.js";
 import { renderRecordToday, renderRecordExpGoal } from "./components/recordSummaryCard.js";
 import { initRecordModal, openRecordModalForEdit } from "./components/recordModal.js";
+import { initThemeToggle } from "./components/themeToggle.js";
 // import { renderAiComment } from "./components/aiComment.js"; // 一旦非表示
 import { initSettingsView, setAccountEmail } from "./components/settingsView.js";
 import { renderTitle } from "./components/titleCard.js";
@@ -122,6 +123,7 @@ function updateGreeting() {
 }
 
 updateGreeting();
+initThemeToggle();
 
 function getTodayRecords() {
   return state.records[todayKey()] || [];

@@ -8,6 +8,15 @@
   <title>人生RPG</title>
   <meta name="description" content="頑張りを可視化するアプリ">
   <meta name="theme-color" content="#0a0e1a">
+  <script>
+    (function () {
+      try {
+        if (localStorage.getItem("lifeRPG_theme") === "light") {
+          document.documentElement.dataset.theme = "light";
+        }
+      } catch (e) {}
+    })();
+  </script>
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
@@ -77,6 +86,9 @@
             <p class="greeting" id="greeting-main">こんにちは</p>
             <p class="greeting-sub" id="greeting-sub">今日も一歩ずつ進んでいきましょう</p>
           </div>
+          <button id="btn-theme-toggle" class="icon-button tap-scale" aria-label="ダークモード切り替え">
+            <span id="theme-toggle-icon"></span>
+          </button>
         </header>
 
         <main class="view-main">
